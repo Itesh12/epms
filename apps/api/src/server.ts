@@ -4,7 +4,11 @@ import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
+import logger from './lib/logger';
+import { errorHandler } from './middleware/error';
 import { connectDB } from './config/db';
+
 import authRoutes from './modules/auth/auth.routes';
 import employeeRoutes from './modules/employees/employee.routes';
 import attendanceRoutes from './modules/attendance/attendance.routes';
@@ -16,6 +20,8 @@ import leavesRoutes from './modules/leaves/leaves.routes';
 import analyticsRoutes from './modules/analytics/analytics.routes';
 import notificationsRoutes from './modules/notifications/notifications.routes';
 import { initSocket } from './lib/socket';
+import { apiRateLimiter } from './middleware/rateLimit';
+
 
 dotenv.config();
 
@@ -27,8 +33,11 @@ const PORT = process.env.PORT || 5000;
 initSocket(httpServer);
 
 // Connect to Database
-connectDB();
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
+app.use(apiRateLimiter);
 app.use(helmet());
 app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:3000',
@@ -36,6 +45,14 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser());
+
+// HTTP Request Logging
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms', {
+  stream: {
+    write: (message) => logger.info(message.trim()),
+  },
+}));
+
 
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
@@ -56,6 +73,16 @@ apiRouter.use('/notifications', notificationsRoutes);
 
 app.use('/api/v1', apiRouter);
 
-httpServer.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+// Global Error Handler (must be last)
+app.use(errorHandler);
+
+
+if (process.env.NODE_ENV !== 'test') {
+  httpServer.listen(PORT, () => {
+    logger.info(`🚀 Server running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  });
+}
+
+
+export { app, httpServer };
+

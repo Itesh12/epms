@@ -1,0 +1,4 @@
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-11 16:32:04"}
+{"level":"info","message":"POST /api/v1/auth/signup-admin 201 413 - 806.337 ms","timestamp":"2026-04-11 16:32:14"}
+{"level":"info","message":"POST /api/v1/auth/login 200 413 - 503.718 ms","timestamp":"2026-04-11 16:32:15"}
+{"level":"info","message":"POST /api/v1/auth/login 401 33 - 464.300 ms","timestamp":"2026-04-11 16:32:15"}
