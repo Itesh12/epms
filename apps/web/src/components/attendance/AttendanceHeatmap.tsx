@@ -7,7 +7,7 @@ import { useAttendance } from '@/contexts/AttendanceContext';
 import { format, startOfYear, eachDayOfInterval, endOfYear, getDay, isSameDay } from 'date-fns';
 
 export default function AttendanceHeatmap() {
-  const { getHeatmapData } = useAttendance();
+  const { getHeatmapData, attendance } = useAttendance();
   const [year, setYear] = useState(new Date().getFullYear());
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,7 +25,7 @@ export default function AttendanceHeatmap() {
       }
     };
     fetchHeatmap();
-  }, [year, getHeatmapData]);
+  }, [year, getHeatmapData, attendance]);
 
   const days = eachDayOfInterval({
     start: startOfYear(new Date(year, 0, 1)),
@@ -33,14 +33,18 @@ export default function AttendanceHeatmap() {
   });
 
   const getDayColor = (date: Date) => {
-    const dayData = data.find(d => isSameDay(new Date(d.date), date));
+    const dayData = data.find((d: any) => isSameDay(new Date(d.date), date));
     if (!dayData) return 'bg-gray-100';
     
     const mins = dayData.totalWorkMinutes || 0;
+    const status = dayData.status;
+
+    // Always show at least a light dot for any logged day
+    if (mins === 0 && status === 'PRESENT') return 'bg-blue-100';
     if (mins === 0) return 'bg-blue-50';
-    if (mins < 240) return 'bg-blue-200'; // < 4h
-    if (mins < 480) return 'bg-blue-400'; // < 8h
-    return 'bg-blue-600'; // 8h+
+    if (mins < 120) return 'bg-blue-200';  // < 2h
+    if (mins < 300) return 'bg-blue-400';  // < 5h
+    return 'bg-blue-600';                  // 5h+
   };
 
   return (

@@ -97,6 +97,9 @@ export default function AttendanceHub() {
     : computedBreakMins;
 
   const totalSessionMins = todayWorkMins + todayBreakMins;
+  const efficiencyPct = totalSessionMins > 0
+    ? Math.round(todayWorkMins / totalSessionMins * 100)
+    : 0;
 
   return (
     <div className={`bg-white rounded-[2.5rem] p-8 shadow-xl border overflow-hidden relative transition-all duration-500 ${
@@ -187,8 +190,8 @@ export default function AttendanceHub() {
         </div>
       </div>
 
-      {/* Stats row */}
-      <div className="mt-10 grid grid-cols-2 lg:grid-cols-4 gap-4 pt-8 border-t border-gray-50">
+      {/* Stats row — 5 columns */}
+      <div className="mt-10 grid grid-cols-2 lg:grid-cols-5 gap-4 pt-8 border-t border-gray-50">
         <div className="p-4 bg-gray-50/50 rounded-2xl">
           <p className="text-xs font-black text-gray-400 uppercase mb-1">Total Work</p>
           <p className="text-xl font-black text-gray-900">
@@ -209,7 +212,35 @@ export default function AttendanceHub() {
               : '--:--'}
           </p>
         </div>
+        <div className="p-4 bg-gray-50/50 rounded-2xl">
+          <p className="text-xs font-black text-gray-400 uppercase mb-1">Clock Out</p>
+          <p className={`text-xl font-black ${attendance?.checkOutTime ? 'text-gray-900' : 'text-gray-300'}`}>
+            {attendance?.checkOutTime
+              ? new Date(attendance.checkOutTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              : '--:--'}
+          </p>
+        </div>
         <div className={`p-4 rounded-2xl border transition-colors ${
           efficiencyPct >= 80 ? 'bg-green-50/50 border-green-100/50' :
           efficiencyPct >= 60 ? 'bg-blue-50/50 border-blue-100/50' :
-          efficiencyPct > 0 ? 'bg-orange-50/50 border-orang
+          efficiencyPct > 0 ? 'bg-orange-50/50 border-orange-100/50' : 'bg-gray-50/50 border-transparent'
+        }`}>
+          <p className={`text-xs font-black uppercase mb-1 ${
+            efficiencyPct >= 80 ? 'text-green-500' :
+            efficiencyPct >= 60 ? 'text-blue-400' :
+            efficiencyPct > 0 ? 'text-orange-400' : 'text-gray-400'
+          }`}>Efficiency</p>
+          <p className={`text-xl font-black ${
+            efficiencyPct >= 80 ? 'text-green-600' :
+            efficiencyPct >= 60 ? 'text-blue-600' :
+            efficiencyPct > 0 ? 'text-orange-500' : 'text-gray-400'
+          }`}>
+            {totalSessionMins > 0 ? `${efficiencyPct}%` : '--%'}
+          </p>
+        </div>
+      </div>
+
+      <CorrectionRequestModal isOpen={isCorrectionOpen} onClose={() => setIsCorrectionOpen(false)} />
+    </div>
+  );
+}

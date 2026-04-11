@@ -280,4 +280,9 @@ export const getDashboardStats = async (req: any, res: Response) => {
       attendance: `${attendancePercentage}%`,
       efficiency: `${efficiency}%`,
       perfScore: (efficiency / 20).toFixed(1), // Scale to 5.0
-      tasksDone: 0 // Place
+      tasksDone: 0 // Placeholder until Task module is built
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
