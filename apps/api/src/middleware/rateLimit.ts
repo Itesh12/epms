@@ -3,7 +3,8 @@ import logger from '../lib/logger';
 
 export const authRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 10, // Limit each IP to 10 login/signup requests per windowMs
+  max: 10,
+  skip: () => process.env.NODE_ENV === 'test',
   message: {
     message: 'Too many authentication attempts, please try again after 15 minutes',
   },
