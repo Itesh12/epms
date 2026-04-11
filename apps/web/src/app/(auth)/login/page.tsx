@@ -6,10 +6,12 @@ import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
+import { useTranslations } from 'next-intl';
 
 export default function LoginPage() {
   const router = useRouter();
   const { user, setAuth } = useAuthStore();
+  const t = useTranslations('Auth');
   
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +34,7 @@ export default function LoginPage() {
       setAuth(data.user, data.token);
       router.push('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+      setError(err.response?.data?.message || t('loginFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -46,8 +48,8 @@ export default function LoginPage() {
         className="max-w-md w-full bg-white rounded-2xl shadow-xl shadow-blue-100 p-8 border border-blue-50"
       >
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
-          <p className="text-gray-500">Sign in to your enterprise portal</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('loginTitle')}</h1>
+          <p className="text-gray-500">{t('loginSubtitle')}</p>
         </div>
 
         {error && (
@@ -62,27 +64,27 @@ export default function LoginPage() {
 
         <form className="space-y-6" autoComplete="off" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{t('emailLabel')}</label>
             <input 
               type="email" 
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-              placeholder="Enter your email address"
+              placeholder={t('emailPlaceholder')}
               autoComplete="off"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">{t('passwordLabel')}</label>
             <input 
               type="password" 
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-              placeholder="Enter your password"
+              placeholder={t('passwordPlaceholder')}
               autoComplete="new-password"
             />
           </div>
@@ -90,9 +92,9 @@ export default function LoginPage() {
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center gap-2 cursor-pointer">
               <input type="checkbox" className="rounded text-blue-600" />
-              <span className="text-gray-600">Remember me</span>
+              <span className="text-gray-600">{t('rememberMe')}</span>
             </label>
-            <Link href="/forgot-password" title="Forgot Password Page" className="text-blue-600 font-semibold hover:underline">Forgot password?</Link>
+            <Link href="/forgot-password" title="Forgot Password Page" className="text-blue-600 font-semibold hover:underline">{t('forgotPassword')}</Link>
           </div>
 
           <button 
@@ -102,24 +104,24 @@ export default function LoginPage() {
           >
             {isLoading ? (
               <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : 'Sign In'}
+            ) : t('signInButton')}
           </button>
         </form>
 
         <div className="mt-10 space-y-4 border-t pt-8 border-gray-100">
-          <p className="text-sm text-gray-500 text-center font-medium">New to EPMS?</p>
+          <p className="text-sm text-gray-500 text-center font-medium">{t('newToPortal')}</p>
           <div className="flex flex-col gap-3">
             <Link 
               href="/signup?role=admin" 
               className="w-full py-3 px-4 rounded-xl border-2 border-blue-50 text-blue-600 font-bold text-sm text-center hover:bg-blue-50 hover:border-blue-100 transition-all"
             >
-              Register your Organization
+              {t('registerOrg')}
             </Link>
             <Link 
               href="/signup?role=employee" 
               className="w-full py-3 px-4 rounded-xl border-2 border-gray-50 text-gray-600 font-bold text-sm text-center hover:bg-gray-50 hover:border-gray-100 transition-all"
             >
-              Join with Invite Code
+              {t('joinWithInvite')}
             </Link>
           </div>
         </div>

@@ -3,15 +3,17 @@
 import React from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  LineChart, Line, Legend 
+  LineChart, Line, Legend, AreaChart, Area 
 } from 'recharts';
 import { AttendanceStats } from '@epms/shared';
+import { useTranslations } from 'next-intl';
 
 export default function AttendanceCharts({ stats }: { stats: AttendanceStats }) {
+  const t = useTranslations('Analytics');
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-        <h3 className="text-lg font-bold text-gray-900 mb-6">Attendance Trends (Last 30 Days)</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-6">{t('attendanceTrends', { days: 30 })}</h3>
         <div className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={stats.trends}>
@@ -40,23 +42,23 @@ export default function AttendanceCharts({ stats }: { stats: AttendanceStats }) 
       </div>
 
       <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex flex-col">
-        <h3 className="text-lg font-bold text-gray-900 mb-6">Key Metrics</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-6">{t('keyMetrics')}</h3>
         <div className="grid grid-cols-2 gap-4 flex-1">
           <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
-            <p className="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">Avg Work Time</p>
+            <p className="text-blue-600 text-xs font-bold uppercase tracking-wider mb-1">{t('avgWorkTime')}</p>
             <p className="text-2xl font-black text-blue-900">{Math.round(stats.avgWorkMinutes / 60)}h {stats.avgWorkMinutes % 60}m</p>
           </div>
           <div className="bg-orange-50 p-4 rounded-xl border border-orange-100">
-            <p className="text-orange-600 text-xs font-bold uppercase tracking-wider mb-1">Late Logins</p>
+            <p className="text-orange-600 text-xs font-bold uppercase tracking-wider mb-1">{t('lateLogins')}</p>
             <p className="text-2xl font-black text-orange-900">{stats.lateLoginCount}</p>
           </div>
           <div className="bg-green-50 p-4 rounded-xl border border-green-100">
-            <p className="text-green-600 text-xs font-bold uppercase tracking-wider mb-1">Total Present</p>
+            <p className="text-green-600 text-xs font-bold uppercase tracking-wider mb-1">{t('totalPresent')}</p>
             <p className="text-2xl font-black text-green-900">{stats.totalPresent}</p>
           </div>
           <div className="bg-purple-50 p-4 rounded-xl border border-purple-100">
-            <p className="text-purple-600 text-xs font-bold uppercase tracking-wider mb-1">Break Pattern</p>
-             <p className="text-2xl font-black text-purple-900">Normal</p>
+            <p className="text-purple-600 text-xs font-bold uppercase tracking-wider mb-1">{t('breakPattern')}</p>
+             <p className="text-2xl font-black text-purple-900">{t('normal')}</p>
           </div>
         </div>
       </div>
@@ -64,4 +66,3 @@ export default function AttendanceCharts({ stats }: { stats: AttendanceStats }) 
   );
 }
 
-import { AreaChart, Area } from 'recharts';

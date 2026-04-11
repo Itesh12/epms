@@ -6,6 +6,7 @@ import { Building2, Users, PieChart, TrendingUp } from 'lucide-react';
 import AttendanceHub from '@/components/attendance/AttendanceHub';
 import AttendanceTimeline from '@/components/attendance/AttendanceTimeline';
 import AttendanceHeatmap from '@/components/attendance/AttendanceHeatmap';
+import { useTranslations } from 'next-intl';
 
 const StatCard = ({ label, value, icon: Icon, color }: any) => (
   <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all">
@@ -21,18 +22,19 @@ const StatCard = ({ label, value, icon: Icon, color }: any) => (
 );
 
 export default function AdminDashboard() {
+  const t = useTranslations('Dashboard.admin');
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900">Organization Overview</h1>
-        <p className="text-sm text-gray-500">Welcome back, Admin. Here is what is happening today.</p>
+        <h1 className="text-2xl font-bold text-gray-900">{t('title')}</h1>
+        <p className="text-sm text-gray-500">{t('subtitle')}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard label="Total Organizations" value="1" icon={Building2} color="bg-blue-600" />
-        <StatCard label="Active Employees" value="128" icon={Users} color="bg-purple-600" />
-        <StatCard label="Monthly Revenue" value="$42,500" icon={PieChart} color="bg-orange-600" />
-        <StatCard label="Growth Rate" value="24%" icon={TrendingUp} color="bg-green-600" />
+        <StatCard label={t('totalOrgs')} value="1" icon={Building2} color="bg-blue-600" />
+        <StatCard label={t('activeEmployees')} value="128" icon={Users} color="bg-purple-600" />
+        <StatCard label={t('monthlyRevenue')} value="$42,500" icon={PieChart} color="bg-orange-600" />
+        <StatCard label={t('growthRate')} value="24%" icon={TrendingUp} color="bg-green-600" />
       </div>
 
       <div className="space-y-8 mt-12 pt-12 border-t border-gray-100">
@@ -43,10 +45,10 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm min-h-[300px] flex items-center justify-center text-gray-400 font-medium">
-          Analytics Chart Placeholder
+          {t('chartPlaceholder')}
         </div>
         <div className="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm min-h-[300px] flex items-center justify-center text-gray-400 font-medium">
-          Top Performing Regions
+          {t('topRegions')}
         </div>
       </div>
     </div>

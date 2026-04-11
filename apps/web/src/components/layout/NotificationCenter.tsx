@@ -7,8 +7,10 @@ import { Bell, Check, Clock, Trash2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 import { Notification } from '@epms/shared';
+import { useTranslations } from 'next-intl';
 
 export default function NotificationCenter() {
+  const t = useTranslations('Common');
   const [isOpen, setIsOpen] = useState(false);
   const queryClient = useQueryClient();
 
@@ -55,13 +57,13 @@ export default function NotificationCenter() {
               className="absolute right-0 mt-3 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden"
             >
               <div className="p-4 border-b flex justify-between items-center bg-gray-50/50">
-                <h3 className="font-bold text-gray-900">Notifications</h3>
+                <h3 className="font-bold text-gray-900">{t('notifications')}</h3>
                 {unreadCount > 0 && (
                    <button 
                     onClick={() => markAllMutation.mutate()}
                     className="text-xs font-bold text-blue-600 hover:text-blue-700 flex items-center gap-1"
                    >
-                     <Check size={14}/> Mark all as read
+                     <Check size={14}/> {t('markAllAsRead')}
                    </button>
                 )}
               </div>
@@ -86,13 +88,13 @@ export default function NotificationCenter() {
                   ))
                 ) : (
                   <div className="p-8 text-center text-gray-500">
-                     <p className="text-sm">No notifications found.</p>
+                     <p className="text-sm">{t('noNotifications')}</p>
                   </div>
                 )}
               </div>
 
               <div className="p-3 border-t bg-gray-50 text-center">
-                 <button className="text-xs font-bold text-gray-500 hover:text-gray-700">View All Activity</button>
+                 <button className="text-xs font-bold text-gray-500 hover:text-gray-700">{t('viewAll')}</button>
               </div>
             </motion.div>
           </>

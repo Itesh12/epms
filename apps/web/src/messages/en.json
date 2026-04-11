@@ -1,4 +1,248 @@
 {
+  "Navigation": {
+    "dashboard": "Dashboard",
+    "timesheets": "Timesheets",
+    "projects": "Projects",
+    "approvals": "Approvals",
+    "workforce": "Workforce",
+    "analytics": "Analytics",
+    "security": "Security",
+    "settings": "Settings",
+    "signOut": "Sign Out",
+    "portalName": "EPMS Portal"
+  },
+  "Auth": {
+    "loginTitle": "Welcome Back",
+    "loginSubtitle": "Sign in to your enterprise portal",
+    "loginFailed": "Login failed. Please check your credentials.",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "Enter your email address",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "rememberMe": "Remember me",
+    "forgotPassword": "Forgot password?",
+    "signInButton": "Sign In",
+    "signingIn": "Signing In...",
+    "newToPortal": "New to EPMS?",
+    "registerOrg": "Register your Organization",
+    "joinWithInvite": "Join with Invite Code",
+    "signUpTitle": "Create an Account",
+    "signUpSubtitle": "Choose how you want to join our platform",
+    "adminRole": "Organization Admin",
+    "adminDesc": "Register your company and add employees",
+    "employeeRole": "Employee",
+    "employeeDesc": "Join an existing organization with a code",
+    "back": "Back",
+    "registerTitle": "Register Organization",
+    "joinTitle": "Join Organization",
+    "regFailed": "Registration failed. Please try again.",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "emailPlaceholderSignup": "example@company.com",
+    "orgName": "Organization Name",
+    "orgNamePlaceholder": "Enter company name",
+    "inviteCode": "Invite Code",
+    "invitePlaceholder": "Enter 12-digit invite code",
+    "passwordPlaceholderSignup": "Create a strong password",
+    "createOrgButton": "Create Organization",
+    "joinAccountButton": "Join Account",
+    "successTitle": "Success!",
+    "successMessage": "Your account has been created successfully. Redirecting you to the dashboard...",
+    "submitting": "Submitting..."
+  },
+  "Workforce": {
+    "title": "Employees",
+    "subtitle": "Manage your organization's workforce",
+    "addEmployee": "Add Employee",
+    "totalEmployees": "Total Employees",
+    "activeStatus": "Active Status",
+    "live": "Live",
+    "cloudSync": "Cloud Sync",
+    "ready": "Ready",
+    "noEmployees": "No employees found in the database.",
+    "fetching": "Fetching workforce data...",
+    "table": {
+      "employee": "Employee",
+      "statusRole": "Status & Role",
+      "department": "Department",
+      "joinedDate": "Joined Date"
+    },
+    "joined": "Joined {date}",
+    "engineering": "Engineering"
+  },
+  "Approvals": {
+    "title": "Approvals Inbox",
+    "subtitle": "Review pending requests that require your authorization.",
+    "loading": "Loading inbox...",
+    "requestSuffix": "REQUEST",
+    "unknownDate": "Unknown Date",
+    "emptyInboxTitle": "You're all caught up!",
+    "emptyInboxSubtitle": "No pending requests right now.",
+    "stepInfo": "Step {current} of {total}",
+    "requestDetails": "Request Details",
+    "trackingId": "Tracking ID:",
+    "formalRequestNote": "This is a formal request waiting for your review. Please evaluate the submission accurately.",
+    "automatedFetchNote": "Automated Data Fetching for target payloads can be integrated here.",
+    "commentLabel": "Add a comment (Optional)",
+    "commentPlaceholder": "Reason for rejection or additional notes...",
+    "rejectButton": "Reject Request",
+    "approveButton": "Approve Request",
+    "selectPrompt": "Select a request to review",
+    "selectSubtitle": "Select an item from your inbox on the left.",
+    "successMessage": "Action recorded successfully",
+    "types": {
+      "TIMESHEET": "Timesheet",
+      "LEAVE": "Leave",
+      "ATTENDANCE_CORRECTION": "Attendance Correction"
+    }
+  },
+  "Projects": {
+    "title": "Projects",
+    "subtitle": "Manage your team's projects and tasks",
+    "newProject": "New Project",
+    "noDescription": "No description provided.",
+    "members": "{count} Members",
+    "noProjects": "No projects found. Create one to get started!",
+    "createTitle": "Create New Project",
+    "nameLabel": "Project Name",
+    "namePlaceholder": "E.g. Website Redesign",
+    "descLabel": "Description",
+    "descPlaceholder": "What is this project about?",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "createButton": "Create Project",
+    "back": "Back to Projects",
+    "loading": "Loading project...",
+    "timeLogged": "Time Logged"
+  },
+  "Tasks": {
+    "addTitle": "Add New Task in {status}",
+    "titleLabel": "Title",
+    "descLabel": "Description",
+    "priorityLabel": "Priority",
+    "priorities": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "createButton": "Create",
+    "detailsTitle": "Task Details",
+    "activityTitle": "Activity & Comments",
+    "commentPlaceholder": "Write a comment...",
+    "noDescription": "No description provided.",
+    "addTask": "Add Task",
+    "board": {
+      "todo": "To Do",
+      "inProgress": "In Progress",
+      "done": "Done"
+    },
+    "labels": {
+      "highPriority": "High Priority",
+      "mediumPriority": "Medium",
+      "lowPriority": "Low Priority"
+    },
+    "timeUnits": {
+      "h": "h",
+      "m": "m",
+      "s": "s"
+    }
+  },
+  "Attendance": {
+    "totalWork": "Total Work",
+    "totalBreak": "Total Break",
+    "clockIn": "Clock In",
+    "clockOut": "Clock Out",
+    "efficiency": "Efficiency",
+    "status": {
+      "dayComplete": "Day Complete",
+      "onBreak": "On Break",
+      "liveSession": "Live Session",
+      "readyToStart": "Ready to Start",
+      "notStarted": "Shift not started",
+      "checkedOutAt": "Checked out at {time}"
+    },
+    "actions": {
+      "shiftCompleted": "SHIFT COMPLETED",
+      "startShift": "START SHIFT",
+      "resumeWork": "RESUME WORK",
+      "takeBreak": "TAKE BREAK",
+      "checkOut": "CHECK OUT",
+      "requestCorrection": "Request Correction"
+    },
+    "messages": {
+      "shiftStarted": "Shift started! Have a productive day 🚀",
+      "shiftEnded": "Shift ended! Great work today 🎉",
+      "breakStarted": "Break started ☕",
+      "welcomeBack": "Welcome back! 💪"
+    },
+    "timeline": {
+      "title": "Activity Journey",
+      "work": "Work",
+      "break": "Break",
+      "activeSession": "Active Work Session",
+      "breakSession": "Official Break Session",
+      "activeNow": "Active Now",
+      "ongoing": "Ongoing"
+    },
+    "correction": "Attendance Correction",
+    "modal": {
+      "requestSubmitted": "Request Submitted!",
+      "hrReview": "Your HR department will review this correction shortly.",
+      "timelineHint": "Your daily activity timeline will appear here once you start your shift.",
+      "heatmap": {
+        "title": "Consistency Heatmap",
+        "subtitle": "Your attendance frequency for {year}",
+        "mon": "Mon",
+        "wed": "Wed",
+        "fri": "Fri",
+        "less": "Less",
+        "more": "More",
+        "zeroStateTitle": "Getting Started?",
+        "zeroStateDesc": "Mark your first check-in today to see your consistency map grow!"
+      },
+      "typeLabel": "Correction Type",
+      "types": {
+        "checkIn": "Check-In Entry",
+        "checkOut": "Check-Out Entry",
+        "break": "Break Duration"
+      },
+      "correctedTime": "Corrected Time",
+      "reasonLabel": "Reason for Correction",
+      "reasonPlaceholder": "e.g. Forgot to clock out at the end of the shift",
+      "submitButton": "Send Request for Approval",
+      "submitting": "Submitting...",
+      "failed": "Failed to submit request"
+    }
+  },
+  "Analytics": {
+    "title": "Intelligent Analytics",
+    "subtitle": "Cross-module insights and performance pattern tracking.",
+    "globalStatus": "Global Status",
+    "systemHealthy": "SYSTEM HEALTHY",
+    "patternTracking": "Pattern Tracking",
+    "projectPerformance": "Project Performance",
+    "onTrack": "ON TRACK",
+    "delayPredicted": "DELAY PREDICTED",
+    "progress": "Progress",
+    "delayPrediction": "{days}D DELAY PREDICTION",
+    "details": "DETAILS",
+    "workloadDistribution": "Workload Distribution",
+    "productivityScore": "Overall Productivity Score",
+    "attendanceTrends": "Attendance Trends (Last {days} Days)",
+    "keyMetrics": "Key Metrics",
+    "avgWorkTime": "Avg Work Time",
+    "lateLogins": "Late Logins",
+    "totalPresent": "Total Present",
+    "breakPattern": "Break Pattern",
+    "normal": "Normal",
+    "completed": "Completed",
+    "avgTimePerTask": "Avg Time",
+    "hoursPerTask": "{hours}h/task",
+    "intelligentPattern": "Intelligent Pattern",
+    "viewPlan": "VIEW PLAN",
+    "allSystemsGreen": "All systems green.",
+    "noCriticalPatterns": "No critical performance patterns detected this week."
+  },
   "Dashboard": {
     "title": "Analytics Dashboard",
     "attendance": "Attendance Trends",
@@ -6,7 +250,159 @@
     "workload": "Workload Distribution",
     "insights": "Intelligent Pattern Tracking",
     "projects": "Project Performance",
-    "welcome": "Welcome back, {name}"
+    "welcome": "Welcome back, {name}",
+    "admin": {
+      "title": "Organization Overview",
+      "subtitle": "Welcome back, Admin. Here is what is happening today.",
+      "totalOrgs": "Total Organizations",
+      "activeEmployees": "Active Employees",
+      "monthlyRevenue": "Monthly Revenue",
+      "growthRate": "Growth Rate",
+      "chartPlaceholder": "Analytics Chart Placeholder",
+      "topRegions": "Top Performing Regions"
+    },
+    "manager": {
+      "title": "Team Leadership",
+      "subtitle": "Monitor your team's real-time attendance and task progress.",
+      "teamReport": "Team Report",
+      "activeNow": "Active Now",
+      "attendanceRate": "{rate}% Attendance",
+      "pendingApprovals": "Pending Approvals",
+      "requestCount": "{count} Requests",
+      "weeklyProgress": "Weekly Progress",
+      "growth": "{rate}% from last week",
+      "anomalies": "Attendance Anomalies",
+      "noAnomalies": "Great job! All team members have checked in correctly today."
+    },
+    "greetings": {
+      "morning": "Good Morning",
+      "afternoon": "Good Afternoon",
+      "evening": "Good Evening",
+      "there": "there"
+    },
+    "subtitles": {
+      "ready": "Ready to start your shift? Click \"Start Shift\" below.",
+      "completed": "You've completed your shift today. Great work! 🎉",
+      "onBreak": "You're on a break. Remember to resume when ready!",
+      "clockedIn": "You're currently clocked in. Keep up the great work! 💪"
+    },
+    "metrics": {
+      "workHoursWeek": "Work Hours (week)",
+      "attendanceMonth": "Attendance (month)",
+      "efficiency": "Efficiency",
+      "perfScore": "Perf. Score (/5)"
+    },
+    "profile": {
+      "title": "Your Profile",
+      "fullName": "Full Name",
+      "jobTitle": "Job Title",
+      "department": "Department",
+      "employeeId": "Employee ID",
+      "status": "Status",
+      "joined": "Joined",
+      "skills": "Skills"
+    },
+    "summary": {
+      "title": "Today's Summary",
+      "checkIn": "Check In",
+      "checkOut": "Check Out",
+      "workTime": "Work Time",
+      "breakTime": "Break Time",
+      "activities": "Activities today",
+      "status": "Status",
+      "completed": "Completed",
+      "notStarted": "Not Started",
+      "noAttendance": "No attendance recorded today yet.",
+      "checkInPrompt": "Check in above to start tracking."
+    }
+  },
+  "HR": {
+    "title": "Workforce Management",
+    "subtitle": "Manage employee onboarding, security requests, and compliance.",
+    "onboard": {
+      "label": "Onboard Talent",
+      "desc": "Send invite codes to new hires."
+    },
+    "corrections": {
+      "label": "Attendance Corrections",
+      "desc": "Review and approve fix requests."
+    },
+    "security": {
+      "label": "Security Tool",
+      "desc": "Quick generate user reset codes."
+    },
+    "records": {
+      "label": "Employee Records",
+      "desc": "View and update personnel files."
+    },
+    "personalAttendance": "Personal Attendance",
+    "personalSubtitle": "Track your own work sessions and consistency",
+    "recentSecurity": "Recent Security Requests",
+    "actionRequired": "Action Required",
+    "table": {
+      "employee": "Employee",
+      "status": "Status",
+      "requested": "Requested",
+      "actions": "Actions"
+    },
+    "reAuthPending": "RE-AUTH PENDING",
+    "modal": {
+      "title": "Reset Code Generated",
+      "desc": "Provide this code to the employee. It will expire in 2 hours.",
+      "done": "Done"
+    }
+  },
+  "Timesheets": {
+    "title": "Timesheets",
+    "subtitle": "Log your weekly work hours across all your assigned tasks.",
+    "loading": "Loading timesheet matrix...",
+    "saveDraft": "Save Draft",
+    "submitApproval": "Submit for Approval",
+    "taskProjectHeader": "Task / Project",
+    "tableTotalHeader": "Total",
+    "unknownProject": "Unknown Project",
+    "noTasks": "No tasks assigned to you.",
+    "dailyTotals": "Daily Totals:",
+    "savedToast": "Timesheet saved successfully",
+    "submittedToast": "Timesheet submitted for approval!",
+    "status": {
+      "DRAFT": "Draft",
+      "SUBMITTED": "Submitted",
+      "APPROVED": "Approved",
+      "REJECTED": "Rejected"
+    }
+  },
+  "Settings": {
+    "workflows": {
+      "title": "Approval Workflows",
+      "subtitle": "Design the exact chain of command for timesheets, leaves, and corrections.",
+      "activeRoutes": "Active Engine Routes",
+      "newTemplate": "New Workflow Template",
+      "builderTitle": "Workflow Builder",
+      "ruleName": "Rule Name",
+      "ruleNamePlaceholder": "E.g. Standard Timesheet Flow",
+      "targetPayload": "Target Payload",
+      "routingSteps": "Routing Steps (Sequential)",
+      "addNextStep": "Add Next Step",
+      "deployButton": "Deploy Engine Rule",
+      "cancel": "Cancel",
+      "loading": "Loading configurations...",
+      "noRoutes": "No custom routes found. The system uses single-step defaults.",
+      "successToast": "Approval Flow Created",
+      "nameRequiredToast": "Name required",
+      "stepRequiredToast": "Requires at least 1 step",
+      "roles": {
+        "MANAGER": "Requires a Manager",
+        "DIRECT_MANAGER": "Requires Submitter's Direct Manager",
+        "HR": "Requires HR Approval",
+        "ADMIN": "Requires Admin Approval"
+      },
+      "payloadTypes": {
+        "TIMESHEET": "Timesheets",
+        "LEAVE": "Leave Requests",
+        "ATTENDANCE_CORRECTION": "Attendance Corrections"
+      }
+    }
   },
   "Common": {
     "loading": "Loading...",
@@ -14,6 +410,18 @@
     "settings": "Settings",
     "logout": "Logout",
     "save": "Save",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "highPriority": "High Priority",
+    "mediumPriority": "Medium",
+    "lowPriority": "Low Priority",
+    "noNotifications": "No notifications found.",
+    "markAllAsRead": "Mark all as read",
+    "viewAll": "View All Activity",
+    "roles": {
+      "ADMIN": "Administrator",
+      "HR": "HR Manager",
+      "MANAGER": "Project Manager",
+      "EMPLOYEE": "Employee"
+    }
   }
 }

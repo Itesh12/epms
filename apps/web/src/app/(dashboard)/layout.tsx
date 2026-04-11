@@ -10,6 +10,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AttendanceProvider } from '@/contexts/AttendanceContext';
 import NotificationCenter from '@/components/layout/NotificationCenter';
+import LocaleSwitcher from '@/components/layout/LocaleSwitcher';
+import { useTranslations } from 'next-intl';
 
 const SidebarItem = ({ icon: Icon, label, href, isCollapsed, isActive }: { 
   icon: any, label: string, href: string, isCollapsed: boolean, isActive: boolean 
@@ -31,6 +33,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuthStore();
+  const t = useTranslations('Navigation');
+  const commonT = useTranslations('Common');
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -40,14 +44,14 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }, []);
 
   const navItems = [
-    { icon: Home, label: 'Dashboard', href: `/dashboard/${user?.role?.toLowerCase()}`, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-    { icon: Clock, label: 'Timesheets', href: '/timesheets', roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-    { icon: Briefcase, label: 'Projects', href: '/projects', roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
-    { icon: CheckSquare, label: 'Approvals', href: '/approvals', roles: ['ADMIN', 'HR', 'MANAGER'] },
-    { icon: Users, label: 'Workforce', href: '/employees', roles: ['ADMIN', 'HR', 'MANAGER'] },
-    { icon: BarChart2, label: 'Analytics', href: '/analytics', roles: ['ADMIN', 'HR'] },
-    { icon: Shield, label: 'Security', href: '/dashboard/hr/security', roles: ['ADMIN', 'HR'] },
-    { icon: Settings, label: 'Settings', href: '/settings', roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { icon: Home, label: t('dashboard'), href: `/dashboard/${user?.role?.toLowerCase()}`, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { icon: Clock, label: t('timesheets'), href: '/timesheets', roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { icon: Briefcase, label: t('projects'), href: '/projects', roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { icon: CheckSquare, label: t('approvals'), href: '/approvals', roles: ['ADMIN', 'HR', 'MANAGER'] },
+    { icon: Users, label: t('workforce'), href: '/employees', roles: ['ADMIN', 'HR', 'MANAGER'] },
+    { icon: BarChart2, label: t('analytics'), href: '/analytics', roles: ['ADMIN', 'HR'] },
+    { icon: Shield, label: t('security'), href: '/dashboard/hr/security', roles: ['ADMIN', 'HR'] },
+    { icon: Settings, label: t('settings'), href: '/settings', roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
   ].filter(item => item.roles.includes(user?.role || ''));
 
   return (
@@ -80,7 +84,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         >
           {/* Logo Section */}
           <div className="h-16 flex items-center justify-between px-6 border-b">
-            {!isCollapsed && <span className="text-xl font-bold text-blue-600 tracking-tight">EPMS Portal</span>}
+            {!isCollapsed && <span className="text-xl font-bold text-blue-600 tracking-tight">{t('portalName')}</span>}
             {!isMobile && (
               <button onClick={() => setCollapsed(!isCollapsed)} className="p-1.5 hover:bg-gray-100 rounded-lg transition-colors">
                 {isCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
@@ -103,7 +107,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Bottom Actions */}
           <div className="p-4 border-t bg-gray-50/50">
             <button onClick={logout} className="w-full">
-              <SidebarItem icon={LogOut} label="Sign Out" href="#" isCollapsed={isCollapsed} isActive={false} />
+              <SidebarItem icon={LogOut} label={t('signOut')} href="#" isCollapsed={isCollapsed} isActive={false} />
             </button>
           </div>
         </motion.aside>
@@ -120,11 +124,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </button>
             
             <div className="flex items-center gap-4 ml-auto">
+              <LocaleSwitcher />
               <NotificationCenter />
               <div className="text-right hidden sm:block ml-2">
                 <span className="block text-sm font-bold text-gray-900">{user?.name}</span>
                 <span className="block text-[10px] font-bold text-blue-600 uppercase tracking-tighter bg-blue-50 px-1.5 py-0.5 rounded leading-none">
-                  {user?.role}
+                  {user?.role ? commonT(`roles.${user.role}`) : ''}
                 </span>
               </div>
               <div className="w-9 h-9 rounded-xl bg-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-blue-100">

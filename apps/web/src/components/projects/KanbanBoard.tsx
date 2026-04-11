@@ -7,6 +7,7 @@ import { updateTask } from '@/services/tasks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Plus } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 interface KanbanBoardProps {
   tasks: Task[];
@@ -15,14 +16,15 @@ interface KanbanBoardProps {
   onAddTask: (status: TaskStatus) => void;
 }
 
-const COLUMNS: { id: TaskStatus; label: string; bg: string; dot: string }[] = [
-  { id: 'TODO', label: 'To Do', bg: 'bg-gray-100', dot: 'bg-gray-400' },
-  { id: 'IN_PROGRESS', label: 'In Progress', bg: 'bg-blue-50', dot: 'bg-blue-500' },
-  { id: 'DONE', label: 'Done', bg: 'bg-green-50', dot: 'bg-green-500' },
-];
-
 export default function KanbanBoard({ tasks, projectId, onTaskClick, onAddTask }: KanbanBoardProps) {
+  const t = useTranslations('Tasks');
   const queryClient = useQueryClient();
+  
+  const COLUMNS: { id: TaskStatus; label: string; bg: string; dot: string }[] = [
+    { id: 'TODO', label: t('board.todo'), bg: 'bg-gray-100', dot: 'bg-gray-400' },
+    { id: 'IN_PROGRESS', label: t('board.inProgress'), bg: 'bg-blue-50', dot: 'bg-blue-500' },
+    { id: 'DONE', label: t('board.done'), bg: 'bg-green-50', dot: 'bg-green-500' },
+  ];
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
   const [dragOverColumn, setDragOverColumn] = useState<TaskStatus | null>(null);
 
@@ -133,7 +135,7 @@ export default function KanbanBoard({ tasks, projectId, onTaskClick, onAddTask }
                 onClick={() => onAddTask(col.id)}
                 className="w-full py-2.5 rounded-xl border-2 border-dashed border-gray-300/50 text-gray-500 hover:text-gray-700 hover:bg-gray-200/50 hover:border-gray-300 font-medium text-sm transition-all flex items-center justify-center gap-2"
               >
-                <Plus size={16} /> Add Task
+                <Plus size={16} /> {t('addTask')}
               </button>
             </div>
           </div>

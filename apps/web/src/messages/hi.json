@@ -1,12 +1,408 @@
 {
+  "Navigation": {
+    "dashboard": "डैशबोर्ड",
+    "timesheets": "टाइमशीट",
+    "projects": "प्रोजेक्ट्स",
+    "approvals": "अनुमोदन",
+    "workforce": "कार्यबल",
+    "analytics": "एनालिटिक्स",
+    "security": "सुरक्षा",
+    "settings": "सेटिंग्स",
+    "signOut": "साइन आउट",
+    "portalName": "EPMS पोर्टल"
+  },
+  "Auth": {
+    "loginTitle": "वापसी पर स्वागत है",
+    "loginSubtitle": "अपने एंटरप्राइज़ पोर्टल में साइन इन करें",
+    "loginFailed": "लॉगिन विफल। कृपया अपनी साख जांचें।",
+    "emailLabel": "ईमेल पता",
+    "emailPlaceholder": "अपना ईमेल पता दर्ज करें",
+    "passwordLabel": "पासवर्ड",
+    "passwordPlaceholder": "अपना पासवर्ड दर्ज करें",
+    "rememberMe": "मुझे याद रखें",
+    "forgotPassword": "पासवर्ड भूल गए?",
+    "signInButton": "साइन इन करें",
+    "signingIn": "साइन इन हो रहा है...",
+    "newToPortal": "EPMS में नए हैं?",
+    "registerOrg": "अपना संगठन पंजीकृत करें",
+    "joinWithInvite": "आमंत्रण कोड के साथ जुड़ें",
+    "signUpTitle": "एक खाता बनाएं",
+    "signUpSubtitle": "चुनें कि आप हमारे प्लेटफॉर्म से कैसे जुड़ना चाहते हैं",
+    "adminRole": "संगठन व्यवस्थापक",
+    "adminDesc": "अपना संगठन पंजीकृत करें और कर्मचारियों को जोड़ें",
+    "employeeRole": "कर्मचारी",
+    "employeeDesc": "एक कोड के साथ किसी मौजूदा संगठन में शामिल हों",
+    "back": "पीछे",
+    "registerTitle": "संगठन पंजीकृत करें",
+    "joinTitle": "संगठन में शामिल हों",
+    "regFailed": "पंजीकरण विफल। कृपया फिर से प्रयास करें।",
+    "fullName": "पूरा नाम",
+    "fullNamePlaceholder": "अपना पूरा नाम दर्ज करें",
+    "emailPlaceholderSignup": "example@company.com",
+    "orgName": "संगठन का नाम",
+    "orgNamePlaceholder": "कंपनी का नाम दर्ज करें",
+    "inviteCode": "आमंत्रण कोड",
+    "invitePlaceholder": "12-अंकीय आमंत्रण कोड दर्ज करें",
+    "passwordPlaceholderSignup": "एक मजबूत पासवर्ड बनाएं",
+    "createOrgButton": "संगठन बनाएं",
+    "joinAccountButton": "खाते में शामिल हों",
+    "successTitle": "सफलता!",
+    "successMessage": "आपका खाता सफलतापूर्वक बना लिया गया है। आपको डैशबोर्ड पर पुनः निर्देशित किया जा रहा है...",
+    "submitting": "सबमिट हो रहा है..."
+  },
+  "Workforce": {
+    "title": "कर्मचारी",
+    "subtitle": "अपने संगठन के कार्यबल का प्रबंधन करें",
+    "addEmployee": "कर्मचारी जोड़ें",
+    "totalEmployees": "कुल कर्मचारी",
+    "activeStatus": "सक्रिय स्थिति",
+    "live": "लाइव",
+    "cloudSync": "क्लाउड सिंक",
+    "ready": "तैयार",
+    "noEmployees": "डेटाबेस में कोई कर्मचारी नहीं मिला।",
+    "fetching": "कार्यबल डेटा प्राप्त हो रहा है...",
+    "table": {
+      "employee": "कर्मचारी",
+      "statusRole": "स्थिति और भूमिका",
+      "department": "विभाग",
+      "joinedDate": "जुड़ने की तारीख"
+    },
+    "joined": "{date} को शामिल हुए",
+    "engineering": "इंजीनियरिंग"
+  },
+  "Approvals": {
+    "title": "अनुमोदन इनબોક્સ",
+    "subtitle": "बाकी अनुरोधों की समीक्षा करें जिनमें आपके प्राधिकरण की आवश्यकता है।",
+    "loading": "इनबॉक्स लोड हो रहा है...",
+    "requestSuffix": "अनुरोध",
+    "unknownDate": "अज्ञात तिथि",
+    "emptyInboxTitle": "आपका सारा काम पूरा हो गया है!",
+    "emptyInboxSubtitle": "अभी कोई लंबित अनुरोध नहीं है।",
+    "stepInfo": "चरण {current} / {total}",
+    "requestDetails": "अनुरोध विवरण",
+    "trackingId": "ट्रैकिंग आईडी:",
+    "formalRequestNote": "यह आपकी समीक्षा के लिए प्रतीक्षा कर रहा एक औपचारिक अनुरोध है। कृपया सबमिशन का सटीक मूल्यांकन करें।",
+    "automatedFetchNote": "लक्ष्य पेलोड के लिए स्वचालित डेटा पुनर्प्राप्ति को यहाँ एकीकृत किया जा सकता है।",
+    "commentLabel": "एक टिप्पणी जोड़ें (वैकल्पिक)",
+    "commentPlaceholder": "अस्वीकृति का कारण या अतिरिक्त नोट्स...",
+    "rejectButton": "अनुरोध अस्वीकार करें",
+    "approveButton": "अनुरोध स्वीकार करें",
+    "selectPrompt": "समीक्षा के लिए एक अनुरोध चुनें",
+    "selectSubtitle": "बाईं ओर अपने इनबॉक्स से एक आइटम चुनें।",
+    "successMessage": "कार्रवाई सफलतापूर्वक दर्ज की गई",
+    "types": {
+      "TIMESHEET": "टाइमशीट",
+      "LEAVE": "छुट्टी",
+      "ATTENDANCE_CORRECTION": "उपस्थिति सुधार"
+    }
+  },
+  "Projects": {
+    "title": "प्रोजेक्ट्स",
+    "subtitle": "अपनी टीम के प्रोजेक्ट्स और कार्यों का प्रबंधन करें",
+    "newProject": "नया प्रोजेक्ट",
+    "noDescription": "कोई विवरण नहीं दिया गया।",
+    "members": "{count} सदस्य",
+    "noProjects": "कोई प्रोजेक्ट नहीं मिला। शुरू करने के लिए एक बनाएं!",
+    "createTitle": "नया प्रोजेक्ट बनाएं",
+    "nameLabel": "प्रोजेक्ट का नाम",
+    "namePlaceholder": "जैसे: वेबसाइट पुनर्रचना",
+    "descLabel": "विवरण",
+    "descPlaceholder": "यह प्रोजेक्ट किस बारे में है?",
+    "cancel": "रद्द करें",
+    "creating": "बनाया जा रहा है...",
+    "createButton": "प्रोजेक्ट बनाएं",
+    "back": "प्रोजेक्ट्स पर वापस जाएं",
+    "loading": "प्रोजेक्ट लोड हो रहा है...",
+    "timeLogged": "लॉग किया गया समय"
+  },
+  "Tasks": {
+    "addTitle": "{status} में नया कार्य जोड़ें",
+    "titleLabel": "शीर्षक",
+    "descLabel": "विवरण",
+    "priorityLabel": "प्राथमिकता",
+    "priorities": {
+      "low": "कम",
+      "medium": "मध्यम",
+      "high": "उच्च"
+    },
+    "createButton": "बनाएं",
+    "detailsTitle": "कार्य विवरण",
+    "activityTitle": "गतिविधि और टिप्पणियाँ",
+    "commentPlaceholder": "एक टिप्पणी लिखें...",
+    "noDescription": "कोई विवरण नहीं दिया गया।",
+    "addTask": "कार्य जोड़ें",
+    "board": {
+      "todo": "करने के लिए",
+      "inProgress": "प्रगति पर है",
+      "done": "पूरा हुआ"
+    },
+    "labels": {
+      "highPriority": "उच्च प्राथमिकता",
+      "mediumPriority": "मध्यम",
+      "lowPriority": "कम प्राथमिकता"
+    },
+    "timeUnits": {
+      "h": "घं",
+      "m": "मि",
+      "s": "से"
+    }
+  },
+  "Attendance": {
+    "totalWork": "कुल कार्य",
+    "totalBreak": "कुल ब्रेक",
+    "clockIn": "क्लॉक इन",
+    "clockOut": "क्लॉक आउट",
+    "efficiency": "दक्षता",
+    "status": {
+      "dayComplete": "दिन पूरा हुआ",
+      "onBreak": "ब्रेक पर",
+      "liveSession": "लाइव सत्र",
+      "readyToStart": "शुरू करने के लिए तैयार",
+      "notStarted": "शिफ्ट शुरू नहीं हुई",
+      "checkedOutAt": "{time} पर चेक आउट किया गया"
+    },
+    "actions": {
+      "shiftCompleted": "शिफ्ट पूरी हुई",
+      "startShift": "शिफ्ट शुरू करें",
+      "resumeWork": "काम फिर से शुरू करें",
+      "takeBreak": "ब्रेक लें",
+      "checkOut": "चेक आउट",
+      "requestCorrection": "सुधार का अनुरोध करें"
+    },
+    "messages": {
+      "shiftStarted": "शिफ्ट शुरू हुई! आपका दिन फलदायी रहे 🚀",
+      "shiftEnded": "शिफ्ट समाप्त हुई! आज आपने बहुत अच्छा काम किया 🎉",
+      "breakStarted": "ब्रेક શરુ हुआ ☕",
+      "welcomeBack": "वापसी पर स्वागत है! 💪"
+    },
+    "timeline": {
+      "title": "गतिविधि यात्रा",
+      "work": "कार्य",
+      "break": "ब्रेक",
+      "activeSession": "सक्रिय कार्य सत्र",
+      "breakSession": "आधिकारिक ब्रेक सत्र",
+      "activeNow": "अभी सक्रिय",
+      "ongoing": "चल रहा है"
+    },
+    "correction": "उपस्थिति सुधार",
+    "modal": {
+      "requestSubmitted": "अनुरोध सबमिट किया गया!",
+      "hrReview": "आपका मानव संसाधन विभाग शीघ्र ही इस सुधार की समीक्षा करेगा।",
+      "typeLabel": "सुधार प्रकार",
+      "types": {
+        "checkIn": "चेक-इन एंट्री",
+        "checkOut": "चेक-आउट एंट्री",
+        "break": "ब्रेक अवधि"
+      },
+      "correctedTime": "संशोधित समय",
+      "reasonLabel": "सुधार का कारण",
+      "reasonPlaceholder": "जैसे: शिफ्ट के अंत में क्लॉक आउट करना भूल गए",
+      "submitButton": "अनुमोदन के लिए अनुरोध भेजें",
+      "submitting": "सबमिट हो रहा है...",
+      "failed": "अनुरोध सबमिट करने में विफल",
+      "timelineHint": "एक बार जब आप अपनी शिफ्ट शुरू कर देंगे तो आपकी दैनिक गतिविधि समयरेखा यहाँ दिखाई देगी।",
+      "heatmap": {
+        "title": "निरंतरता हीटमैપ",
+        "subtitle": "{year} के लिए आपकी उपस्थिति आवृत्ति",
+        "mon": "सोम",
+        "wed": "बुध",
+        "fri": "शुक्र",
+        "less": "कम",
+        "more": "अधिक",
+        "zeroStateTitle": "शुरू करना?",
+        "zeroStateDesc": "अपने निरंतरता मानचित्र को बढ़ते देखने के लिए आज ही अपना पहला चेक-इन करें!"
+      }
+    }
+  },
+  "Analytics": {
+    "title": "इंटेलिजेंट एनालिटिक्स",
+    "subtitle": "क्रॉस-मॉड्यूल अंतर्दृष्टि और प्रदर्शन पैटर्न ट्रैकिंग।",
+    "globalStatus": "वैश्विक स्थिति",
+    "systemHealthy": "प्रणाली स्वस्थ है",
+    "patternTracking": "पैटर्न ट्रैकिंग",
+    "projectPerformance": "प्रोजेक्ट का प्रदर्शन",
+    "onTrack": "ट्रैक पर",
+    "delayPredicted": "विपुल देरी का अनुमान",
+    "progress": "प्रगति",
+    "delayPrediction": "{days}D देरी का अनुमान",
+    "details": "विवरण",
+    "workloadDistribution": "कार्यभार वितरण",
+    "productivityScore": "कुल उत्पादकता स्कोर",
+    "attendanceTrends": "उपस्थिति रुझान (पिछले {days} दिन)",
+    "keyMetrics": "मुख्य मेट्रिक्स",
+    "avgWorkTime": "औसत कार्य समय",
+    "lateLogins": "देर से लॉगिन",
+    "totalPresent": "कुल उपस्थिति",
+    "breakPattern": "ब्रेक पैटर्न",
+    "normal": "सामान्य",
+    "completed": "पूरा हुआ",
+    "avgTimePerTask": "औसत समय",
+    "hoursPerTask": "{hours}घंटा/कार्य",
+    "intelligentPattern": "इंटेलिजेंट पैटर्न",
+    "viewPlan": "योजना देखें",
+    "allSystemsGreen": "सभी प्रणालियाँ सुरक्षित हैं।",
+    "noCriticalPatterns": "इस सप्ताह कोई गंभीर प्रदर्शन पैटर्न नहीं पाया गया।"
+  },
   "Dashboard": {
     "title": "एनालिटिक्स डैशबोर्ड",
     "attendance": "उपस्थिति रुझान",
     "productivity": "उत्पादकता स्कोर",
     "workload": "कार्यभार वितरण",
     "insights": "इंटेलिजेंट पैटर्न ट्रैकिंग",
-    "projects": "प्रोजेक्ट का प्रदर्शन",
-    "welcome": "वापसी पर स्वागत है, {name}"
+    "projects": "प्रोजेक्ट प्रदर्शन",
+    "welcome": "वापस स्वागत है, {name}",
+    "admin": {
+      "title": "संगठन अवलोकन",
+      "subtitle": "वापस स्वागत है, एडमिन। आज क्या हो रहा है, यहाँ देखें।",
+      "totalOrgs": "कुल संगठन",
+      "activeEmployees": "सक्रिय कर्मचारी",
+      "monthlyRevenue": "मासिक राजस्व",
+      "growthRate": "विकास दर",
+      "chartPlaceholder": "एनालिटिक्स चार्ट प्लेसहोल्डर",
+      "topRegions": "शीर्ष प्रदर्शन करने वाले क्षेत्र"
+    },
+    "manager": {
+      "title": "टीम नेतृत्व",
+      "subtitle": "अपनी टीम की रीयल-टाइम उपस्थिति और कार्य प्रगति की निगरानी करें।",
+      "teamReport": "टीम रिपोर्ट",
+      "activeNow": "अभी सक्रिय",
+      "attendanceRate": "{rate}% उपस्थिति",
+      "pendingApprovals": "लंबित अनुमोदन",
+      "requestCount": "{count} अनुरोध",
+      "weeklyProgress": "साप्ताहिक प्रगति",
+      "growth": "पिछले सप्ताह से {rate}%",
+      "anomalies": "उपस्थिति विसंगतियाँ",
+      "noAnomalies": "बहुत बढ़िया! टीम के सभी सदस्यों ने आज सही ढंग से चेक-इन किया है।"
+    },
+    "greetings": {
+      "morning": "शुभ प्रभात",
+      "afternoon": "शुभ दोपहर",
+      "evening": "शुभ संध्या",
+      "there": "दोस्त"
+    },
+    "subtitles": {
+      "ready": "अपनी शिफ्ट शुरू करने के लिए तैयार हैं? नीचे \"शिफ्ट शुरू करें\" पर क्लिक करें।",
+      "completed": "आपने आज अपनी शिफ्ट पूरी कर ली है। बहुत बढ़िया! 🎉",
+      "onBreak": "आप ब्रेक पर हैं। तैयार होने पर फिर से शुरू करना याद रखें!",
+      "clockedIn": "आप वर्तमान में क्लॉक-इन हैं। अच्छा काम जारी रखें! 💪"
+    },
+    "metrics": {
+      "workHoursWeek": "कार्य के घंटे (सप्ताह)",
+      "attendanceMonth": "उपस्थिति (महीना)",
+      "efficiency": "दक्षता",
+      "perfScore": "प्रदर्शन स्कोर (/5)"
+    },
+    "profile": {
+      "title": "आपका प्रोफ़ाइल",
+      "fullName": "पूरा नाम",
+      "jobTitle": "नौकरी का शीर्षक",
+      "department": "विभाग",
+      "employeeId": "कर्मचारी आईडी",
+      "status": "स्थिति",
+      "joined": "शामिल हुए",
+      "skills": "कौशल"
+    },
+    "summary": {
+      "title": "आज का सारांश",
+      "checkIn": "चेक इन",
+      "checkOut": "चेक आउट",
+      "workTime": "कार्य समय",
+      "breakTime": "ब्रेक टाइम",
+      "activities": "आज की गतिविधियाँ",
+      "status": "स्थिति",
+      "completed": "पूरा हुआ",
+      "notStarted": "शुरू नहीं हुआ",
+      "noAttendance": "आज अभी तक कोई उपस्थिति दर्ज नहीं की गई है।",
+      "checkInPrompt": "ट्रैकिंग शुरू करने के लिए ऊपर चेक-इन करें।"
+    }
+  },
+  "HR": {
+    "title": "कार्यबल प्रबंधन",
+    "subtitle": "कर्मचारी ऑनबोर्डिंग, सुरक्षा अनुरोधों और अनुपालन का प्रबंधन करें।",
+    "onboard": {
+      "label": "प्रतिभा को ऑनबोर्ड करें",
+      "desc": "नए कर्मचारियों को आमंत्रित कोड भेजें।"
+    },
+    "corrections": {
+      "label": "उपस्थिति सुधार",
+      "desc": "सुधार अनुरोधों की समीक्षा और अनुमोदन करें।"
+    },
+    "security": {
+      "label": "सुरक्षा उपकरण",
+      "desc": "त्वरित उपयोगकर्ता रीसेट कोड उत्पन्न करें।"
+    },
+    "records": {
+      "label": "कर्मचारी रिकॉर्ड",
+      "desc": "कार्मिक फ़ाइलों को देखें और अपडेट करें।"
+    },
+    "personalAttendance": "व्यक्तिगत उपस्थिति",
+    "personalSubtitle": "अपने स्वयं के कार्य सत्रों और निरंतरता को ट्रैक करें",
+    "recentSecurity": "हाल के सुरक्षा अनुरोध",
+    "actionRequired": "कार्रवाई आवश्यक",
+    "table": {
+      "employee": "कर्मचारी",
+      "status": "स्थिति",
+      "requested": "अनुरोध किया गया",
+      "actions": "कार्रवाई"
+    },
+    "reAuthPending": "पुनः प्रमाणीकरण लंबित",
+    "modal": {
+      "title": "रीसेट कोड उत्पन्न",
+      "desc": "यह कोड कर्मचारी को प्रदान करें। यह 2 घंटे में समाप्त हो जाएगा।",
+      "done": "हो गया"
+    }
+  },
+  "Timesheets": {
+    "title": "टाइमशीट",
+    "subtitle": "अपने सभी सौपे गए कार्यों में अपने साप्ताहिक कार्य घंटों को लॉग करें।",
+    "loading": "टाइमशीट मैट्रिक्स लोड हो रहा है...",
+    "saveDraft": "ड्राफ्ट सहेजें",
+    "submitApproval": "अनुमोदन के लिए भेजें",
+    "taskProjectHeader": "कार्य / प्रोजेक्ट",
+    "tableTotalHeader": "कुल",
+    "unknownProject": "अज्ञात प्रोजेक्ट",
+    "noTasks": "आपको कोई कार्य नहीं सौंपा गया है।",
+    "dailyTotals": "दैनिक कुल:",
+    "savedToast": "टाइमशीट सफलतापूर्वक सहेजी गई",
+    "submittedToast": "टाइमशीट अनुमोदन के लिए सबमिट कर दी गई है!",
+    "status": {
+      "DRAFT": "ड्राफ्ट",
+      "SUBMITTED": "सबमिट किया गया",
+      "APPROVED": "अनुमोदित",
+      "REJECTED": "अस्वीकार कर दिया"
+    }
+  },
+  "Settings": {
+    "workflows": {
+      "title": "अनुमोदन कार्यप्रवाह",
+      "subtitle": "टाइमशीट, पत्तियों और सुधारों के लिए कमांड की सटीक श्रृंखला डिज़ाइन करें।",
+      "activeRoutes": "सक्रिय इंजन मार्ग",
+      "newTemplate": "नया वर्कफ़्लो टेम्पलेट",
+      "builderTitle": "वर्कफ़्लो बिल्डर",
+      "ruleName": "नियम का नाम",
+      "ruleNamePlaceholder": "जैसे स्टैंडर्ड टाइमशीट फ्लो",
+      "targetPayload": "लक्ष्य पेलोड",
+      "routingSteps": "रूटिंग चरण (अनुक्रमिक)",
+      "addNextStep": "अगला चरण जोड़ें",
+      "deployButton": "इंजन नियम तैनात करें",
+      "cancel": "रद्द करें",
+      "loading": "कॉन्फ़िगरेशन लोड हो रहा है...",
+      "noRoutes": "कोई कस्टम मार्ग नहीं मिला। सिस्टम सिंगल-स्टेप डिफॉल्ट का उपयोग करता है।",
+      "successToast": "अनुमोदन प्रवाह बनाया गया",
+      "nameRequiredToast": "नाम आवश्यक है",
+      "stepRequiredToast": "कम से कम 1 चरण आवश्यक है",
+      "roles": {
+        "MANAGER": "प्रबंधक की आवश्यकता है",
+        "DIRECT_MANAGER": "जमाकर्ता के प्रत्यक्ष प्रबंधक की आवश्यकता है",
+        "HR": "एचआर अनुमोदन की आवश्यकता है",
+        "ADMIN": "एडमिन अनुमोदन की आवश्यकता है"
+      },
+      "payloadTypes": {
+        "TIMESHEET": "टाइमशीट",
+        "LEAVE": "छुट्टी के अनुरोध",
+        "ATTENDANCE_CORRECTION": "उपस्थिति सुधार"
+      }
+    }
   },
   "Common": {
     "loading": "लोड हो रहा है...",
@@ -14,6 +410,18 @@
     "settings": "सेटिंग्स",
     "logout": "लॉगआउट",
     "save": "सहेजें",
-    "cancel": "रद्द करें"
+    "cancel": "रद्द करें",
+    "highPriority": "उच्च प्राथमिकता",
+    "mediumPriority": "मध्यम",
+    "lowPriority": "कम प्राथमिकता",
+    "noNotifications": "कोई सूचना नहीं मिली।",
+    "markAllAsRead": "सभी को पढ़ा हुआ मानें",
+    "viewAll": "सभी गतिविधि देखें",
+    "roles": {
+      "ADMIN": "प्रशासक",
+      "HR": "एचआर प्रबंधक",
+      "MANAGER": "प्रोजेक्ट मैनेजर",
+      "EMPLOYEE": "कर्मचारी"
+    }
   }
 }

@@ -11,6 +11,7 @@ import {
 import dynamic from 'next/dynamic';
 import { BarChart2, TrendingUp, Info, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 const AttendanceCharts = dynamic(() => import('@/components/analytics/AttendanceCharts'), { 
   loading: () => <div className="h-[400px] bg-gray-50 animate-pulse rounded-2xl" />,
@@ -28,6 +29,8 @@ const InsightCards = dynamic(() => import('@/components/analytics/InsightCards')
 });
 
 export default function AnalyticsDashboard() {
+  const t = useTranslations('Analytics');
+  const commonT = useTranslations('Common');
   const { data: attendance, isLoading: attendanceL } = useQuery({
     queryKey: ['analytics-attendance'],
     queryFn: getAttendanceAnalytics
@@ -70,16 +73,16 @@ export default function AnalyticsDashboard() {
         <div>
           <h1 className="text-3xl font-black text-gray-900 flex items-center gap-3">
             <span className="p-3 bg-blue-600 text-white rounded-2xl shadow-lg shadow-blue-200"><BarChart2 size={28} /></span>
-            Intelligent Analytics
+            {t('title')}
           </h1>
-          <p className="text-gray-500 mt-2 text-lg">Cross-module insights and performance pattern tracking.</p>
+          <p className="text-gray-500 mt-2 text-lg">{t('subtitle')}</p>
         </div>
         <div className="flex gap-4">
           <div className="text-right">
-            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Global Status</p>
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{t('globalStatus')}</p>
             <div className="flex items-center gap-2 mt-1">
               <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-              <span className="font-bold text-gray-900">SYSTEM HEALTHY</span>
+              <span className="font-bold text-gray-900">{t('systemHealthy')}</span>
             </div>
           </div>
         </div>
@@ -89,7 +92,7 @@ export default function AnalyticsDashboard() {
       <section className="space-y-6">
         <div className="flex items-center gap-2 px-2">
            <Info className="text-blue-500" size={20} />
-           <h2 className="text-xl font-bold text-gray-900">Pattern Tracking</h2>
+           <h2 className="text-xl font-bold text-gray-900">{t('patternTracking')}</h2>
         </div>
         <InsightCards insights={insights} />
       </section>
@@ -104,7 +107,7 @@ export default function AnalyticsDashboard() {
       <section className="space-y-6">
         <div className="flex items-center gap-2 px-2">
            <TrendingUp className="text-blue-500" size={20} />
-           <h2 className="text-xl font-bold text-gray-900">Project Performance</h2>
+           <h2 className="text-xl font-bold text-gray-900">{t('projectPerformance')}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {projects?.map((project: any) => (
@@ -114,16 +117,16 @@ export default function AnalyticsDashboard() {
                className="bg-white p-6 rounded-3xl shadow-sm border border-gray-100"
             >
                <div className="flex justify-between items-start mb-6">
-                 <div>
-                   <h3 className="font-bold text-gray-900 truncate max-w-[150px]">{project.projectName}</h3>
-                   <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${project.isOnTrack ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
-                     {project.isOnTrack ? 'ON TRACK' : 'DELAY PREDICTED'}
-                   </span>
-                 </div>
-                 <div className="text-right">
-                   <p className="text-2xl font-black text-gray-900">{project.progress}%</p>
-                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Progress</p>
-                 </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 truncate max-w-[150px]">{project.projectName}</h3>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${project.isOnTrack ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                      {project.isOnTrack ? t('onTrack') : t('delayPredicted')}
+                    </span>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-2xl font-black text-gray-900">{project.progress}%</p>
+                    <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{t('progress')}</p>
+                  </div>
                </div>
 
                <div className="w-full h-3 bg-gray-50 rounded-full overflow-hidden mb-6">
@@ -134,13 +137,13 @@ export default function AnalyticsDashboard() {
                  />
                </div>
 
-               <div className="flex justify-between items-center text-xs font-bold">
-                 <div className="flex items-center gap-1.5 text-gray-500">
-                   <AlertTriangle size={14} className={project.predictedDelayDays > 0 ? 'text-orange-500' : 'text-gray-200'}/>
-                   {project.predictedDelayDays}D DELAY PREDICTION
-                 </div>
-                 <button className="text-blue-600 hover:underline">DETAILS</button>
-               </div>
+                <div className="flex justify-between items-center text-xs font-bold">
+                  <div className="flex items-center gap-1.5 text-gray-500">
+                    <AlertTriangle size={14} className={project.predictedDelayDays > 0 ? 'text-orange-500' : 'text-gray-200'}/>
+                    {t('delayPrediction', { days: project.predictedDelayDays })}
+                  </div>
+                  <button className="text-blue-600 hover:underline">{t('details')}</button>
+                </div>
             </motion.div>
           ))}
         </div>

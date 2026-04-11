@@ -4,8 +4,10 @@ import React from 'react';
 import { InsightPattern } from '@epms/shared';
 import { AlertCircle, Zap, ShieldCheck, Flame, ArrowUpRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export default function InsightCards({ insights }: { insights: InsightPattern[] }) {
+  const t = useTranslations('Analytics');
   const getIcon = (type: string) => {
     switch (type) {
       case 'BURNOUT': return <Flame size={24} className="text-orange-500" />;
@@ -40,7 +42,7 @@ export default function InsightCards({ insights }: { insights: InsightPattern[] 
           </div>
           <div className="flex-1 min-w-0">
              <div className="flex justify-between items-start mb-2">
-               <span className="px-2 py-0.5 bg-white/60 text-[10px] font-bold rounded uppercase tracking-wider text-gray-500">Intelligent Pattern</span>
+               <span className="px-2 py-0.5 bg-white/60 text-[10px] font-bold rounded uppercase tracking-wider text-gray-500">{t('intelligentPattern')}</span>
                <span className={`w-2 h-2 rounded-full ${
                  insight.severity === 'HIGH' ? 'bg-red-500' :
                  insight.severity === 'MEDIUM' ? 'bg-orange-500' :
@@ -49,7 +51,7 @@ export default function InsightCards({ insights }: { insights: InsightPattern[] 
              </div>
              <p className="text-sm font-bold text-gray-900 leading-tight">{insight.message}</p>
              <button className="flex items-center gap-1 text-xs font-bold mt-4 opacity-70 hover:opacity-100 transition-opacity">
-               VIEW PLAN <ArrowUpRight size={14}/>
+               {t('viewPlan')} <ArrowUpRight size={14}/>
              </button>
           </div>
         </motion.div>
@@ -57,8 +59,8 @@ export default function InsightCards({ insights }: { insights: InsightPattern[] 
       {insights.length === 0 && (
         <div className="col-span-full py-12 text-center text-gray-400 bg-gray-50/50 border-2 border-dashed border-gray-100 rounded-3xl">
            <ShieldCheck size={48} className="mx-auto mb-4 opacity-30" />
-           <p className="font-bold text-lg">All systems green.</p>
-           <p className="text-sm">No critical performance patterns detected this week.</p>
+           <p className="font-bold text-lg">{t('allSystemsGreen')}</p>
+           <p className="text-sm">{t('noCriticalPatterns')}</p>
         </div>
       )}
     </div>

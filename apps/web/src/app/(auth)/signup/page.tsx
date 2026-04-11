@@ -6,11 +6,13 @@ import { User, Building, Mail, Lock, CheckCircle, ArrowRight } from 'lucide-reac
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
+import { useTranslations } from 'next-intl';
 
 function SignupForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const { setAuth } = useAuthStore();
+  const t = useTranslations('Auth');
   
   const initialRole = searchParams.get('role') || 'admin';
   const [step, setStep] = useState(searchParams.get('role') ? 2 : 1);
@@ -64,7 +66,7 @@ function SignupForm() {
       // Auto redirect after showing success for 2 seconds
       setTimeout(() => router.push('/dashboard'), 2000);
     } catch (err: any) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      setError(err.response?.data?.message || t('regFailed'));
       setIsLoading(false);
     }
   };
@@ -93,13 +95,13 @@ function SignupForm() {
       <AnimatePresence mode="wait">
         {step === 1 && (
           <motion.div 
-            key="step1"
+            <key="step1"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
           >
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Create an Account</h1>
-            <p className="text-gray-500 mb-8">Choose how you want to join our platform</p>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('signUpTitle')}</h1>
+            <p className="text-gray-500 mb-8">{t('signUpSubtitle')}</p>
             
             <div className="space-y-4">
               <button 
@@ -109,8 +111,8 @@ function SignupForm() {
                 <div className="flex items-center gap-4">
                   <div className="p-3 rounded-lg bg-blue-600 text-white"><Building /></div>
                   <div>
-                    <h3 className="font-bold text-gray-900">Organization Admin</h3>
-                    <p className="text-sm text-gray-500">Register your company and add employees</p>
+                    <h3 className="font-bold text-gray-900">{t('adminRole')}</h3>
+                    <p className="text-sm text-gray-500">{t('adminDesc')}</p>
                   </div>
                 </div>
               </button>
@@ -122,8 +124,8 @@ function SignupForm() {
                 <div className="flex items-center gap-4">
                   <div className="p-3 rounded-lg bg-gray-100 text-gray-600 group-hover:bg-blue-600 group-hover:text-white transition-colors"><User /></div>
                   <div>
-                    <h3 className="font-bold text-gray-900">Employee</h3>
-                    <p className="text-sm text-gray-500">Join an existing organization with a code</p>
+                    <h3 className="font-bold text-gray-900">{t('employeeRole')}</h3>
+                    <p className="text-sm text-gray-500">{t('employeeDesc')}</p>
                   </div>
                 </div>
               </button>
@@ -139,9 +141,9 @@ function SignupForm() {
             exit={{ opacity: 0, x: 20 }}
           >
             <div className="flex items-center gap-4 mb-6">
-              <button onClick={() => setStep(1)} className="text-gray-400 hover:text-gray-600 transition-colors">← Back</button>
+              <button onClick={() => setStep(1)} className="text-gray-400 hover:text-gray-600 transition-colors">← {t('back')}</button>
               <h2 className="text-2xl font-bold text-gray-900">
-                {role === 'admin' ? 'Register Organization' : 'Join Organization'}
+                {role === 'admin' ? t('registerTitle') : t('joinTitle')}
               </h2>
             </div>
 
@@ -152,16 +154,16 @@ function SignupForm() {
             )}
 
             <form onSubmit={handleSubmit} autoComplete="off">
-              <FormInput icon={User} label="Full Name" name="name" placeholder="Enter your full name" autoComplete="off" required />
-              <FormInput icon={Mail} label="Email Address" name="email" type="email" placeholder="example@company.com" autoComplete="off" required />
+              <FormInput icon={User} label={t('fullName')} name="name" placeholder={t('fullNamePlaceholder')} autoComplete="off" required />
+              <FormInput icon={Mail} label={t('emailLabel')} name="email" type="email" placeholder={t('emailPlaceholderSignup')} autoComplete="off" required />
               
               {role === 'admin' ? (
-                <FormInput icon={Building} label="Organization Name" name="organizationName" placeholder="Enter company name" autoComplete="off" required />
+                <FormInput icon={Building} label={t('orgName')} name="organizationName" placeholder={t('orgNamePlaceholder')} autoComplete="off" required />
               ) : (
-                <FormInput icon={Building} label="Invite Code" name="inviteCode" placeholder="Enter 12-digit invite code" autoComplete="off" required />
+                <FormInput icon={Building} label={t('inviteCode')} name="inviteCode" placeholder={t('invitePlaceholder')} autoComplete="off" required />
               )}
               
-              <FormInput icon={Lock} label="Password" name="password" type="password" placeholder="Create a strong password" autoComplete="new-password" required />
+              <FormInput icon={Lock} label={t('passwordLabel')} name="password" type="password" placeholder={t('passwordPlaceholderSignup')} autoComplete="new-password" required />
               
               <button 
                 type="submit"
@@ -172,7 +174,7 @@ function SignupForm() {
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 ) : (
                   <>
-                    <span>{role === 'admin' ? 'Create Organization' : 'Join Account'}</span>
+                    <span>{role === 'admin' ? t('createOrgButton') : t('joinAccountButton')}</span>
                     <ArrowRight size={18} />
                   </>
                 )}
@@ -191,8 +193,8 @@ function SignupForm() {
             <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
               <CheckCircle size={40} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">Success!</h2>
-            <p className="text-gray-500 mb-8">Your account has been created successfully. Redirecting you to the dashboard...</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">{t('successTitle')}</h2>
+            <p className="text-gray-500 mb-8">{t('successMessage')}</p>
           </motion.div>
         )}
       </AnimatePresence>

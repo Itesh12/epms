@@ -8,8 +8,10 @@ import { CheckSquare, XCircle, CheckCircle2, Clock, FileText, CalendarOff } from
 import { motion, AnimatePresence } from 'framer-motion';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 export default function ApprovalsInbox() {
+  const t = useTranslations('Approvals');
   const queryClient = useQueryClient();
   const [selectedRequest, setSelectedRequest] = useState<ApprovalRequest | null>(null);
 
@@ -21,7 +23,7 @@ export default function ApprovalsInbox() {
   const actionMutation = useMutation({
     mutationFn: ({ id, action, comment }: { id: string, action: 'APPROVE' | 'REJECT', comment?: string }) => actionApproval(id, action, comment),
     onSuccess: () => {
-      toast.success('Action recorded successfully');
+      toast.success(t('successMessage'));
       queryClient.invalidateQueries({ queryKey: ['pending-approvals'] });
       setSelectedRequest(null);
     }
@@ -45,7 +47,7 @@ export default function ApprovalsInbox() {
     }
   };
 
-  if (isLoading) return <div className="p-8 text-gray-500 animate-pulse">Loading inbox...</div>;
+  if (isLoading) return <div className="p-8 text-gray-500 animate-pulse">{t('loading')}</div>;
 
   return (
     <div className="space-y-6">
@@ -53,9 +55,9 @@ export default function ApprovalsInbox() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             <span className="p-2 bg-indigo-100 text-indigo-600 rounded-xl"><CheckSquare size={24} /></span>
-            Approvals Inbox
+            {t('title')}
           </h1>
-          <p className="text-gray-500 mt-1">Review pending requests that require your authorization.</p>
+          <p className="text-gray-500 mt-1">{t('subtitle')}</p>
         </div>
         <div className="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center font-bold text-xl ring-4 ring-indigo-50/50">
           {approvals.length}
@@ -82,10 +84,10 @@ export default function ApprovalsInbox() {
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-gray-900 truncate">{(req as any).requesterId?.name || 'User'}</h3>
-                  <p className="text-sm text-gray-500 font-medium">{req.targetType.replace('_', ' ')} REQUEST</p>
+                  <p className="text-sm text-gray-500 font-medium">{t(`types.${req.targetType}`)} {t('requestSuffix')}</p>
                   <p className="text-xs text-gray-400 mt-2 flex items-center gap-1">
                     <Clock size={12}/> 
-                    {req.createdAt ? format(new Date(req.createdAt), 'MMM d, h:mm a') : 'Unknown Date'}
+                    {req.createdAt ? format(new Date(req.createdAt), 'MMM d, h:mm a') : t('unknownDate')}
                   </p>
                 </div>
               </div>
@@ -94,8 +96,8 @@ export default function ApprovalsInbox() {
           {approvals.length === 0 && (
             <div className="p-12 text-center text-gray-500 bg-white border border-gray-100 rounded-2xl">
               <CheckCircle2 size={48} className="mx-auto mb-4 text-green-300" />
-              <p className="font-medium text-lg text-gray-900">You're all caught up!</p>
-              <p className="text-sm mt-1">No pending requests right now.</p>
+              <p className="font-medium text-lg text-gray-900">{t('emptyInboxTitle')}</p>
+              <p className="text-sm mt-1">{t('emptyInboxSubtitle')}</p>
             </div>
           )}
         </div>
@@ -118,18 +120,19 @@ export default function ApprovalsInbox() {
                     </div>
                     <div>
                       <h2 className="text-2xl font-bold text-gray-900">{(selectedRequest as any).requesterId?.name}</h2>
-                      <p className="text-gray-500 font-medium">Step {selectedRequest.currentStepOrder} of {((selectedRequest as any).flowId?.steps?.length) || 1} • {selectedRequest.targetType.replace('_', ' ')}</p>
+                      <p className="text-gray-500 font-medium">
+                        {t('stepInfo', { current: selectedRequest.currentStepOrder, total: ((selectedRequest as any).flowId?.steps?.length) || 1 })} • {t(`types.${selectedRequest.targetType}`)}
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 <div className="bg-gray-50 rounded-2xl p-6 mb-8">
-                  {/* For demonstration we show generic details. In reality, we'd fetch the specific target ID data (Timesheet / Leave) */}
-                  <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Request Details</h4>
+                  <h4 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">{t('requestDetails')}</h4>
                   <div className="space-y-4 text-gray-700">
-                     <p><strong>Tracking ID:</strong> {selectedRequest.targetId}</p>
-                     <p>This is a formal request waiting for your review. Please evaluate the submission accurately.</p>
-                     <p className="text-xs text-gray-400 mt-4">Automated Data Fetching for target payloads can be integrated here.</p>
+                     <p><strong>{t('trackingId')}</strong> {selectedRequest.targetId}</p>
+                     <p>{t('formalRequestNote')}</p>
+                     <p className="text-xs text-gray-400 mt-4">{t('automatedFetchNote')}</p>
                   </div>
                 </div>
 
@@ -139,16 +142,16 @@ export default function ApprovalsInbox() {
                   const comment = e.target.comment.value;
                   actionMutation.mutate({ id: selectedRequest.id || (selectedRequest as any)._id, action, comment });
                 }}>
-                  <p className="text-sm font-bold text-gray-500 mb-2">Add a comment (Optional)</p>
-                  <textarea name="comment" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 min-h-[100px] resize-none focus:ring-2 focus:ring-indigo-500 outline-none mb-6" placeholder="Reason for rejection or additional notes..." />
+                  <p className="text-sm font-bold text-gray-500 mb-2">{t('commentLabel')}</p>
+                  <textarea name="comment" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 min-h-[100px] resize-none focus:ring-2 focus:ring-indigo-500 outline-none mb-6" placeholder={t('commentPlaceholder')} />
                   
                   <div className="flex gap-4">
                     <button type="submit" data-action="REJECT" disabled={actionMutation.isPending} className="flex-1 py-3 px-6 rounded-xl font-bold border-2 border-red-100 text-red-600 bg-red-50 hover:bg-red-100 transition-colors disabled:opacity-50">
-                      Reject Request
+                      {t('rejectButton')}
                     </button>
                     <button type="submit" data-action="APPROVE" disabled={actionMutation.isPending} className="flex-1 py-3 px-6 rounded-xl font-bold text-white shadow-lg shadow-indigo-200 bg-indigo-600 hover:bg-indigo-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
                       <CheckCircle2 size={20} />
-                      Approve Request
+                      {t('approveButton')}
                     </button>
                   </div>
                 </form>
@@ -156,8 +159,8 @@ export default function ApprovalsInbox() {
             ) : (
               <div key="empty" className="h-[400px] flex flex-col items-center justify-center text-gray-400 bg-gray-50/50 rounded-3xl border-2 border-dashed border-gray-200">
                  <CheckSquare size={48} className="mb-4 text-gray-300" />
-                 <p className="font-semibold text-lg">Select a request to review</p>
-                 <p className="text-sm mt-1">Select an item from your inbox on the left.</p>
+                 <p className="font-semibold text-lg">{t('selectPrompt')}</p>
+                 <p className="text-sm mt-1">{t('selectSubtitle')}</p>
               </div>
             )}
           </AnimatePresence>

@@ -6,6 +6,7 @@ import { Play, Square, MessageSquare, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { addTime } from '@/services/tasks';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 
 interface TaskCardProps {
   task: Task;
@@ -14,6 +15,7 @@ interface TaskCardProps {
 }
 
 export default function TaskCard({ task, onDragStart, onClick }: TaskCardProps) {
+  const t = useTranslations('Tasks');
   const queryClient = useQueryClient();
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [elapsedTime, setElapsedTime] = useState(task.timeSpent || 0);
@@ -55,9 +57,9 @@ export default function TaskCard({ task, onDragStart, onClick }: TaskCardProps) 
     const h = Math.floor(seconds / 3600);
     const m = Math.floor((seconds % 3600) / 60);
     const s = seconds % 60;
-    if (h > 0) return `${h}h ${m}m`;
-    if (m > 0) return `${m}m`;
-    return `${s}s`;
+    if (h > 0) return `${h}${t('timeUnits.h')} ${m}${t('timeUnits.m')}`;
+    if (m > 0) return `${m}${t('timeUnits.m')}`;
+    return `${s}${t('timeUnits.s')}`;
   };
 
   return (
@@ -81,9 +83,9 @@ export default function TaskCard({ task, onDragStart, onClick }: TaskCardProps) 
       </div>
 
       <div className="flex flex-wrap gap-2 mb-3">
-        {task.priority === 'HIGH' && <span className="px-2 py-0.5 bg-red-50 text-red-600 text-[10px] font-bold rounded uppercase tracking-wider">High Priority</span>}
-        {task.priority === 'MEDIUM' && <span className="px-2 py-0.5 bg-orange-50 text-orange-600 text-[10px] font-bold rounded uppercase tracking-wider">Medium</span>}
-        {task.priority === 'LOW' && <span className="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-bold rounded uppercase tracking-wider">Low Priority</span>}
+        {task.priority === 'HIGH' && <span className="px-2 py-0.5 bg-red-50 text-red-600 text-[10px] font-bold rounded uppercase tracking-wider">{t('labels.highPriority')}</span>}
+        {task.priority === 'MEDIUM' && <span className="px-2 py-0.5 bg-orange-50 text-orange-600 text-[10px] font-bold rounded uppercase tracking-wider">{t('labels.mediumPriority')}</span>}
+        {task.priority === 'LOW' && <span className="px-2 py-0.5 bg-green-50 text-green-600 text-[10px] font-bold rounded uppercase tracking-wider">{t('labels.lowPriority')}</span>}
       </div>
 
       <div className="flex items-center justify-between text-xs text-gray-500 pt-2 border-t border-gray-50">

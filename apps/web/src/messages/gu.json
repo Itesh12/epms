@@ -1,12 +1,408 @@
 {
+  "Navigation": {
+    "dashboard": "ડેશબોર્ડ",
+    "timesheets": "ટાઇમશીટ્સ",
+    "projects": "પ્રોજેક્ટ્સ",
+    "approvals": "મંજૂરીઓ",
+    "workforce": "વર્કફોર્સ",
+    "analytics": "એનાલિટિક્સ",
+    "security": "સુરક્ષા",
+    "settings": "સેટિંગ્સ",
+    "signOut": "સાઇન આઉટ",
+    "portalName": "EPMS પોર્ટલ"
+  },
+  "Auth": {
+    "loginTitle": "સ્વાગત છે",
+    "loginSubtitle": "તમારા એન્ટરપ્રાઇઝ પોર્ટલમાં સાઇન ઇન કરો",
+    "loginFailed": "લોગિન નિષ્ફળ. કૃપા કરીને તમારી વિગતો તપાસો.",
+    "emailLabel": "ઇમેઇલ સરનામું",
+    "emailPlaceholder": "તમારું ઇમેઇલ સરનામું દાખલ કરો",
+    "passwordLabel": "પાસવર્ડ",
+    "passwordPlaceholder": "તમારો પાસવર્ડ દાખલ કરો",
+    "rememberMe": "મને યાદ રાખો",
+    "forgotPassword": "પાસવર્ડ ભૂલી ગયા છો?",
+    "signInButton": "સાઇન ઇન કરો",
+    "signingIn": "સાઇન ઇન થઈ રહ્યું છે...",
+    "newToPortal": "EPMS માં નવા છો?",
+    "registerOrg": "તમારી સંસ્થાની નોંધણી કરો",
+    "joinWithInvite": "આમંત્રણ કોડ સાથે જોડાઓ",
+    "signUpTitle": "એક ખાતું બનાવો",
+    "signUpSubtitle": "તમે અમારા પ્લેટફોર્મ સાથે કેવી રીતે જોડાવા માંગો છો તે પસંદ કરો",
+    "adminRole": "સંસ્થા સંચાલક",
+    "adminDesc": "તમારી સંસ્થાની નોંધણી કરો અને કર્મચારીઓને ઉમેરો",
+    "employeeRole": "કર્મચારી",
+    "employeeDesc": "કોડ સાથે હાલની સંસ્થામાં જોડાઓ",
+    "back": "પાછળ",
+    "registerTitle": "સંસ્થાની નોંધણી કરો",
+    "joinTitle": "સંસ્થામાં જોડાઓ",
+    "regFailed": "નોંધણી નિષ્ફળ. કૃપા કરીને ફરી પ્રયાસ કરો.",
+    "fullName": "પૂરું નામ",
+    "fullNamePlaceholder": "તમારું પૂરું નામ દાખલ કરો",
+    "emailPlaceholderSignup": "example@company.com",
+    "orgName": "સંસ્થાનું નામ",
+    "orgNamePlaceholder": "કંપનીનું નામ દાખલ કરો",
+    "inviteCode": "આમંત્રણ કોડ",
+    "invitePlaceholder": "12-અંકનો આમંત્રણ કોડ દાખલ કરો",
+    "passwordPlaceholderSignup": "મજબૂત પાસવર્ડ બનાવો",
+    "createOrgButton": "સંસ્થા બનાવો",
+    "joinAccountButton": "ખાતામાં જોડાઓ",
+    "successTitle": "સફળતા!",
+    "successMessage": "તમારું ખાતું સફળતાપૂર્વક બનાવવામાં આવ્યું છે. તમને ડેશબોર્ડ પર રીડાયરેક્ટ કરવામાં આવી રહ્યા છે...",
+    "submitting": "સબમિટ થઈ રહ્યું છે..."
+  },
+  "Workforce": {
+    "title": "કર્મચારીઓ",
+    "subtitle": "તમારા સંગઠનના કર્મચારીઓનું સંચાલન કરો",
+    "addEmployee": "કર્મચારી ઉમેરો",
+    "totalEmployees": "કુલ કર્મચારીઓ",
+    "activeStatus": "સક્રિય સ્થિતિ",
+    "live": "લાઇવ",
+    "cloudSync": "ક્લાઉડ સિંક",
+    "ready": "તૈયાર",
+    "noEmployees": "ડેટાબેઝમાં કોઈ કર્મચારી મળ્યા નથી.",
+    "fetching": "કર્મચારીઓનો ડેટા મેળવી રહ્યો છે...",
+    "table": {
+      "employee": "કર્મચારી",
+      "statusRole": "સ્થિતિ અને ભૂમિકા",
+      "department": "વિભાગ",
+      "joinedDate": "જોડાવાની તારીખ"
+    },
+    "joined": "{date} ના રોજ જોડાયા",
+    "engineering": "એન્જિનિયરિંગ"
+  },
+  "Approvals": {
+    "title": "અનુમોદન ઇનબોક્સ",
+    "subtitle": "બાકી વિનંતીઓની સમીક્ષા કરો કે જેના માટે તમારા અધિકૃતતાની જરૂર છે.",
+    "loading": "ઇનબોક્સ લોડ થઈ રહ્યું છે...",
+    "requestSuffix": "વિનંતી",
+    "unknownDate": "અજ્ઞાત તારીખ",
+    "emptyInboxTitle": "તમે બધા કામ પૂર્ણ કરી લીધા છે!",
+    "emptyInboxSubtitle": "અત્યારે કોઈ બાકી વિનંતીઓ નથી.",
+    "stepInfo": "પગલું {current} / {total}",
+    "requestDetails": "વિનંતી વિગતો",
+    "trackingId": "ટ્રેકિંગ આઈડી:",
+    "formalRequestNote": "આ તમારી સમીક્ષા માટે પ્રતીક્ષામાં રહેલી ઔપચારિક વિનંતી છે. કૃપા કરીને સબમિશનનું સચોટ મૂલ્યાંકન કરો.",
+    "automatedFetchNote": "ટાર્ગેટ પેલોડ માટે ઓટોમેટેડ ડેટા ફેચિંગ અહીં ઇન્ટિગ્રેટ કરી શકાય છે.",
+    "commentLabel": "ટિપ્પણી ઉમેરો (વૈકલ્પિક)",
+    "commentPlaceholder": "અસ્વીકારનું કારણ અથવા વધારાની નોંધો...",
+    "rejectButton": "વિનંતી નકારો",
+    "approveButton": "વિનંતી મંજૂર કરો",
+    "selectPrompt": "સમીક્ષા માટે વિનંતી પસંદ કરો",
+    "selectSubtitle": "ડાબી બાજુએ તમારા ઇનબોક્સમાંથી એક આઇટમ પસંદ કરો.",
+    "successMessage": "ક્રિયા સફળતાપૂર્વક રેકોર્ડ કરવામાં આવી",
+    "types": {
+      "TIMESHEET": "ટાઇમશીટ",
+      "LEAVE": "રજા",
+      "ATTENDANCE_CORRECTION": "હાજરી સુધારો"
+    }
+  },
+  "Projects": {
+    "title": "પ્રોજેક્ટ્સ",
+    "subtitle": "તમારી ટીમના પ્રોજેક્ટ્સ અને કાર્યોનું સંચાલન કરો",
+    "newProject": "નવો પ્રોજેક્ટ",
+    "noDescription": "કોઈ વિગત આપવામાં આવી નથી.",
+    "members": "{count} સભ્યો",
+    "noProjects": "કોઈ પ્રોજેક્ટ મળ્યા નથી. શરૂ કરવા માટે એક બનાવો!",
+    "createTitle": "નવો પ્રોજેક્ટ બનાવો",
+    "nameLabel": "પ્રોજેક્ટનું નામ",
+    "namePlaceholder": "દા.ત. વેબસાઇટ રિડિઝાઇન",
+    "descLabel": "વર્ણન",
+    "descPlaceholder": "આ પ્રોજેક્ટ શેના વિશે છે?",
+    "cancel": "રદ કરો",
+    "creating": "બનાવી રહ્યું છે...",
+    "createButton": "પ્રોજેક્ટ બનાવો",
+    "back": "પ્રોજેક્ટ્સ પર પાછા જાઓ",
+    "loading": "પ્રોજેક્ટ લોડ થઈ રહ્યો છે...",
+    "timeLogged": "લૉગ કરેલ સમય"
+  },
+  "Tasks": {
+    "addTitle": "{status} માં નવું કાર્ય ઉમેરો",
+    "titleLabel": "શીર્ષક",
+    "descLabel": "વર્ણન",
+    "priorityLabel": "પ્રાથમિકતા",
+    "priorities": {
+      "low": "ઓછી",
+      "medium": "મધ્યમ",
+      "high": "ઉચ્ચ"
+    },
+    "createButton": "બનાવો",
+    "detailsTitle": "કાર્ય વિગતો",
+    "activityTitle": "પ્રવૃત્તિ અને ટિપ્પણીઓ",
+    "commentPlaceholder": "ટિપ્પણી લખો...",
+    "noDescription": "કોઈ વિગત આપવામાં આવી નથી.",
+    "addTask": "કાર્ય ઉમેરો",
+    "board": {
+      "todo": "કરવા માટે",
+      "inProgress": "પ્રગતિમાં છે",
+      "done": "પૂર્ણ"
+    },
+    "labels": {
+      "highPriority": "ઉચ્ચ પ્રાથમિકતા",
+      "mediumPriority": "મધ્યમ",
+      "lowPriority": "ઓછી પ્રાથમિકતા"
+    },
+    "timeUnits": {
+      "h": "ક",
+      "m": "મિ",
+      "s": "સે"
+    }
+  },
+  "Attendance": {
+    "totalWork": "કુલ કામ",
+    "totalBreak": "કુલ બ્રેક",
+    "clockIn": "ક્લોક ઇન",
+    "clockOut": "ક્લોક આઉટ",
+    "efficiency": "કાર્યક્ષમતા",
+    "status": {
+      "dayComplete": "દિવસ પૂર્ણ",
+      "onBreak": "બ્રેક પર",
+      "liveSession": "લાઇવ સત્ર",
+      "readyToStart": "શરૂ કરવા માટે તૈયાર",
+      "notStarted": "શિફ્ટ શરૂ થઈ નથી",
+      "checkedOutAt": "{time} પર ચેક આઉટ કર્યું"
+    },
+    "actions": {
+      "shiftCompleted": "શિફ્ટ પૂર્ણ થઈ",
+      "startShift": "શિફ્ટ શરૂ કરો",
+      "resumeWork": "કામ ફરી શરૂ કરો",
+      "takeBreak": "બ્રેક લો",
+      "checkOut": "ચેક આઉટ",
+      "requestCorrection": "હાજરી સુધારો"
+    },
+    "messages": {
+      "shiftStarted": "શિફ્ટ શરૂ થઈ! તમારો દિવસ ફળદાયી રહે 🚀",
+      "shiftEnded": "શિફ્ટ સમાપ્ત થઈ! તમે આજે ઉત્તમ કામ કર્યું 🎉",
+      "breakStarted": "બ્રેક શરૂ થયો ☕",
+      "welcomeBack": "ફરી સ્વાગત છે! 💪"
+    },
+    "timeline": {
+      "title": "પ્રવૃત્તિ પ્રવાસ",
+      "work": "કામ",
+      "break": "બ્રેક",
+      "activeSession": "સક્રિય કાર્ય સત્ર",
+      "breakSession": "સત્તાવાર બ્રેક સત્ર",
+      "activeNow": "હમણાં સક્રિય",
+      "ongoing": "ચાલુ છે"
+    },
+    "correction": "હાજરી સુધારો",
+    "modal": {
+      "requestSubmitted": "વિનંતી સબમિટ કરવામાં આવી!",
+      "hrReview": "તમારો એચઆર વિભાગ ટૂંક સમયમાં આ સુધારાની સમીક્ષા કરશે.",
+      "typeLabel": "સુધારાનો પ્રકાર",
+      "types": {
+        "checkIn": "ચેક-ઇન એન્ટ્રી",
+        "checkOut": "ચેક-આઉટ એન્ટ્રી",
+        "break": "બ્રેકનો સમયગાળો"
+      },
+      "correctedTime": "સુધારેલ સમય",
+      "reasonLabel": "સુધારાનું કારણ",
+      "reasonPlaceholder": "દા.ત. શિફ્ટના અંતે ક્લોક આઉટ કરવાનું ભૂલી ગયા",
+      "submitButton": "મંજૂરી માટે વિનંતી મોકલો",
+      "submitting": "સબમિટ થઈ રહ્યું છે...",
+      "failed": "વિનંતી સબમિટ કરવામાં નિષ્ફળ",
+      "timelineHint": "તમે તમારી શિફ્ટ શરૂ કરો પછી તમારી દૈનિક પ્રવૃત્તિ ટાઇમલાઇન અહીં દેખાશે.",
+      "heatmap": {
+        "title": "સાતત્ય હીટમેપ",
+        "subtitle": "{year} માટે તમારી હાજરીની આવૃત્તિ",
+        "mon": "સોમ",
+        "wed": "બુધ",
+        "fri": "શુક્ર",
+        "less": "ઓછું",
+        "more": "વધારે",
+        "zeroStateTitle": "શરૂ કરી રહ્યા છો?",
+        "zeroStateDesc": "તમારા સાતત્ય નકશાને વધતો જોવા માટે આજે જ તમારું પ્રથમ ચેક-ઇન કરો!"
+      }
+    }
+  },
+  "Analytics": {
+    "title": "ઇન્ટેલિજન્ટ એનાલિટિક્સ",
+    "subtitle": "ક્રોસ-મોડ્યુલ આંતરદૃષ્ટિ અને પ્રદર્શન પેટર્ન ટ્રેકિંગ.",
+    "globalStatus": "વૈશ્વિક સ્થિતિ",
+    "systemHealthy": "સિસ્ટમ તંદુરસ્ત છે",
+    "patternTracking": "પેટર્ન ટ્રેકિંગ",
+    "projectPerformance": "પ્રોજેક્ટ પ્રદર્શન",
+    "onTrack": "ટ્રેક પર",
+    "delayPredicted": "વિલંબનું અનુમાન",
+    "progress": "પ્રગતિ",
+    "delayPrediction": "{days}D વિલંબનું અનુમાન",
+    "details": "વિગતો",
+    "workloadDistribution": "કાર્યભાર વિતરણ",
+    "productivityScore": "કુલ ઉત્પાદકતા સ્કોર",
+    "attendanceTrends": "હાજરીના વલણો (છેલ્લા {days} દિવસો)",
+    "keyMetrics": "મુખ્ય મેટ્રિક્સ",
+    "avgWorkTime": "સરેરાશ કાર્ય સમય",
+    "lateLogins": "મોડા લોગિન",
+    "totalPresent": "કુલ હાજર",
+    "breakPattern": "બ્રેક પેટર્ન",
+    "normal": "સામાન્ય",
+    "completed": "પૂર્ણ",
+    "avgTimePerTask": "સરેરાશ સમય",
+    "hoursPerTask": "{hours}કલાક/કાર્ય",
+    "intelligentPattern": "ઇન્ટેલિજન્ટ પેટર્ન",
+    "viewPlan": "પ્લાન જુઓ",
+    "allSystemsGreen": "બધી સિસ્ટમો સુરક્ષિત છે.",
+    "noCriticalPatterns": "આ અઠવાડિયે કોઈ જટિલ પ્રદર્શન પેટર્ન મળી નથી."
+  },
   "Dashboard": {
     "title": "એનાલિટિક્સ ડેશબોર્ડ",
     "attendance": "હાજરીના વલણો",
     "productivity": "ઉત્પાદકતા સ્કોર",
     "workload": "કાર્યભાર વિતરણ",
     "insights": "ઇન્ટેલિજન્ટ પેટર્ન ટ્રેકિંગ",
-    "projects": "પ્રોજેક્ટ પ્રદર્શન",
-    "welcome": "ફરીથી સ્વાગત છે, {name}"
+    "projects": "પ્રોજેક્ટ પરફોર્મન્સ",
+    "welcome": "ફરી સ્વાગત છે, {name}",
+    "admin": {
+      "title": "સંસ્થાનું વિહંગાવલોકન",
+      "subtitle": "ફરી સ્વાગત છે, એડમિન. આજે શું થઈ રહ્યું છે તે અહીં છે.",
+      "totalOrgs": "કુલ સંસ્થાઓ",
+      "activeEmployees": "સક્રિય કર્મચારીઓ",
+      "monthlyRevenue": "માસિક આવક",
+      "growthRate": "વૃદ્ધિ દર",
+      "chartPlaceholder": "એનાલિટિક્સ ચાર્ટ પ્લેસહોલ્ડર",
+      "topRegions": "શ્રેષ્ઠ પ્રદર્શન કરતા પ્રદેશો"
+    },
+    "manager": {
+      "title": "ટીમ નેતૃત્વ",
+      "subtitle": "તમારી ટીમની રીઅલ-ટાઇમ હાજરી અને કાર્ય પ્રગતિનું નિરીક્ષણ કરો.",
+      "teamReport": "ટીમ રિપોર્ટ",
+      "activeNow": "અત્યારે સક્રિય",
+      "attendanceRate": "{rate}% હાજરી",
+      "pendingApprovals": "બાકી મંજૂરીઓ",
+      "requestCount": "{count} વિનંતીઓ",
+      "weeklyProgress": "સાપ્તાહિક પ્રગતિ",
+      "growth": "ગયા અઠવાડિયા કરતા {rate}%",
+      "anomalies": "હાજરીની વિસંગતતાઓ",
+      "noAnomalies": "ખૂબ સરસ! ટીમના તમામ સભ્યોએ આજે ​​યોગ્ય રીતે ચેક-ઇન કર્યું છે."
+    },
+    "greetings": {
+      "morning": "સુપ્રભાત",
+      "afternoon": "શુભ બપોર",
+      "evening": "શુભ સાંજ",
+      "there": "મિત્ર"
+    },
+    "subtitles": {
+      "ready": "તમારી શિફ્ટ શરૂ કરવા માટે તૈયાર છો? નીચે \"શિફ્ટ શરૂ કરો\" પર ક્લિક કરો.",
+      "completed": "તમે આજે તમારી શિફ્ટ પૂરી કરી છે. ઉત્તમ કામ! 🎉",
+      "onBreak": "તમે વિરામ પર છો. જ્યારે તૈયાર હોવ ત્યારે ફરી શરૂ કરવાનું યાદ રાખજો!",
+      "clockedIn": "તમે અત્યારે ક્લોક-ઇન છો. સારું કામ ચાલુ રાખજો! 💪"
+    },
+    "metrics": {
+      "workHoursWeek": "કાર્યના કલાકો (અઠવાડિયું)",
+      "attendanceMonth": "હાજરી (મહિનો)",
+      "efficiency": "કાર્યક્ષમતા",
+      "perfScore": "પરફોર્મન્સ સ્કોર (/5)"
+    },
+    "profile": {
+      "title": "તમારી પ્રોફાઇલ",
+      "fullName": "પૂરું નામ",
+      "jobTitle": "જોબ ટાઇટલ",
+      "department": "વિભાગ",
+      "employeeId": "કર્મચારી આઈડી",
+      "status": "સ્થિતિ",
+      "joined": "જોડાયા",
+      "skills": "કૌશલ્યો"
+    },
+    "summary": {
+      "title": "આજનો સારાંશ",
+      "checkIn": "ચેક ઇન",
+      "checkOut": "ચેક આઉટ",
+      "workTime": "કાર્ય સમય",
+      "breakTime": "બ્રેક ટાઇમ",
+      "activities": "આજની પ્રવૃત્તિઓ",
+      "status": "સ્થિતિ",
+      "completed": "પૂર્ણ થયું",
+      "notStarted": "શરૂ થયું નથી",
+      "noAttendance": "આજે હજી સુધી કોઈ હાજરી નોંધાઈ નથી.",
+      "checkInPrompt": "ટ્રેકિંગ શરૂ કરવા માટે ઉપર ચેક-ઇન કરો."
+    }
+  },
+  "HR": {
+    "title": "વર્કફોર્સ મેનેજમેન્ટ",
+    "subtitle": "કર્મચારી ઓનબોર્ડિંગ, સુરક્ષા વિનંતીઓ અને પાલનનું સંચાલન કરો.",
+    "onboard": {
+      "label": "પ્રતિભાને ઓનબોર્ડ કરો",
+      "desc": "નવા કર્મચારીઓને ઇન્વાઇટ કોડ મોકલો."
+    },
+    "corrections": {
+      "label": "હાજરી સુધારો",
+      "desc": "સુધારાની વિનંતીઓની સમીક્ષા કરો અને મંજૂર કરો."
+    },
+    "security": {
+      "label": "સુરક્ષા સાધન",
+      "desc": "ઝડપથી વપરાશકર્તા રીસેટ કોડ જનરેટ કરો."
+    },
+    "records": {
+      "label": "કર્મચારી રેકોર્ડ",
+      "desc": "કર્મચારીઓની ફાઇલો જુઓ અને અપડેટ કરો."
+    },
+    "personalAttendance": "વ્યક્તિગત હાજરી",
+    "personalSubtitle": "તમારા પોતાના કાર્ય સત્રો અને સાતત્યને ટ્રૅક કરો",
+    "recentSecurity": "તાજેતરની સુરક્ષા વિનંતીઓ",
+    "actionRequired": "ક્રિયા જરૂરી",
+    "table": {
+      "employee": "કર્મચારી",
+      "status": "સ્થિતિ",
+      "requested": "વિનંતી કરેલ",
+      "actions": "ક્રિયાઓ"
+    },
+    "reAuthPending": "પુનઃ પ્રમાણીકરણ બાકી",
+    "modal": {
+      "title": "રીસેટ કોડ જનરેટ થયો",
+      "desc": "આ કોડ કર્મચારીને આપો. તે 2 કલાકમાં સમાપ્ત થઈ જશે.",
+      "done": "થઈ ગયું"
+    }
+  },
+  "Timesheets": {
+    "title": "ટાઇમશીટ્સ",
+    "subtitle": "તમારા બધા સોંપેલ કાર્યોમાં તમારા સાપ્તાહિક કાર્યના કલાકો લોગ કરો.",
+    "loading": "ટાઇમશીટ મેટ્રિક્સ લોડ થઈ રહ્યું છે...",
+    "saveDraft": "ડ્રાફ્ટ સાચવો",
+    "submitApproval": "મંજૂરી માટે સબમિટ કરો",
+    "taskProjectHeader": "કાર્ય / પ્રોજેક્ટ",
+    "tableTotalHeader": "કુલ",
+    "unknownProject": "અજ્ઞાત પ્રોજેક્ટ",
+    "noTasks": "તમને કોઈ કાર્યો સોંપવામાં આવ્યા નથી.",
+    "dailyTotals": "દૈનિક કુલ:",
+    "savedToast": "ટાઇમશીટ સફળતાપૂર્વક સાચવવામાં આવી",
+    "submittedToast": "ટાઇમશીટ મંજૂરી માટે સબમિટ કરવામાં આવી છે!",
+    "status": {
+      "DRAFT": "ડ્રાફ્ટ",
+      "SUBMITTED": "સબમિટ કરેલ",
+      "APPROVED": "મંજૂર",
+      "REJECTED": "નકારવામાં આવેલ"
+    }
+  },
+  "Settings": {
+    "workflows": {
+      "title": "અનુમોદન કાર્યપ્રવાહ",
+      "subtitle": "ટાઇમશીટ, રજાઓ અને સુધારા માટે કમાન્ડની ચોક્કસ શૃંખલા ડિઝાઇન કરો.",
+      "activeRoutes": "સક્રિય એન્જિન રૂટ્સ",
+      "newTemplate": "નવું વર્કફ્લો ટેમ્પલેટ",
+      "builderTitle": "વર્કફ્લો બિલ્ડર",
+      "ruleName": "નિયમનું નામ",
+      "ruleNamePlaceholder": "દા.ત. સ્ટાન્ડર્ડ ટાઇમશીટ ફ્લો",
+      "targetPayload": "ટાર્ગેટ પેલોડ",
+      "routingSteps": "રૂટીંગ સ્ટેપ્સ (ક્રમિક)",
+      "addNextStep": "આગળનું પગલું ઉમેરો",
+      "deployButton": "એન્જિન નિયમ લાગુ કરો",
+      "cancel": "રદ કરો",
+      "loading": "રૂપરેખાંકનો લોડ થઈ રહ્યાં છે...",
+      "noRoutes": "કોઈ કસ્ટમ રૂટ્સ મળ્યા નથી. સિસ્ટમ સિંગલ-સ્ટેપ ડિફોલ્ટનો ઉપયોગ કરે છે.",
+      "successToast": "અનુમોદન ફ્લો બનાવવામાં આવ્યો",
+      "nameRequiredToast": "નામ આવશ્યક છે",
+      "stepRequiredToast": "ઓછામાં ઓછું 1 પગલું આવશ્યક છે",
+      "roles": {
+        "MANAGER": "મેનેજરની જરૂર છે",
+        "DIRECT_MANAGER": "સબમિટ કરનારના ડાયરેક્ટ મેનેજરની જરૂર છે",
+        "HR": "HR અનુમોદન લો",
+        "ADMIN": "એડમિન અનુમોદન લો"
+      },
+      "payloadTypes": {
+        "TIMESHEET": "ટાઇમશીટ્સ",
+        "LEAVE": "રજાની વિનંતીઓ",
+        "ATTENDANCE_CORRECTION": "હાજરી સુધારો"
+      }
+    }
   },
   "Common": {
     "loading": "લોડ થઈ રહ્યું છે...",
@@ -14,6 +410,18 @@
     "settings": "સેટિંગ્સ",
     "logout": "લોગઆઉટ",
     "save": "સાચવો",
-    "cancel": "રદ કરો"
+    "cancel": "રદ કરો",
+    "highPriority": "ઉચ્ચ અગ્રતા",
+    "mediumPriority": "મધ્યમ",
+    "lowPriority": "ઓછી અગ્રતા",
+    "noNotifications": "કોઈ સૂચનાઓ મળી નથી.",
+    "markAllAsRead": "બધાને વાંચેલ તરીકે ચિહ્નિત કરો",
+    "viewAll": "તમામ પ્રવૃત્તિ જુઓ",
+    "roles": {
+      "ADMIN": "એડમિનિસ્ટ્રેટર",
+      "HR": "HR મેનેજર",
+      "MANAGER": "પ્રોજેક્ટ મેનેજર",
+      "EMPLOYEE": "કર્મચારી"
+    }
   }
 }

@@ -8,9 +8,11 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Project } from '@epms/shared';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 
 export default function ProjectsPage() {
   const queryClient = useQueryClient();
+  const t = useTranslations('Projects');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newProject, setNewProject] = useState({ name: '', description: '' });
 
@@ -42,16 +44,16 @@ export default function ProjectsPage() {
             <span className="p-2 bg-blue-100 text-blue-600 rounded-xl">
               <Briefcase size={24} />
             </span>
-            Projects
+            {t('title')}
           </h1>
-          <p className="text-gray-500 mt-1">Manage your team's projects and tasks</p>
+          <p className="text-gray-500 mt-1">{t('subtitle')}</p>
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-200"
         >
           <Plus size={20} />
-          New Project
+          {t('newProject')}
         </button>
       </div>
 
@@ -81,13 +83,13 @@ export default function ProjectsPage() {
                 </div>
                 
                 <p className="text-gray-500 text-sm line-clamp-2 mb-6 flex-1">
-                  {project.description || 'No description provided.'}
+                  {project.description || t('noDescription')}
                 </p>
                 
                 <div className="flex items-center justify-between text-sm text-gray-400 mt-auto pt-4 border-t border-gray-50">
                   <div className="flex flex-col gap-1.5">
                     <span className="flex items-center gap-1.5"><Clock size={14}/> {format(new Date(project.createdAt!), 'MMM d, yyyy')}</span>
-                    <span className="flex items-center gap-1.5"><Users size={14}/> {project.members?.length || 0} Members</span>
+                    <span className="flex items-center gap-1.5"><Users size={14}/> {t('members', { count: project.members?.length || 0 })}</span>
                   </div>
                   <div className="w-8 h-8 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
                     <ChevronRight size={18} />
@@ -98,7 +100,7 @@ export default function ProjectsPage() {
           ))}
           {projects.length === 0 && (
             <div className="col-span-full py-12 text-center bg-white rounded-2xl border border-gray-100">
-              <p className="text-gray-500">No projects found. Create one to get started!</p>
+              <p className="text-gray-500">{t('noProjects')}</p>
             </div>
           )}
         </div>
@@ -113,7 +115,7 @@ export default function ProjectsPage() {
             className="bg-white rounded-3xl p-6 w-full max-w-md shadow-2xl"
           >
             <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold">Create New Project</h2>
+              <h2 className="text-xl font-bold">{t('createTitle')}</h2>
               <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600">
                 &times;
               </button>
@@ -121,23 +123,23 @@ export default function ProjectsPage() {
             
             <form onSubmit={handleCreate} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Project Name</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('nameLabel')}</label>
                 <input
                   type="text"
                   required
                   value={newProject.name}
                   onChange={(e) => setNewProject({ ...newProject, name: e.target.value })}
                   className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-                  placeholder="E.g. Website Redesign"
+                  placeholder={t('namePlaceholder')}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">{t('descLabel')}</label>
                 <textarea
                   value={newProject.description}
                   onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
                   className="w-full px-4 py-2 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none transition-all h-24 resize-none"
-                  placeholder="What is this project about?"
+                  placeholder={t('descPlaceholder')}
                 />
               </div>
               <div className="pt-4 flex justify-end gap-3">
@@ -146,14 +148,14 @@ export default function ProjectsPage() {
                   onClick={() => setIsModalOpen(false)}
                   className="px-5 py-2.5 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors font-medium"
                 >
-                  Cancel
+                  {t('cancel')}
                 </button>
                 <button
                   type="submit"
                   disabled={createMutation.isPending}
                   className="px-5 py-2.5 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium disabled:opacity-50 inline-flex items-center justify-center gap-2"
                 >
-                  {createMutation.isPending ? 'Creating...' : 'Create Project'}
+                  {createMutation.isPending ? t('creating') : t('createButton')}
                 </button>
               </div>
             </form>

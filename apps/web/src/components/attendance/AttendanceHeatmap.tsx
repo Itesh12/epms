@@ -5,8 +5,10 @@ import { motion } from 'framer-motion';
 import { Calendar, ChevronLeft, ChevronRight, Info } from 'lucide-react';
 import { useAttendance } from '@/contexts/AttendanceContext';
 import { format, startOfYear, eachDayOfInterval, endOfYear, getDay, isSameDay } from 'date-fns';
+import { useTranslations } from 'next-intl';
 
 export default function AttendanceHeatmap() {
+  const t = useTranslations('Attendance.heatmap');
   const { getHeatmapData, attendance } = useAttendance();
   const [year, setYear] = useState(new Date().getFullYear());
   const [data, setData] = useState<any[]>([]);
@@ -53,9 +55,9 @@ export default function AttendanceHeatmap() {
         <div>
           <h3 className="text-xl font-black text-gray-900 flex items-center gap-3">
             <Calendar className="text-blue-600" />
-            Consistency Heatmap
+            {t('title')}
           </h3>
-          <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-tight">Your attendance frequency for {year}</p>
+          <p className="text-sm font-bold text-gray-400 mt-1 uppercase tracking-tight">{t('subtitle', { year })}</p>
         </div>
         
         <div className="flex items-center gap-2 bg-gray-50 p-1 rounded-xl">
@@ -86,11 +88,11 @@ export default function AttendanceHeatmap() {
           <div className="grid grid-flow-col grid-rows-7 gap-1.5 overflow-x-auto pb-4 scrollbar-hide">
             {/* Day Labels */}
             <div className="grid grid-rows-7 pr-4 text-[10px] font-black text-gray-300 uppercase">
-              <span className="h-4">Mon</span>
+              <span className="h-4">{t('mon')}</span>
               <span className="h-4" />
-              <span className="h-4">Wed</span>
+              <span className="h-4">{t('wed')}</span>
               <span className="h-4" />
-              <span className="h-4">Fri</span>
+              <span className="h-4">{t('fri')}</span>
               <span className="h-4" />
               <span className="h-4" />
             </div>
@@ -108,14 +110,14 @@ export default function AttendanceHeatmap() {
           </div>
 
           <div className="flex items-center justify-end gap-3 mt-4 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-            <span>Less</span>
+            <span>{t('less')}</span>
             <div className="flex gap-1">
               <div className="w-3 h-3 bg-gray-100 rounded-sm" />
               <div className="w-3 h-3 bg-blue-200 rounded-sm" />
               <div className="w-3 h-3 bg-blue-400 rounded-sm" />
               <div className="w-3 h-3 bg-blue-600 rounded-sm" />
             </div>
-            <span>More</span>
+            <span>{t('more')}</span>
           </div>
         </div>
       )}
@@ -126,8 +128,8 @@ export default function AttendanceHeatmap() {
             <Info size={20} />
           </div>
           <div>
-            <p className="text-sm font-black text-blue-900 leading-none mb-1">Getting Started?</p>
-            <p className="text-xs font-bold text-blue-600 opacity-80">Mark your first check-in today to see your consistency map grow!</p>
+            <p className="text-sm font-black text-blue-900 leading-none mb-1">{t('zeroStateTitle')}</p>
+            <p className="text-xs font-bold text-blue-600 opacity-80">{t('zeroStateDesc')}</p>
           </div>
         </div>
       )}

@@ -5,9 +5,11 @@ import { motion } from 'framer-motion';
 import { Clock, Coffee, Briefcase, Info } from 'lucide-react';
 import { useAttendance } from '@/contexts/AttendanceContext';
 import { format } from 'date-fns';
+import { useTranslations } from 'next-intl';
 
 export default function AttendanceTimeline() {
   const { attendance, isLoading } = useAttendance();
+  const t = useTranslations('Attendance');
 
   if (isLoading || !attendance || attendance.activities.length === 0) {
     return (
@@ -15,8 +17,8 @@ export default function AttendanceTimeline() {
         <div className="w-16 h-16 bg-gray-50 text-gray-300 rounded-full flex items-center justify-center mb-4">
           <Info size={32} />
         </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-1">Timeline Unavailable</h3>
-        <p className="text-sm text-gray-500 max-w-xs font-medium">Please check in to start tracking your daily activity timeline.</p>
+        <h3 className="text-lg font-bold text-gray-900 mb-1">{t('timelineUnavailable')}</h3>
+        <p className="text-sm text-gray-500 max-w-xs font-medium">{t('timelineHint')}</p>
       </div>
     );
   }
@@ -43,16 +45,16 @@ export default function AttendanceTimeline() {
       <div className="flex items-center justify-between mb-8">
         <h3 className="text-xl font-black text-gray-900 flex items-center gap-3">
           <Clock className="text-blue-600" />
-          Activity Journey
+          {t('timeline.title')}
         </h3>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-blue-600 rounded-full" />
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-tighter">Work</span>
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-tighter">{t('timeline.work')}</span>
           </div>
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-orange-500 rounded-full" />
-            <span className="text-xs font-bold text-gray-500 uppercase tracking-tighter">Break</span>
+            <span className="text-xs font-bold text-gray-500 uppercase tracking-tighter">{t('timeline.break')}</span>
           </div>
         </div>
       </div>
@@ -95,10 +97,10 @@ export default function AttendanceTimeline() {
             
             <div className="flex-1">
               <p className="text-sm font-black text-gray-900 underline decoration-blue-100 decoration-2 underline-offset-4">
-                {activity.type === 'WORK' ? 'Active Work Session' : 'Official Break Session'}
+                {activity.type === 'WORK' ? t('timeline.activeSession') : t('timeline.breakSession')}
               </p>
               <p className="text-xs text-gray-400 font-bold uppercase mt-1">
-                {format(new Date(activity.startTime), 'hh:mm a')} — {activity.endTime ? format(new Date(activity.endTime), 'hh:mm a') : 'Active Now'}
+                {format(new Date(activity.startTime), 'hh:mm a')} — {activity.endTime ? format(new Date(activity.endTime), 'hh:mm a') : t('timeline.activeNow')}
               </p>
             </div>
 
@@ -106,7 +108,7 @@ export default function AttendanceTimeline() {
               <span className="text-sm font-black text-gray-900 tracking-tight">
                 {activity.endTime 
                   ? `${Math.round((new Date(activity.endTime).getTime() - new Date(activity.startTime).getTime()) / 60000)}m`
-                  : 'Ongoing'
+                  : t('timeline.ongoing')
                 }
               </span>
             </div>

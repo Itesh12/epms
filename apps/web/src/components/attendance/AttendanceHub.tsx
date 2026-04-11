@@ -5,11 +5,14 @@ import { Clock, Play, Coffee, LogOut, CheckCircle2, Edit3 } from 'lucide-react';
 import { useAttendance } from '@/contexts/AttendanceContext';
 import { toast } from 'sonner';
 import CorrectionRequestModal from './CorrectionRequestModal';
+import { useTranslations } from 'next-intl';
 
 export default function AttendanceHub() {
   const { attendance, checkIn, checkOut, toggleBreak, isLoading } = useAttendance();
   const [sessionTime, setSessionTime] = useState<number>(0);
   const [isCorrectionOpen, setIsCorrectionOpen] = useState(false);
+  const t = useTranslations('Attendance');
+  const commonT = useTranslations('Common');
 
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -35,7 +38,7 @@ export default function AttendanceHub() {
   const handleCheckIn = async () => {
     try {
       await checkIn();
-      toast.success('Shift started! Have a productive day 🚀');
+      toast.success(t('messages.shiftStarted'));
     } catch (e: any) {
       // toast already shown in context
     }
@@ -44,7 +47,7 @@ export default function AttendanceHub() {
   const handleCheckOut = async () => {
     try {
       await checkOut();
-      toast.success('Shift ended! Great work today 🎉');
+      toast.success(t('messages.shiftEnded'));
     } catch (e: any) {
       // toast already shown in context
     }
@@ -54,7 +57,7 @@ export default function AttendanceHub() {
     try {
       await toggleBreak();
       const isOnBreak = attendance?.status === 'PRESENT';
-      toast.success(isOnBreak ? 'Break started ☕' : 'Welcome back! 💪');
+      toast.success(isOnBreak ? t('messages.breakStarted') : t('messages.welcomeBack'));
     } catch (e: any) {
       // toast already shown in context
     }
@@ -122,14 +125,14 @@ export default function AttendanceHub() {
               isOnBreak ? 'text-orange-500' : hasCheckedOut ? 'text-green-600' : 'text-blue-600'
             }`}>
               <Clock size={16} />
-              {hasCheckedOut ? 'Day Complete' : isOnBreak ? 'On Break' : isActive ? 'Live Session' : 'Ready to Start'}
+              {hasCheckedOut ? t('status.dayComplete') : isOnBreak ? t('status.onBreak') : isActive ? t('status.liveSession') : t('status.readyToStart')}
             </h2>
             {hasSession && (
               <button
                 onClick={() => setIsCorrectionOpen(true)}
                 className="text-[10px] font-black bg-blue-50 text-blue-600 px-2 py-0.5 rounded hover:bg-blue-600 hover:text-white transition-all uppercase tracking-tighter"
               >
-                <Edit3 size={10} className="inline mr-1" />Request Correction
+                <Edit3 size={10} className="inline mr-1" />{t('actions.requestCorrection')}
               </button>
             )}
           </div>
@@ -145,8 +148,8 @@ export default function AttendanceHub() {
 
           <p className="text-gray-400 font-bold text-sm mt-1">
             {hasCheckedOut
-              ? `Checked out at ${new Date(attendance!.checkOutTime!).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
-              : status === 'NOT_STARTED' ? 'Shift not started' : `Currently: ${status.replace('_', ' ')}`}
+              ? t('status.checkedOutAt', { time: format(new Date(attendance!.checkOutTime!), 'hh:mm a') })
+              : status === 'NOT_STARTED' ? t('status.notStarted') : `${t('timeline.title')}: ${commonT(`roles.${status}`)}`}
           </p>
         </div>
 
@@ -155,7 +158,7 @@ export default function AttendanceHub() {
           {hasCheckedOut ? (
             <div className="flex items-center gap-2 px-8 py-4 bg-green-50 text-green-700 rounded-2xl font-black border border-green-100">
               <CheckCircle2 size={20} />
-              SHIFT COMPLETED
+              {t('actions.shiftCompleted')}
             </div>
           ) : !attendance || status === 'NOT_STARTED' ? (
             <button
@@ -163,7 +166,7 @@ export default function AttendanceHub() {
               className="px-10 py-5 bg-blue-600 hover:bg-blue-700 text-white rounded-2xl font-black flex items-center gap-3 transition-all shadow-xl shadow-blue-200 active:scale-95 group"
             >
               <Play fill="currentColor" size={20} className="group-hover:translate-x-0.5 transition-transform" />
-              START SHIFT
+              {t('actions.startShift')}
             </button>
           ) : (
             <>
@@ -176,14 +179,14 @@ export default function AttendanceHub() {
                 }`}
               >
                 {isOnBreak ? <Play size={20} /> : <Coffee size={20} />}
-                {isOnBreak ? 'RESUME WORK' : 'TAKE BREAK'}
+                {isOnBreak ? t('actions.resumeWork') : t('actions.takeBreak')}
               </button>
               <button
                 onClick={handleCheckOut}
                 className="px-8 py-5 bg-gray-900 hover:bg-black text-white rounded-2xl font-black flex items-center gap-3 transition-all shadow-xl active:scale-95"
               >
                 <LogOut size={20} />
-                CHECK OUT
+                {t('actions.checkOut')}
               </button>
             </>
           )}
@@ -193,30 +196,30 @@ export default function AttendanceHub() {
       {/* Stats row — 5 columns */}
       <div className="mt-10 grid grid-cols-2 lg:grid-cols-5 gap-4 pt-8 border-t border-gray-50">
         <div className="p-4 bg-gray-50/50 rounded-2xl">
-          <p className="text-xs font-black text-gray-400 uppercase mb-1">Total Work</p>
+          <p className="text-xs font-black text-gray-400 uppercase mb-1">{t('totalWork')}</p>
           <p className="text-xl font-black text-gray-900">
             {Math.floor(todayWorkMins / 60)}h {todayWorkMins % 60}m
           </p>
         </div>
         <div className="p-4 bg-gray-50/50 rounded-2xl">
-          <p className="text-xs font-black text-gray-400 uppercase mb-1">Total Break</p>
+          <p className="text-xs font-black text-gray-400 uppercase mb-1">{t('totalBreak')}</p>
           <p className="text-xl font-black text-gray-900">
             {Math.floor(todayBreakMins / 60)}h {todayBreakMins % 60}m
           </p>
         </div>
         <div className="p-4 bg-gray-50/50 rounded-2xl">
-          <p className="text-xs font-black text-gray-400 uppercase mb-1">Clock In</p>
+          <p className="text-xs font-black text-gray-400 uppercase mb-1">{t('clockIn')}</p>
           <p className="text-xl font-black text-gray-900">
             {attendance?.checkInTime
-              ? new Date(attendance.checkInTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              ? format(new Date(attendance.checkInTime), 'hh:mm a')
               : '--:--'}
           </p>
         </div>
         <div className="p-4 bg-gray-50/50 rounded-2xl">
-          <p className="text-xs font-black text-gray-400 uppercase mb-1">Clock Out</p>
+          <p className="text-xs font-black text-gray-400 uppercase mb-1">{t('clockOut')}</p>
           <p className={`text-xl font-black ${attendance?.checkOutTime ? 'text-gray-900' : 'text-gray-300'}`}>
             {attendance?.checkOutTime
-              ? new Date(attendance.checkOutTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+              ? format(new Date(attendance.checkOutTime), 'hh:mm a')
               : '--:--'}
           </p>
         </div>
@@ -229,7 +232,7 @@ export default function AttendanceHub() {
             efficiencyPct >= 80 ? 'text-green-500' :
             efficiencyPct >= 60 ? 'text-blue-400' :
             efficiencyPct > 0 ? 'text-orange-400' : 'text-gray-400'
-          }`}>Efficiency</p>
+          }`}>{t('efficiency')}</p>
           <p className={`text-xl font-black ${
             efficiencyPct >= 80 ? 'text-green-600' :
             efficiencyPct >= 60 ? 'text-blue-600' :

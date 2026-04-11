@@ -9,8 +9,10 @@ import { startOfWeek, addDays, format, isSameDay } from 'date-fns';
 import { ChevronLeft, ChevronRight, Save, Send, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
+import { useTranslations } from 'next-intl';
 
 export default function TimesheetsPage() {
+  const t = useTranslations('Timesheets');
   const queryClient = useQueryClient();
   const [currentWeekStart, setCurrentWeekStart] = useState(() => startOfWeek(new Date(), { weekStartsOn: 1 }));
   const [localEntries, setLocalEntries] = useState<TimesheetEntry[]>([]);
@@ -34,7 +36,7 @@ export default function TimesheetsPage() {
   const saveMutation = useMutation({
     mutationFn: (entries: TimesheetEntry[]) => saveTimesheetEntries(timesheet!.id || (timesheet as any)._id, entries),
     onSuccess: () => {
-      toast.success('Timesheet saved successfully');
+      toast.success(t('savedToast'));
       queryClient.invalidateQueries({ queryKey: ['timesheet'] });
     }
   });
@@ -42,7 +44,7 @@ export default function TimesheetsPage() {
   const submitMutation = useMutation({
     mutationFn: () => submitTimesheet(timesheet!.id || (timesheet as any)._id),
     onSuccess: () => {
-      toast.success('Timesheet submitted for approval!');
+      toast.success(t('submittedToast'));
       queryClient.invalidateQueries({ queryKey: ['timesheet'] });
     }
   });
@@ -84,7 +86,7 @@ export default function TimesheetsPage() {
   const grandTotal = localEntries.reduce((s, e) => s + Number(e.hoursLogged), 0);
   const isEditable = !timesheet || timesheet.status === 'DRAFT' || timesheet.status === 'REJECTED';
 
-  if (isLoading) return <div className="p-8 text-gray-500 animate-pulse">Loading timesheet matrix...</div>;
+  if (isLoading) return <div className="p-8 text-gray-500 animate-pulse">{t('loading')}</div>;
 
   return (
     <div className="space-y-6">
@@ -92,9 +94,9 @@ export default function TimesheetsPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
             <span className="p-2 bg-purple-100 text-purple-600 rounded-xl"><Clock size={24} /></span>
-            Timesheets
+            {t('title')}
           </h1>
-          <p className="text-gray-500 mt-1">Log your weekly work hours across all your assigned tasks.</p>
+          <p className="text-gray-500 mt-1">{t('subtitle')}</p>
         </div>
         
         <div className="flex items-center gap-3">
@@ -117,16 +119,16 @@ export default function TimesheetsPage() {
               timesheet?.status === 'APPROVED' ? 'bg-green-100 text-green-600' :
               'bg-red-100 text-red-600'
             }`}>
-              {timesheet?.status || 'DRAFT'}
+              {timesheet?.status ? t(`status.${timesheet.status}`) : t('status.DRAFT')}
             </span>
           </div>
           {isEditable && (
              <div className="flex gap-2">
               <button disabled={saveMutation.isPending} onClick={() => saveMutation.mutate(localEntries)} className="flex items-center gap-2 px-4 py-2 text-gray-600 bg-gray-50 hover:bg-gray-100 font-medium rounded-xl transition-colors disabled:opacity-50 text-sm">
-                <Save size={16} /> Save Draft
+                <Save size={16} /> {t('saveDraft')}
               </button>
               <button disabled={submitMutation.isPending} onClick={() => submitMutation.mutate()} className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors shadow-md shadow-blue-200 disabled:opacity-50 text-sm">
-                <Send size={16} /> Submit for Approval
+                <Send size={16} /> {t('submitApproval')}
               </button>
              </div>
           )}
@@ -136,14 +138,14 @@ export default function TimesheetsPage() {
           <table className="w-full text-left border-collapse">
             <thead>
               <tr className="bg-gray-50/80 border-b">
-                <th className="p-4 font-semibold text-gray-600 text-sm w-1/4 min-w-[200px]">Task / Project</th>
+                <th className="p-4 font-semibold text-gray-600 text-sm w-1/4 min-w-[200px]">{t('taskProjectHeader')}</th>
                 {weekDays.map(date => (
                   <th key={date.toISOString()} className="p-4 font-semibold text-gray-600 text-sm text-center min-w-[80px]">
                     <span className="block text-gray-400 text-xs font-normal uppercase tracking-wider mb-0.5">{format(date, 'eee')}</span>
                     {format(date, 'd')}
                   </th>
                 ))}
-                <th className="p-4 font-bold text-gray-800 text-sm text-center bg-gray-100">Total</th>
+                <th className="p-4 font-bold text-gray-800 text-sm text-center bg-gray-100">{t('tableTotalHeader')}</th>
               </tr>
             </thead>
             <tbody>
@@ -151,7 +153,7 @@ export default function TimesheetsPage() {
                 <tr key={task.id || (task as any)._id} className="border-b hover:bg-gray-50/50 transition-colors">
                   <td className="p-4 text-sm">
                     <p className="font-bold text-gray-900 line-clamp-1">{task.title}</p>
-                    <p className="text-gray-500 text-xs mt-0.5 line-clamp-1">{(task.projectId as any)?.name || 'Unknown Project'}</p>
+                    <p className="text-gray-500 text-xs mt-0.5 line-clamp-1">{(task.projectId as any)?.name || t('unknownProject')}</p>
                   </td>
                   {weekDays.map(date => (
                     <td key={date.toISOString()} className="p-2 align-middle">
@@ -175,13 +177,13 @@ export default function TimesheetsPage() {
               ))}
               {tasks.length === 0 && (
                 <tr>
-                   <td colSpan={9} className="p-6 text-center text-gray-500">No tasks assigned to you.</td>
+                   <td colSpan={9} className="p-6 text-center text-gray-500">{t('noTasks')}</td>
                 </tr>
               )}
             </tbody>
             <tfoot>
               <tr className="bg-gray-100 border-t-2 border-gray-200">
-                <td className="p-4 font-bold text-gray-900 text-right">Daily Totals:</td>
+                <td className="p-4 font-bold text-gray-900 text-right">{t('dailyTotals')}</td>
                 {weekDays.map(date => (
                   <td key={date.toISOString()} className="p-4 text-center font-bold text-gray-800">
                     {getTotalForDay(date) || '-'}
