@@ -10,6 +10,10 @@ import employeeRoutes from './modules/employees/employee.routes';
 import attendanceRoutes from './modules/attendance/attendance.routes';
 import projectsRoutes from './modules/projects/projects.routes';
 import tasksRoutes from './modules/tasks/tasks.routes';
+import workflowsRoutes from './modules/workflows/workflows.routes';
+import timesheetsRoutes from './modules/timesheets/timesheets.routes';
+import leavesRoutes from './modules/leaves/leaves.routes';
+import analyticsRoutes from './modules/analytics/analytics.routes';
 import { initSocket } from './lib/socket';
 
 dotenv.config();
@@ -43,6 +47,10 @@ apiRouter.use('/employees', employeeRoutes);
 apiRouter.use('/attendance', attendanceRoutes);
 apiRouter.use('/projects', projectsRoutes);
 apiRouter.use('/tasks', tasksRoutes);
+apiRouter.use('/workflows', workflowsRoutes);
+apiRouter.use('/timesheets', timesheetsRoutes);
+apiRouter.use('/leaves', leavesRoutes);
+apiRouter.use('/analytics', analyticsRoutes);
 
 app.use('/api/v1', apiRouter);
 

@@ -7,13 +7,13 @@ export interface IUser extends Document {
   passwordHash: string;
   role: Role;
   organizationId?: mongoose.Types.ObjectId;
-  
   // Profile
   phone?: string;
   personalEmail?: string;
   jobTitle?: string;
   department?: string;
   employeeId?: string;
+  managerId?: mongoose.Types.ObjectId;
   status: 'ACTIVE' | 'INACTIVE' | 'ON_LEAVE' | 'TERMINATED';
   avatar?: string;
   gender?: string;
@@ -64,6 +64,7 @@ const UserSchema: Schema = new Schema({
   jobTitle: { type: String },
   department: { type: String },
   employeeId: { type: String, index: true },
+  managerId: { type: Schema.Types.ObjectId, ref: 'User' },
   status: { type: String, enum: ['ACTIVE', 'INACTIVE', 'ON_LEAVE', 'TERMINATED'], default: 'ACTIVE' },
   avatar: { type: String },
   gender: { type: String },

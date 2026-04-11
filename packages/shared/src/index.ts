@@ -23,6 +23,8 @@ export const UserSchema = z.object({
   avatar: z.string().optional(),
   gender: z.string().optional(),
   dateOfBirth: z.string().optional(),
+  managerId: z.string().optional(),
+  
   
   // Professional
   skills: z.array(z.string()).default([]),
@@ -60,6 +62,10 @@ export const OrganizationSchema = z.object({
   name: z.string(),
   slug: z.string(),
   adminId: z.string(),
+  workingHours: z.object({
+    start: z.string().default('09:00'),
+    end: z.string().default('18:00'),
+  }).optional(),
 });
 export type Organization = z.infer<typeof OrganizationSchema>;
 
@@ -164,6 +170,7 @@ export const TaskSchema = z.object({
   status: TaskStatus.default('TODO'),
   priority: TaskPriority.default('MEDIUM'),
   deadline: z.string().optional(),
+  estimatedHours: z.number().optional(),
   position: z.number().default(0), // For Kanban order
   timeSpent: z.number().default(0), // In seconds
   comments: z.array(TaskCommentSchema).default([]),
@@ -172,3 +179,140 @@ export const TaskSchema = z.object({
   updatedAt: z.string().optional(),
 });
 export type Task = z.infer<typeof TaskSchema>;
+
+// Workflow Engine Types
+export const ApprovalStatus = z.enum(['PENDING', 'APPROVED', 'REJECTED']);
+export type ApprovalStatus = z.infer<typeof ApprovalStatus>;
+
+export const ApprovalTargetType = z.enum(['TIMESHEET', 'LEAVE', 'ATTENDANCE_CORRECTION']);
+export type ApprovalTargetType = z.infer<typeof ApprovalTargetType>;
+
+export const ApprovalFlowStepSchema = z.object({
+  stepOrder: z.number(),
+  requiredRole: z.enum(['MANAGER', 'HR', 'ADMIN', 'DIRECT_MANAGER']),
+});
+export type ApprovalFlowStep = z.infer<typeof ApprovalFlowStepSchema>;
+
+export const ApprovalFlowSchema = z.object({
+  id: z.string(),
+  organizationId: z.string(),
+  name: z.string(),
+  targetType: ApprovalTargetType,
+  steps: z.array(ApprovalFlowStepSchema),
+  isActive: z.boolean().default(true),
+});
+export type ApprovalFlow = z.infer<typeof ApprovalFlowSchema>;
+
+export const ApprovalHistorySchema = z.object({
+  stepOrder: z.number(),
+  status: ApprovalStatus,
+  reviewedBy: z.string(), // userId
+  comment: z.string().optional(),
+  reviewedAt: z.string(),
+});
+export type ApprovalHistory = z.infer<typeof ApprovalHistorySchema>;
+
+export const ApprovalRequestSchema = z.object({
+  id: z.string(),
+  organizationId: z.string(),
+  targetId: z.string(),
+  targetType: ApprovalTargetType,
+  flowId: z.string().optional(),
+  requesterId: z.string(),
+  currentStepOrder: z.number().default(1),
+  status: ApprovalStatus.default('PENDING'),
+  history: z.array(ApprovalHistorySchema).default([]),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+export type ApprovalRequest = z.infer<typeof ApprovalRequestSchema>;
+
+// Timesheet Types
+export const TimesheetEntrySchema = z.object({
+  taskId: z.string().optional(),
+  projectId: z.string().optional(),
+  date: z.string(),
+  hoursLogged: z.number(),
+  description: z.string().optional(),
+});
+export type TimesheetEntry = z.infer<typeof TimesheetEntrySchema>;
+
+export const TimesheetSchema = z.object({
+  id: z.string(),
+  organizationId: z.string(),
+  userId: z.string(),
+  startDate: z.string(), // Monday
+  endDate: z.string(), // Sunday
+  status: z.enum(['DRAFT', 'SUBMITTED', 'APPROVED', 'REJECTED']).default('DRAFT'),
+  entries: z.array(TimesheetEntrySchema).default([]),
+  totalHours: z.number().default(0),
+  approvalRequestId: z.string().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+export type Timesheet = z.infer<typeof TimesheetSchema>;
+
+// Leave Types
+export const LeaveType = z.enum(['SICK', 'VACATION', 'PERSONAL', 'BEREAVEMENT', 'OTHER']);
+export type LeaveType = z.infer<typeof LeaveType>;
+
+export const LeaveSchema = z.object({
+  id: z.string(),
+  organizationId: z.string(),
+  userId: z.string(),
+  leaveType: LeaveType,
+  startDate: z.string(),
+  endDate: z.string(),
+  reason: z.string(),
+  status: z.enum(['PENDING', 'APPROVED', 'REJECTED']).default('PENDING'),
+  approvalRequestId: z.string().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+export type Leave = z.infer<typeof LeaveSchema>;
+
+// Analytics Types
+export const AttendanceStatsSchema = z.object({
+  totalPresent: z.number(),
+  totalAbsent: z.number(),
+  avgWorkMinutes: z.number(),
+  lateLoginCount: z.number(),
+  breakMisuseCount: z.number(),
+  trends: z.array(z.object({
+    date: z.string(),
+    count: z.number(),
+  })),
+});
+export type AttendanceStats = z.infer<typeof AttendanceStatsSchema>;
+
+export const ProductivityStatsSchema = z.object({
+  overallScore: z.number(),
+  tasksCompleted: z.number(),
+  avgCompletionTime: z.number(),
+  workloadDistribution: z.array(z.object({
+    userId: z.string(),
+    userName: z.string(),
+    taskCount: z.number(),
+  })),
+});
+export type ProductivityStats = z.infer<typeof ProductivityStatsSchema>;
+
+export const ProjectPerformanceSchema = z.object({
+  projectId: z.string(),
+  projectName: z.string(),
+  progress: z.number(),
+  isOnTrack: z.boolean(),
+  predictedDelayDays: z.number(),
+  bottleneckStatus: TaskStatus,
+});
+export type ProjectPerformance = z.infer<typeof ProjectPerformanceSchema>;
+
+export const InsightPatternSchema = z.object({
+  type: z.enum(['BURNOUT', 'DELAY', 'IMBALANCE', 'EXCELLENCE']),
+  severity: z.enum(['LOW', 'MEDIUM', 'HIGH', 'INFO']),
+  message: z.string(),
+  metadata: z.any().optional(),
+});
+export type InsightPattern = z.infer<typeof InsightPatternSchema>;
+
+

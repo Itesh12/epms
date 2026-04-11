@@ -7,6 +7,7 @@ const router = express.Router();
 router.use(authenticate);
 
 router.post('/', tasksController.createTask);
+router.get('/my', tasksController.getMyTasks);
 router.get('/project/:projectId', tasksController.getTasksByProject);
 router.patch('/:id', tasksController.updateTask);
 router.post('/:id/comments', tasksController.addComment);

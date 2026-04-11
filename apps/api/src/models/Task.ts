@@ -17,6 +17,7 @@ export interface ITask extends Document {
   status: TaskStatus;
   priority: TaskPriority;
   deadline?: Date;
+  estimatedHours?: number;
   position: number;
   timeSpent: number; // in seconds
   comments: ITaskComment[];
@@ -39,6 +40,7 @@ const TaskSchema: Schema = new Schema({
   status: { type: String, enum: ['TODO', 'IN_PROGRESS', 'DONE'], default: 'TODO' },
   priority: { type: String, enum: ['LOW', 'MEDIUM', 'HIGH'], default: 'MEDIUM' },
   deadline: { type: Date },
+  estimatedHours: { type: Number },
   position: { type: Number, default: 0 },
   timeSpent: { type: Number, default: 0 },
   comments: [TaskCommentSchema],

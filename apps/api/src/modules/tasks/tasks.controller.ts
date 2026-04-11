@@ -116,3 +116,16 @@ export const addTime = async (req: any, res: Response) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getMyTasks = async (req: any, res: Response) => {
+  try {
+    const organizationId = new mongoose.Types.ObjectId(req.user.organizationId);
+    const assigneeId = new mongoose.Types.ObjectId(req.user.userId);
+
+    const tasks = await Task.find({ organizationId, assigneeId }).populate('projectId', 'name').sort({ createdAt: -1 });
+    
+    res.status(200).json(tasks);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

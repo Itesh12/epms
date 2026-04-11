@@ -14,6 +14,7 @@ export interface IAttendanceCorrection extends Document {
   reviewedBy?: mongoose.Types.ObjectId;
   reviewedAt?: Date;
   adminComment?: string;
+  approvalRequestId?: mongoose.Types.ObjectId;
 }
 
 const AttendanceCorrectionSchema: Schema = new Schema({
@@ -36,7 +37,8 @@ const AttendanceCorrectionSchema: Schema = new Schema({
   },
   reviewedBy: { type: Schema.Types.ObjectId, ref: 'User' },
   reviewedAt: { type: Date },
-  adminComment: { type: String }
+  adminComment: { type: String },
+  approvalRequestId: { type: Schema.Types.ObjectId, ref: 'ApprovalRequest' }
 }, {
   timestamps: true
 });
