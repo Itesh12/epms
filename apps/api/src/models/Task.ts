@@ -47,7 +47,7 @@ const TaskSchema: Schema = new Schema({
   createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 
-TaskSchema.index({ organizationId: 1, projectId: 1 });
-TaskSchema.index({ organizationId: 1, _id: 1 });
+TaskSchema.index({ organizationId: 1, status: 1, priority: 1 });
+TaskSchema.index({ assigneeId: 1, status: 1 });
 
 export default mongoose.model<ITask>('Task', TaskSchema);

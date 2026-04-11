@@ -44,5 +44,6 @@ const AttendanceSchema: Schema = new Schema({
 // Compound index for fast lookup and to prevent duplicate daily records for a user
 AttendanceSchema.index({ userId: 1, date: 1 }, { unique: true });
 AttendanceSchema.index({ organizationId: 1, date: 1 });
+AttendanceSchema.index({ organizationId: 1, status: 1, date: 1 });
 
 export default mongoose.model<IAttendance>('Attendance', AttendanceSchema);

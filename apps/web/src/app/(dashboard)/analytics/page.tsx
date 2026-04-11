@@ -8,11 +8,24 @@ import {
   getProjectPerformance, 
   getInsights 
 } from '@/services/analytics';
-import AttendanceCharts from '@/components/analytics/AttendanceCharts';
-import ProductivityCharts from '@/components/analytics/ProductivityCharts';
-import InsightCards from '@/components/analytics/InsightCards';
+import dynamic from 'next/dynamic';
 import { BarChart2, TrendingUp, Info, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+const AttendanceCharts = dynamic(() => import('@/components/analytics/AttendanceCharts'), { 
+  loading: () => <div className="h-[400px] bg-gray-50 animate-pulse rounded-2xl" />,
+  ssr: false 
+});
+
+const ProductivityCharts = dynamic(() => import('@/components/analytics/ProductivityCharts'), { 
+  loading: () => <div className="h-[400px] bg-gray-50 animate-pulse rounded-2xl" />,
+  ssr: false 
+});
+
+const InsightCards = dynamic(() => import('@/components/analytics/InsightCards'), { 
+  loading: () => <div className="h-40 bg-gray-50 animate-pulse rounded-2xl" />,
+  ssr: false 
+});
 
 export default function AnalyticsDashboard() {
   const { data: attendance, isLoading: attendanceL } = useQuery({

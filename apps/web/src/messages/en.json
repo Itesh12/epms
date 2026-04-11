@@ -1,0 +1,19 @@
+{
+  "Dashboard": {
+    "title": "Analytics Dashboard",
+    "attendance": "Attendance Trends",
+    "productivity": "Productivity Score",
+    "workload": "Workload Distribution",
+    "insights": "Intelligent Pattern Tracking",
+    "projects": "Project Performance",
+    "welcome": "Welcome back, {name}"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "search": "Search",
+    "settings": "Settings",
+    "logout": "Logout",
+    "save": "Save",
+    "cancel": "Cancel"
+  }
+}

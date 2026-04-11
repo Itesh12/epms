@@ -5,10 +5,17 @@ import Task from '../../models/Task';
 import Project from '../../models/Project';
 import Organization from '../../models/Organization';
 import { differenceInDays, isBefore, parse } from 'date-fns';
+import { getCache, setCache } from '../../lib/cache';
 
 export const getAttendanceAnalytics = async (req: any, res: Response) => {
   try {
     const organizationId = new mongoose.Types.ObjectId(req.user.organizationId);
+    
+    // Cache Check
+    const cacheKey = `analytics:attendance:${organizationId}`;
+    const cachedData = await getCache(cacheKey);
+    if (cachedData) return res.status(200).json(JSON.parse(cachedData));
+
     const org = await Organization.findById(organizationId);
     const startTime = org?.workingHours?.start || '09:00';
 
@@ -53,6 +60,9 @@ export const getAttendanceAnalytics = async (req: any, res: Response) => {
       trends
     };
 
+    // Cache to Redis for 5 minutes
+    await setCache(cacheKey, JSON.stringify(result), 300);
+
     res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
@@ -62,6 +72,10 @@ export const getAttendanceAnalytics = async (req: any, res: Response) => {
 export const getProductivityAnalytics = async (req: any, res: Response) => {
   try {
     const organizationId = new mongoose.Types.ObjectId(req.user.organizationId);
+
+    const cacheKey = `analytics:productivity:${organizationId}`;
+    const cachedData = await getCache(cacheKey);
+    if (cachedData) return res.status(200).json(JSON.parse(cachedData));
 
     const taskStats = await Task.aggregate([
       { $match: { organizationId } },
@@ -104,12 +118,16 @@ export const getProductivityAnalytics = async (req: any, res: Response) => {
     const completed = taskStats.find(s => s._id === 'DONE')?.count || 0;
     const total = taskStats.reduce((acc, s) => acc + s.count, 0);
 
-    res.status(200).json({
+    const result = {
       overallScore: total > 0 ? Math.round((completed / total) * 100) : 0,
       tasksCompleted: completed,
       avgCompletionTime: Math.round((taskStats.find(s => s._id === 'DONE')?.avgTime || 0) / 3600),
       workloadDistribution: distribution
-    });
+    };
+
+    await setCache(cacheKey, JSON.stringify(result), 300);
+
+    res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
