@@ -121,3 +121,54 @@ export const AttendanceCorrectionSchema = z.object({
   adminComment: z.string().optional(),
 });
 export type AttendanceCorrection = z.infer<typeof AttendanceCorrectionSchema>;
+
+// Project Management Types
+export const ProjectStatus = z.enum(['ACTIVE', 'COMPLETED', 'ON_HOLD']);
+export type ProjectStatus = z.infer<typeof ProjectStatus>;
+
+export const ProjectSchema = z.object({
+  id: z.string(),
+  organizationId: z.string(),
+  name: z.string(),
+  description: z.string().optional(),
+  status: ProjectStatus.default('ACTIVE'),
+  members: z.array(z.string()), // user IDs
+  createdBy: z.string(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+export type Project = z.infer<typeof ProjectSchema>;
+
+// Task Management Types
+export const TaskStatus = z.enum(['TODO', 'IN_PROGRESS', 'DONE']);
+export type TaskStatus = z.infer<typeof TaskStatus>;
+
+export const TaskPriority = z.enum(['LOW', 'MEDIUM', 'HIGH']);
+export type TaskPriority = z.infer<typeof TaskPriority>;
+
+export const TaskCommentSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  text: z.string(),
+  createdAt: z.string(),
+});
+export type TaskComment = z.infer<typeof TaskCommentSchema>;
+
+export const TaskSchema = z.object({
+  id: z.string(),
+  projectId: z.string(),
+  organizationId: z.string(),
+  assigneeId: z.string().optional(),
+  title: z.string(),
+  description: z.string().optional(),
+  status: TaskStatus.default('TODO'),
+  priority: TaskPriority.default('MEDIUM'),
+  deadline: z.string().optional(),
+  position: z.number().default(0), // For Kanban order
+  timeSpent: z.number().default(0), // In seconds
+  comments: z.array(TaskCommentSchema).default([]),
+  createdBy: z.string(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+export type Task = z.infer<typeof TaskSchema>;

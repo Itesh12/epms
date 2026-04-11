@@ -8,6 +8,8 @@ import { connectDB } from './config/db';
 import authRoutes from './modules/auth/auth.routes';
 import employeeRoutes from './modules/employees/employee.routes';
 import attendanceRoutes from './modules/attendance/attendance.routes';
+import projectsRoutes from './modules/projects/projects.routes';
+import tasksRoutes from './modules/tasks/tasks.routes';
 import { initSocket } from './lib/socket';
 
 dotenv.config();
@@ -39,6 +41,8 @@ const apiRouter = express.Router();
 apiRouter.use('/auth', authRoutes);
 apiRouter.use('/employees', employeeRoutes);
 apiRouter.use('/attendance', attendanceRoutes);
+apiRouter.use('/projects', projectsRoutes);
+apiRouter.use('/tasks', tasksRoutes);
 
 app.use('/api/v1', apiRouter);
 

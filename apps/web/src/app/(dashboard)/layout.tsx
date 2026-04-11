@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { 
-  Menu, X, Home, Users, BarChart2, Settings, LogOut, ChevronLeft, ChevronRight, Shield 
+  Menu, X, Home, Users, BarChart2, Settings, LogOut, ChevronLeft, ChevronRight, Shield, Briefcase
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/authStore';
@@ -40,6 +40,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const navItems = [
     { icon: Home, label: 'Dashboard', href: `/dashboard/${user?.role?.toLowerCase()}`, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
+    { icon: Briefcase, label: 'Projects', href: '/projects', roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },
     { icon: Users, label: 'Workforce', href: '/employees', roles: ['ADMIN', 'HR', 'MANAGER'] },
     { icon: BarChart2, label: 'Analytics', href: '/analytics', roles: ['ADMIN', 'HR'] },
     { icon: Shield, label: 'Security', href: '/dashboard/hr/security', roles: ['ADMIN', 'HR'] },
