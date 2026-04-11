@@ -2,6 +2,7 @@ import { Response } from 'express';
 import mongoose from 'mongoose';
 import Task from '../../models/Task';
 import { getIO } from '../../lib/socket';
+import { sendNotification } from '../../services/notification.service';
 
 export const createTask = async (req: any, res: Response) => {
   try {
@@ -23,6 +24,18 @@ export const createTask = async (req: any, res: Response) => {
 
     await task.save();
     
+    // Trigger notification if assignee exists
+    if (task.assigneeId) {
+      await sendNotification({
+        userId: task.assigneeId.toString(),
+        organizationId: organizationId.toString(),
+        title: 'New Task Assigned',
+        message: `You have been assigned: ${task.title}`,
+        type: 'TASK',
+        targetUrl: `/projects/${projectId}`
+      });
+    }
+
     // Emit socket event
     getIO().to(organizationId.toString()).emit(`project:${projectId}:task-created`, task);
 
@@ -61,8 +74,32 @@ export const updateTask = async (req: any, res: Response) => {
     
     if (!task) return res.status(404).json({ message: 'Task not found' });
 
+    // Trigger notification on reassignment/update if assignee exists
+    if (req.body.assigneeId) {
+      await sendNotification({
+        userId: req.body.assigneeId,
+        organizationId: organizationId.toString(),
+        title: 'Task Assignment Update',
+        message: `You have a task update: ${task.title}`,
+        type: 'TASK',
+        targetUrl: `/projects/${task.projectId}`
+      });
+    }
+
     // Emit socket event
     getIO().to(organizationId.toString()).emit(`project:${task.projectId}:task-updated`, task);
+
+    // Notify creator if task is completed
+    if (req.body.status === 'DONE' && task.createdBy.toString() !== req.user.userId) {
+      await sendNotification({
+        userId: task.createdBy.toString(),
+        organizationId: organizationId.toString(),
+        title: 'Task Completed',
+        message: `Task "${task.title}" has been marked as DONE.`,
+        type: 'SUCCESS',
+        targetUrl: `/projects/${task.projectId}`
+      });
+    }
 
     res.status(200).json(task);
   } catch (error: any) {

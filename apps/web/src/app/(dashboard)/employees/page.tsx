@@ -5,6 +5,7 @@ import api from '@/services/api';
 import React from 'react';
 import { motion } from 'framer-motion';
 import { UserPlus, Mail, Calendar, MoreVertical, Shield, Loader2 } from 'lucide-react';
+import { useSocket } from '@/components/realtime/SocketProvider';
 
 const EmployeeCard = ({ emp }: { emp: any }) => (
   <motion.div 
@@ -14,8 +15,9 @@ const EmployeeCard = ({ emp }: { emp: any }) => (
   >
     <div className="flex justify-between items-start mb-4">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold">
+        <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold relative">
           {emp.name.split(' ').map((n: string) => n[0]).join('')}
+          <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${emp.isOnline ? 'bg-green-500' : 'bg-gray-300'}`} />
         </div>
         <div>
           <h3 className="font-bold text-gray-900">{emp.name}</h3>
@@ -43,11 +45,15 @@ const EmployeeCard = ({ emp }: { emp: any }) => (
 );
 
 export default function EmployeesPage() {
+  const { onlineUsers } = useSocket();
   const { data: employees, isLoading, error } = useQuery({
     queryKey: ['employees'],
     queryFn: async () => {
       const response = await api.get('/employees');
-      return response.data;
+      return response.data.map((e: any) => ({
+        ...e,
+        isOnline: onlineUsers.includes(e._id || e.id)
+      }));
     }
   });
 
@@ -110,8 +116,9 @@ export default function EmployeesPage() {
               <tr key={emp._id} className="hover:bg-gray-50/50 transition-colors group">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm">
+                    <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 font-bold text-sm relative">
                       {emp.name[0]}
+                      <span className={`absolute bottom-[-2px] right-[-2px] w-2.5 h-2.5 rounded-full border-2 border-white ${emp.isOnline ? 'bg-green-500' : 'bg-gray-300'}`} />
                     </div>
                     <div>
                       <div className="font-bold text-gray-900 leading-none mb-1">{emp.name}</div>

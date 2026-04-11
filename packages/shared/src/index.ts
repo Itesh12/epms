@@ -315,4 +315,31 @@ export const InsightPatternSchema = z.object({
 });
 export type InsightPattern = z.infer<typeof InsightPatternSchema>;
 
+// Notification Types
+export const NotificationType = z.enum(['INFO', 'SUCCESS', 'WARNING', 'ERROR', 'TASK', 'TIME', 'APPROVAL']);
+export type NotificationType = z.infer<typeof NotificationType>;
+
+export const NotificationSchema = z.object({
+  id: z.string(),
+  organizationId: z.string(),
+  userId: z.string(),
+  title: z.string(),
+  message: z.string(),
+  type: NotificationType.default('INFO'),
+  isRead: z.boolean().default(false),
+  targetUrl: z.string().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
+});
+export type Notification = z.infer<typeof NotificationSchema>;
+
+// Presence Types
+export const UserPresenceSchema = z.object({
+  userId: z.string(),
+  status: z.enum(['ONLINE', 'OFFLINE']),
+  lastActive: z.string().optional(),
+});
+export type UserPresence = z.infer<typeof UserPresenceSchema>;
+
+
 

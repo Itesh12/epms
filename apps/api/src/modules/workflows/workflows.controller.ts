@@ -5,6 +5,7 @@ import ApprovalRequest from '../../models/ApprovalRequest';
 import Timesheet from '../../models/Timesheet';
 import Leave from '../../models/Leave';
 import AttendanceCorrection from '../../models/AttendanceCorrection';
+import { sendNotification } from '../../services/notification.service';
 
 export const createFlow = async (req: any, res: Response) => {
   try {
@@ -86,6 +87,16 @@ export const actionApproval = async (req: any, res: Response) => {
     }
 
     await request.save();
+
+    // Trigger notification for the requester
+    await sendNotification({
+      userId: request.requesterId.toString(),
+      organizationId: organizationId.toString(),
+      title: `Request ${request.status}`,
+      message: `Your ${request.targetType} request has been ${request.status.toLowerCase()}.`,
+      type: 'APPROVAL',
+      targetUrl: request.targetType === 'TIMESHEET' ? '/timesheets' : '/approvals'
+    });
 
     // Side effects on target
     if (request.status === 'APPROVED' || request.status === 'REJECTED') {

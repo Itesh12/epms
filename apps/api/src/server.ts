@@ -14,6 +14,7 @@ import workflowsRoutes from './modules/workflows/workflows.routes';
 import timesheetsRoutes from './modules/timesheets/timesheets.routes';
 import leavesRoutes from './modules/leaves/leaves.routes';
 import analyticsRoutes from './modules/analytics/analytics.routes';
+import notificationsRoutes from './modules/notifications/notifications.routes';
 import { initSocket } from './lib/socket';
 
 dotenv.config();
@@ -51,6 +52,7 @@ apiRouter.use('/workflows', workflowsRoutes);
 apiRouter.use('/timesheets', timesheetsRoutes);
 apiRouter.use('/leaves', leavesRoutes);
 apiRouter.use('/analytics', analyticsRoutes);
+apiRouter.use('/notifications', notificationsRoutes);
 
 app.use('/api/v1', apiRouter);
 

@@ -9,6 +9,7 @@ import { useAuthStore } from '@/store/authStore';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AttendanceProvider } from '@/contexts/AttendanceContext';
+import NotificationCenter from '@/components/layout/NotificationCenter';
 
 const SidebarItem = ({ icon: Icon, label, href, isCollapsed, isActive }: { 
   icon: any, label: string, href: string, isCollapsed: boolean, isActive: boolean 
@@ -119,7 +120,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </button>
             
             <div className="flex items-center gap-4 ml-auto">
-              <div className="text-right hidden sm:block">
+              <NotificationCenter />
+              <div className="text-right hidden sm:block ml-2">
                 <span className="block text-sm font-bold text-gray-900">{user?.name}</span>
                 <span className="block text-[10px] font-bold text-blue-600 uppercase tracking-tighter bg-blue-50 px-1.5 py-0.5 rounded leading-none">
                   {user?.role}
