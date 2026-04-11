@@ -9,35 +9,39 @@ dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const seedDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/epms');
-    console.log('🌱 Seeding database with rich enterprise data...');
+    const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/epms';
+    await mongoose.connect(uri);
+    console.log('🌱 Connected to database. Seeding started...');
 
     await User.deleteMany({});
     await Organization.deleteMany({});
 
     const passwordHash = await bcrypt.hash('Admin@123', 12);
 
-    // 1. Create Organization
+    // 1. Create a dummy admin first to satisfy Organization requirement
+    const tempAdmin = await User.create({
+        email: 'admin@epms.com',
+        name: 'Super Admin',
+        passwordHash,
+        role: 'ADMIN',
+    });
+
+    // 2. Create Organization linked to this admin
     const org = await Organization.create({
       name: 'Enterprise Hub',
       slug: 'enterprise-hub',
+      adminId: tempAdmin._id
     });
 
-    // 2. Create Users with Detailed Profiles
-    const users = [
-      {
-        email: 'admin@epms.com',
-        name: 'Sarah Connor',
-        passwordHash,
-        role: 'ADMIN',
-        organizationId: org._id,
-        employeeId: 'EHUB-001',
-        jobTitle: 'Chief Strategy Officer',
-        department: 'Executive',
-        status: 'ACTIVE',
-        phone: '+1 (555) 0101',
-        skills: ['Leadership', 'Strategic Planning'],
-      },
+    // 3. Update Admin with Org ID
+    tempAdmin.organizationId = org._id as mongoose.Types.ObjectId;
+    tempAdmin.employeeId = 'EHUB-001';
+    tempAdmin.jobTitle = 'Chief Strategy Officer';
+    tempAdmin.department = 'Executive';
+    await tempAdmin.save();
+
+    // 4. Create other roles with Detailed Profiles
+    const otherUsers = [
       {
         email: 'hr@epms.com',
         name: 'Michael Scott',
@@ -79,13 +83,17 @@ const seedDB = async () => {
       }
     ];
 
-    await User.insertMany(users);
+    await User.insertMany(otherUsers);
 
     console.log('✅ Seeding complete!');
     console.log(`
       ---------------------------------
       Organization: Enterprise Hub
-      Available Roles: ADMIN, HR, MANAGER, EMPLOYEE
+      Available Roles & Emails:
+      - ADMIN: admin@epms.com
+      - HR: hr@epms.com
+      - MANAGER: manager@epms.com
+      - EMPLOYEE: employee@epms.com
       Passwords: all use 'Admin@123'
       ---------------------------------
     `);

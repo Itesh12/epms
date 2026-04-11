@@ -1,5 +1,5 @@
 import express from 'express';
-// Phase 1 Finalized - Port Sync Check
+import { createServer } from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
@@ -7,11 +7,17 @@ import dotenv from 'dotenv';
 import { connectDB } from './config/db';
 import authRoutes from './modules/auth/auth.routes';
 import employeeRoutes from './modules/employees/employee.routes';
+import attendanceRoutes from './modules/attendance/attendance.routes';
+import { initSocket } from './lib/socket';
 
 dotenv.config();
 
 const app = express();
+const httpServer = createServer(app);
 const PORT = process.env.PORT || 5000;
+
+// Initialize Socket.io
+initSocket(httpServer);
 
 // Connect to Database
 connectDB();
@@ -32,9 +38,10 @@ app.get('/health', (req, res) => {
 const apiRouter = express.Router();
 apiRouter.use('/auth', authRoutes);
 apiRouter.use('/employees', employeeRoutes);
+apiRouter.use('/attendance', attendanceRoutes);
 
 app.use('/api/v1', apiRouter);
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
 });

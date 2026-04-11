@@ -4,7 +4,7 @@ import { verifyAccessToken } from '../utils/jwt';
 export interface AuthRequest extends Request {
   user?: {
     userId: string;
-    orgId?: string;
+    organizationId?: string;
     role: string;
   };
 }
@@ -17,8 +17,15 @@ export const authenticate = (req: AuthRequest, res: Response, next: NextFunction
 
   const token = authHeader.split(' ')[1];
   try {
-    const decoded = verifyAccessToken(token);
-    req.user = decoded as any;
+    const decoded: any = verifyAccessToken(token);
+    
+    // Standardize: Backward compatibility for tokens with 'orgId'
+    req.user = {
+      userId: decoded.userId,
+      role: decoded.role,
+      organizationId: decoded.organizationId || decoded.orgId
+    };
+
     next();
   } catch (err) {
     res.status(401).json({ message: 'Invalid or expired token' });

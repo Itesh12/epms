@@ -1,20 +1,43 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
+import api from '@/services/api';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { user } = useAuthStore();
+  const { user, setAuth } = useAuthStore();
+  
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   React.useEffect(() => {
     if (user) {
       router.push('/dashboard');
     }
   }, [user, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const { data } = await api.post('/auth/login', { email, password });
+      setAuth(data.user, data.token);
+      router.push('/dashboard');
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center p-6">
       <motion.div 
@@ -27,11 +50,24 @@ export default function LoginPage() {
           <p className="text-gray-500">Sign in to your enterprise portal</p>
         </div>
 
-        <form className="space-y-6" autoComplete="off">
+        {error && (
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-medium"
+          >
+            {error}
+          </motion.div>
+        )}
+
+        <form className="space-y-6" autoComplete="off" onSubmit={handleSubmit}>
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
             <input 
               type="email" 
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
               placeholder="Enter your email address"
               autoComplete="off"
@@ -42,6 +78,9 @@ export default function LoginPage() {
             <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
             <input 
               type="password" 
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
               placeholder="Enter your password"
               autoComplete="new-password"
@@ -53,11 +92,17 @@ export default function LoginPage() {
               <input type="checkbox" className="rounded text-blue-600" />
               <span className="text-gray-600">Remember me</span>
             </label>
-            <a href="#" className="text-blue-600 font-semibold hover:underline">Forgot password?</a>
+            <Link href="/forgot-password" title="Forgot Password Page" className="text-blue-600 font-semibold hover:underline">Forgot password?</Link>
           </div>
 
-          <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-blue-200 active:scale-95">
-            Sign In
+          <button 
+            type="submit"
+            disabled={isLoading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-blue-200 active:scale-95 flex items-center justify-center"
+          >
+            {isLoading ? (
+              <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            ) : 'Sign In'}
           </button>
         </form>
 

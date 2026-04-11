@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, ShieldCheck, Lock, ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import api from '@/services/api';
 
 const FormInput = ({ icon: Icon, label, ...props }: any) => (
   <div className="mb-6">
@@ -21,6 +22,52 @@ const FormInput = ({ icon: Icon, label, ...props }: any) => (
 export default function ForgotPasswordPage() {
   const [step, setStep] = useState(1); // 1: Request, 2: Reset Form, 3: Success
   const [email, setEmail] = useState('');
+  const [code, setCode] = useState(['', '', '', '', '', '']);
+  const [newPassword, setNewPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleRequestReset = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    try {
+      await api.post('/auth/forgot-password', { email });
+      setStep(2);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Failed to request reset. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResetPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
+    try {
+      const resetCode = code.join('');
+      await api.post('/auth/reset-password', { email, code: resetCode, newPassword });
+      setStep(3);
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Reset failed. Please verify your code.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleCodeChange = (index: number, value: string) => {
+    if (value.length > 1) return;
+    const newCode = [...code];
+    newCode[index] = value;
+    setCode(newCode);
+
+    // Auto focus next input
+    if (value && index < 5) {
+      const nextInput = document.getElementById(`code-${index + 1}`);
+      nextInput?.focus();
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50/50 to-white flex items-center justify-center p-6 font-sans">
@@ -45,7 +92,13 @@ export default function ForgotPasswordPage() {
                 Enter your email address and we'll notify your Admin or HR to generate your reset code.
               </p>
 
-              <form onSubmit={(e) => { e.preventDefault(); setStep(2); }} autoComplete="off">
+              {error && (
+                <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-medium">
+                  {error}
+                </div>
+              )}
+
+              <form onSubmit={handleRequestReset} autoComplete="off">
                 <FormInput 
                   icon={Mail} 
                   label="Email Address" 
@@ -56,9 +109,18 @@ export default function ForgotPasswordPage() {
                   required 
                 />
                 
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-black py-4 px-6 rounded-2xl transition-all shadow-xl shadow-blue-100 mt-4 flex items-center justify-center gap-3 active:scale-95">
-                  <span>Request Reset Code</span>
-                  <ArrowRight size={20} />
+                <button 
+                  disabled={isLoading}
+                  className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-black py-4 px-6 rounded-2xl transition-all shadow-xl shadow-blue-100 mt-4 flex items-center justify-center gap-3 active:scale-95"
+                >
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Request Reset Code</span>
+                      <ArrowRight size={20} />
+                    </>
+                  )}
                 </button>
               </form>
 
@@ -79,19 +141,28 @@ export default function ForgotPasswordPage() {
               exit={{ opacity: 0, x: -20 }}
             >
                <h1 className="text-3xl font-black text-gray-900 mb-3 tracking-tight">Security Reset</h1>
-              <p className="text-gray-500 mb-10 leading-relaxed font-medium">
+              <p className="text-gray-500 mb-6 leading-relaxed font-medium">
                 Contact your **Admin or HR** to get your 6-digit reset code, then enter it below.
               </p>
 
-              <form onSubmit={(e) => { e.preventDefault(); setStep(3); }} autoComplete="off">
+              {error && (
+                <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm font-medium">
+                  {error}
+                </div>
+              )}
+
+              <form onSubmit={handleResetPassword} autoComplete="off">
                 <div className="mb-8">
                     <label className="block text-sm font-bold text-gray-700 mb-4 uppercase tracking-tight text-center">Verification Code</label>
                     <div className="flex justify-between gap-2">
-                        {[1,2,3,4,5,6].map(i => (
+                        {code.map((digit, i) => (
                             <input 
                                 key={i}
+                                id={`code-${i}`}
                                 type="text"
                                 maxLength={1}
+                                value={digit}
+                                onChange={(e) => handleCodeChange(i, e.target.value)}
                                 className="w-12 h-14 bg-gray-50 border-2 border-gray-100 rounded-xl text-center font-black text-xl text-blue-600 focus:border-blue-600 focus:bg-white outline-none transition-all shadow-sm"
                                 placeholder="•"
                             />
@@ -99,12 +170,29 @@ export default function ForgotPasswordPage() {
                     </div>
                 </div>
 
-                <FormInput icon={Lock} label="New Password" type="password" placeholder="Create a new password" required />
+                <FormInput 
+                  icon={Lock} 
+                  label="New Password" 
+                  type="password" 
+                  placeholder="Create a new password" 
+                  value={newPassword}
+                  onChange={(e: any) => setNewPassword(e.target.value)}
+                  required 
+                />
                 
-                <button className="w-full bg-gray-900 hover:bg-black text-white font-black py-4 px-6 rounded-2xl transition-all shadow-xl mt-4 flex items-center justify-center gap-3">
-                  Reset Password
+                <button 
+                  disabled={isLoading}
+                  className="w-full bg-gray-900 hover:bg-black disabled:bg-gray-400 text-white font-black py-4 px-6 rounded-2xl transition-all shadow-xl mt-4 flex items-center justify-center gap-3"
+                >
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : 'Reset Password'}
                 </button>
               </form>
+              
+              <button onClick={() => setStep(1)} className="w-full mt-6 text-sm font-bold text-gray-400 hover:text-blue-600 transition-colors">
+                Back to Request
+              </button>
             </motion.div>
           )}
 

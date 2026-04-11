@@ -36,7 +36,7 @@ export const registerAdmin = async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
-    res.status(201).json({ user: { id: user.id, name, email, role: 'ADMIN', orgId: org.id }, accessToken });
+    res.status(201).json({ user: { id: user.id, name, email, role: 'ADMIN', organizationId: org.id }, token: accessToken });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
@@ -85,7 +85,7 @@ export const registerEmployee = async (req: Request, res: Response) => {
       maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
     });
 
-    res.status(201).json({ user: { id: user.id, name, email, role: user.role, orgId: user.organizationId }, accessToken });
+    res.status(201).json({ user: { id: user.id, name, email, role: user.role, organizationId: user.organizationId }, token: accessToken });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error });
   }
@@ -112,8 +112,8 @@ export const login = async (req: Request, res: Response) => {
     });
 
     res.json({ 
-      user: { id: user.id, name: user.name, email, role: user.role, orgId }, 
-      accessToken 
+      user: { id: user.id, name: user.name, email, role: user.role, organizationId: orgId }, 
+      token: accessToken 
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error' });
@@ -135,7 +135,7 @@ export const refreshToken = async (req: Request, res: Response) => {
     if (!user) return res.status(401).json({ message: 'User not found' });
 
     const newAccessToken = generateAccessToken(user.id, user.organizationId?.toString(), user.role);
-    res.json({ accessToken: newAccessToken });
+    res.json({ token: newAccessToken });
   } catch (err) {
     res.status(401).json({ message: 'Invalid refresh token' });
   }

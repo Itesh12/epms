@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { Users, UserPlus, ShieldAlert, FileText, Key, RefreshCcw } from 'lucide-react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { Users, UserPlus, ShieldAlert, FileText, Key, RefreshCcw, CheckSquare } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import AttendanceHub from '@/components/attendance/AttendanceHub';
+import AttendanceTimeline from '@/components/attendance/AttendanceTimeline';
+import AttendanceHeatmap from '@/components/attendance/AttendanceHeatmap';
 
 const ActionCard = ({ label, description, icon: Icon, color, onClick }: any) => (
   <div 
@@ -15,6 +21,7 @@ const ActionCard = ({ label, description, icon: Icon, color, onClick }: any) => 
 );
 
 export default function HRDashboard() {
+  const router = useRouter();
   const [showResetModal, setShowResetModal] = useState(false);
   const [generatedCode, setGeneratedCode] = useState<string | null>(null);
 
@@ -40,6 +47,13 @@ export default function HRDashboard() {
           color="bg-blue-600" 
         />
         <ActionCard 
+          label="Attendance Corrections" 
+          description="Review and approve fix requests." 
+          icon={CheckSquare} 
+          color="bg-green-600"
+          onClick={() => router.push('/dashboard/hr/corrections')}
+        />
+        <ActionCard 
           label="Security Tool" 
           description="Quick generate user reset codes." 
           icon={Key} 
@@ -52,12 +66,17 @@ export default function HRDashboard() {
           icon={Users} 
           color="bg-purple-600" 
         />
-        <ActionCard 
-          label="Reports" 
-          description="Generate workforce compliance reports." 
-          icon={FileText} 
-          color="bg-orange-500" 
-        />
+      </div>
+
+      <div className="space-y-8 mt-12 pt-12 border-t border-gray-100">
+        <div>
+          <h2 className="text-xl font-black text-gray-900">Personal Attendance</h2>
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mt-1">Track your own work sessions and consistency</p>
+        </div>
+        
+        <AttendanceHub />
+        <AttendanceTimeline />
+        <AttendanceHeatmap />
       </div>
 
       <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden">

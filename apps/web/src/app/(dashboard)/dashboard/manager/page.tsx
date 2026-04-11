@@ -2,6 +2,9 @@
 
 import React from 'react';
 import { Users, Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import AttendanceHub from '@/components/attendance/AttendanceHub';
+import AttendanceTimeline from '@/components/attendance/AttendanceTimeline';
+import AttendanceHeatmap from '@/components/attendance/AttendanceHeatmap';
 
 const TeamStat = ({ label, value, subtext, icon: Icon, color }: any) => (
   <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-6">
@@ -33,6 +36,12 @@ export default function ManagerDashboard() {
         <TeamStat label="Active Now" value="18" subtext="92% Attendance" icon={Users} color="bg-blue-600" />
         <TeamStat label="Pending Approvals" value="4" subtext="2 Leave Requests" icon={Clock} color="bg-orange-500" />
         <TeamStat label="Weekly Progress" value="76%" subtext="+5% from last week" icon={CheckCircle2} color="bg-green-600" />
+      </div>
+
+      <div className="space-y-8 mt-12 pt-12 border-t border-gray-100">
+        <AttendanceHub />
+        <AttendanceTimeline />
+        <AttendanceHeatmap />
       </div>
 
       <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">

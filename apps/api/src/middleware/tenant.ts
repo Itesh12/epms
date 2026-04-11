@@ -2,7 +2,7 @@ import { Response, NextFunction } from 'express';
 import { AuthRequest } from './auth';
 
 export const tenantMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-  if (!req.user?.orgId) {
+  if (!req.user?.organizationId) {
     return res.status(400).json({ message: 'Organization ID missing from context' });
   }
   
