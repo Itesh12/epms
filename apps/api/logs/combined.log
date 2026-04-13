@@ -564,3 +564,8 @@
 {"level":"info","message":"POST /api/v1/auth/signup-admin 500 37 - 699.445 ms","timestamp":"2026-04-11 17:20:14"}
 {"level":"info","message":"POST /api/v1/auth/signup-admin 201 418 - 1083.067 ms","timestamp":"2026-04-11 17:21:32"}
 {"level":"info","message":"POST /api/v1/auth/signup-admin 500 37 - 747.552 ms","timestamp":"2026-04-11 17:24:16"}
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-11 17:25:42"}
+{"level":"info","message":"GET /api/health 404 149 - 2.770 ms","timestamp":"2026-04-11 17:26:18"}
+{"level":"info","message":"GET /health 200 54 - 1.852 ms","timestamp":"2026-04-11 17:26:23"}
+{"level":"info","message":"GET /favicon.ico 404 150 - 0.923 ms","timestamp":"2026-04-11 17:26:23"}
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-11 18:25:45"}
