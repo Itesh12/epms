@@ -8,6 +8,7 @@ import AttendanceHeatmap from '@/components/attendance/AttendanceHeatmap';
 import { useAttendance } from '@/contexts/AttendanceContext';
 import { useAuthStore } from '@/store/authStore';
 import { useTranslations } from 'next-intl';
+import { format } from 'date-fns';
 
 const MetricCard = ({ label, value, icon: Icon, color, loading }: any) => (
   <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col items-center text-center">

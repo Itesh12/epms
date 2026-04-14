@@ -6,6 +6,7 @@ import { useAttendance } from '@/contexts/AttendanceContext';
 import { toast } from 'sonner';
 import CorrectionRequestModal from './CorrectionRequestModal';
 import { useTranslations } from 'next-intl';
+import { format } from 'date-fns';
 
 export default function AttendanceHub() {
   const { attendance, checkIn, checkOut, toggleBreak, isLoading } = useAttendance();

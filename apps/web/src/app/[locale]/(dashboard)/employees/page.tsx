@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { UserPlus, Mail, Calendar, MoreVertical, Shield, Loader2 } from 'lucide-react';
 import { useSocket } from '@/components/realtime/SocketProvider';
 import { useTranslations } from 'next-intl';
+import { format } from 'date-fns';
 
 const EmployeeCard = ({ emp }: { emp: any }) => {
   const t = useTranslations('Workforce');
@@ -46,7 +47,8 @@ const EmployeeCard = ({ emp }: { emp: any }) => {
       </div>
     </div>
   </motion.div>
-);
+  );
+};
 
 export default function EmployeesPage() {
   const t = useTranslations('Workforce');
