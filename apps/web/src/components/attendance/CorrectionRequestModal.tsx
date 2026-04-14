@@ -100,7 +100,7 @@ export default function CorrectionRequestModal({ isOpen, onClose, attendanceId }
                   <select 
                     value={formData.correctionType}
                     onChange={(e) => setFormData({...formData, correctionType: e.target.value})}
-                    className="w-full p-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-bold appearance-none"
+                    className="w-full p-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border-transparent dark:border-gray-800 focus:bg-white dark:focus:bg-gray-950 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none transition-all font-bold appearance-none text-gray-900 dark:text-gray-100"
                   >
                     <option value="CHECK_IN">{t('modal.types.checkIn')}</option>
                     <option value="CHECK_OUT">{t('modal.types.checkOut')}</option>
@@ -117,7 +117,7 @@ export default function CorrectionRequestModal({ isOpen, onClose, attendanceId }
                       required
                       value={formData.requestedTime}
                       onChange={(e) => setFormData({...formData, requestedTime: e.target.value})}
-                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-bold"
+                      className="w-full pl-12 pr-4 py-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border-transparent dark:border-gray-800 focus:bg-white dark:focus:bg-gray-950 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none transition-all font-bold text-gray-900 dark:text-gray-100"
                     />
                   </div>
                 </div>
@@ -130,7 +130,7 @@ export default function CorrectionRequestModal({ isOpen, onClose, attendanceId }
                     placeholder={t('modal.reasonPlaceholder')}
                     value={formData.reason}
                     onChange={(e) => setFormData({...formData, reason: e.target.value})}
-                    className="w-full p-4 rounded-2xl bg-gray-50 border-transparent focus:bg-white focus:border-blue-600 focus:ring-4 focus:ring-blue-100 outline-none transition-all font-bold"
+                    className="w-full p-4 rounded-2xl bg-gray-50 dark:bg-gray-900 border-transparent dark:border-gray-800 focus:bg-white dark:focus:bg-gray-950 focus:border-blue-600 focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none transition-all font-bold text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600"
                   />
                 </div>
 

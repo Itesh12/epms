@@ -162,15 +162,15 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
               <form onSubmit={handleCreateTask} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{taskT('titleLabel')}</label>
-                  <input name="title" required className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500" />
+                  <input name="title" required className="w-full px-4 py-2 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100 outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{taskT('descLabel')}</label>
-                  <textarea name="description" className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 h-24 resize-none" />
+                  <textarea name="description" className="w-full px-4 py-2 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-blue-500 h-24 resize-none text-gray-900 dark:text-gray-100 outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{taskT('priorityLabel')}</label>
-                  <select name="priority" className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 bg-white">
+                  <select name="priority" className="w-full px-4 py-2 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100 outline-none">
                     <option value="LOW">{taskT('priorities.low')}</option>
                     <option value="MEDIUM">{taskT('priorities.medium')}</option>
                     <option value="HIGH">{taskT('priorities.high')}</option>
@@ -232,7 +232,7 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
                       });
                     }
                   }}>
-                    <input name="comment" placeholder={taskT('commentPlaceholder')} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500" />
+                    <input name="comment" placeholder={taskT('commentPlaceholder')} className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl focus:ring-2 focus:ring-blue-500 text-gray-900 dark:text-gray-100 outline-none" />
                   </form>
                 </div>
               </div>

@@ -23,7 +23,7 @@ export default function LocaleSwitcher() {
       <select
         value={locale}
         onChange={(e) => handleLocaleChange(e.target.value)}
-        className="bg-transparent text-xs font-bold text-gray-700 focus:outline-none pr-2 py-1 cursor-pointer"
+        className="bg-transparent text-xs font-bold text-gray-700 dark:text-gray-300 focus:outline-none pr-2 py-1 cursor-pointer"
       >
         <option value="en">English</option>
         <option value="hi">हिंदी</option>

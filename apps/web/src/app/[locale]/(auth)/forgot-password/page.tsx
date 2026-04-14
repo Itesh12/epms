@@ -2,22 +2,37 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, ShieldCheck, Lock, ArrowRight, ArrowLeft, CheckCircle } from 'lucide-react';
+import { Mail, ShieldCheck, Lock, ArrowRight, ArrowLeft, CheckCircle, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import api from '@/services/api';
 
-const FormInput = ({ icon: Icon, label, ...props }: any) => (
-  <div className="mb-6">
-    <label className="block text-sm font-bold text-gray-700 mb-2 uppercase tracking-tight">{label}</label>
-    <div className="relative">
-      <Icon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-      <input 
-        {...props}
-        className="w-full pl-12 pr-4 py-3.5 rounded-2xl border-2 border-gray-100 focus:border-blue-600 focus:ring-0 transition-all outline-none text-gray-900 font-medium placeholder:text-gray-300"
-      />
+const FormInput = ({ icon: Icon, label, type = 'text', ...props }: any) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === 'password';
+
+  return (
+    <div className="mb-6">
+      <label className="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-2 uppercase tracking-tight">{label}</label>
+      <div className="relative">
+        <Icon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input 
+          {...props}
+          type={isPassword ? (showPassword ? 'text' : 'password') : type}
+          className="w-full pl-12 pr-12 py-3.5 rounded-2xl border-2 border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-950 focus:border-blue-600 dark:focus:border-blue-500 focus:ring-0 transition-all outline-none text-gray-900 dark:text-gray-100 font-medium placeholder:text-gray-300 dark:placeholder:text-gray-600"
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 focus:outline-none"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default function ForgotPasswordPage() {
   const [step, setStep] = useState(1); // 1: Request, 2: Reset Form, 3: Success
@@ -163,7 +178,7 @@ export default function ForgotPasswordPage() {
                                 maxLength={1}
                                 value={digit}
                                 onChange={(e) => handleCodeChange(i, e.target.value)}
-                                className="w-12 h-14 bg-gray-50 border-2 border-gray-100 rounded-xl text-center font-black text-xl text-blue-600 focus:border-blue-600 focus:bg-white outline-none transition-all shadow-sm"
+                                className="w-12 h-14 bg-gray-50 dark:bg-gray-900 border-2 border-gray-100 dark:border-gray-800 rounded-xl text-center font-black text-xl text-blue-600 dark:text-blue-400 focus:border-blue-600 dark:focus:border-blue-500 focus:bg-white dark:focus:bg-gray-950 outline-none transition-all shadow-sm"
                                 placeholder="•"
                             />
                         ))}

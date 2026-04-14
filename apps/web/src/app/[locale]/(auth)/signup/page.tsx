@@ -2,7 +2,7 @@
 
 import React, { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Building, Mail, Lock, CheckCircle, ArrowRight } from 'lucide-react';
+import { User, Building, Mail, Lock, CheckCircle, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
@@ -71,21 +71,36 @@ function SignupForm() {
     }
   };
 
-  const FormInput = ({ icon: Icon, label, name, ...props }: any) => (
-    <div className="mb-4">
-      <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
-      <div className="relative">
-        <Icon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-        <input 
-          {...props}
-          name={name}
-          value={(formData as any)[name]}
-          onChange={handleChange}
-          className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-        />
+  const FormInput = ({ icon: Icon, label, name, type = 'text', ...props }: any) => {
+    const [showPassword, setShowPassword] = useState(false);
+    const isPassword = type === 'password';
+
+    return (
+      <div className="mb-4">
+        <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
+        <div className="relative">
+          <Icon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+          <input 
+            {...props}
+            type={isPassword ? (showPassword ? 'text' : 'password') : type}
+            name={name}
+            value={(formData as any)[name]}
+            onChange={handleChange}
+            className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 dark:border-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-950"
+          />
+          {isPassword && (
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <motion.div 

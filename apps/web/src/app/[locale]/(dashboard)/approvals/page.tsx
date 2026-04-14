@@ -143,7 +143,7 @@ export default function ApprovalsInbox() {
                   actionMutation.mutate({ id: selectedRequest.id || (selectedRequest as any)._id, action, comment });
                 }}>
                   <p className="text-sm font-bold text-gray-500 mb-2">{t('commentLabel')}</p>
-                  <textarea name="comment" className="w-full bg-gray-50 border border-gray-200 rounded-xl p-4 min-h-[100px] resize-none focus:ring-2 focus:ring-indigo-500 outline-none mb-6" placeholder={t('commentPlaceholder')} />
+                  <textarea name="comment" className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 min-h-[100px] resize-none focus:ring-2 focus:ring-indigo-500 outline-none mb-6 text-gray-900 dark:text-gray-100" placeholder={t('commentPlaceholder')} />
                   
                   <div className="flex gap-4">
                     <button type="submit" data-action="REJECT" disabled={actionMutation.isPending} className="flex-1 py-3 px-6 rounded-xl font-bold border-2 border-red-100 text-red-600 bg-red-50 hover:bg-red-100 transition-colors disabled:opacity-50">
