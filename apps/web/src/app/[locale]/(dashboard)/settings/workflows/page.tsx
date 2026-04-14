@@ -93,11 +93,11 @@ export default function WorkflowsSettings() {
           <div className="grid grid-cols-2 gap-6 mb-8">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">{t('ruleName')}</label>
-              <input value={newFlow.name} onChange={e => setNewFlow(f => ({...f, name: e.target.value}))} className="w-full p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-gray-900 dark:text-gray-100 outline-none" placeholder={t('ruleNamePlaceholder')} />
+              <input value={newFlow.name} onChange={e => setNewFlow(f => ({...f, name: e.target.value}))} className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 outline-none" placeholder={t('ruleNamePlaceholder')} />
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">{t('targetPayload')}</label>
-              <select value={newFlow.targetType} onChange={e => setNewFlow(f => ({...f, targetType: e.target.value as any}))} className="w-full p-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl text-gray-900 dark:text-gray-100 outline-none">
+              <select value={newFlow.targetType} onChange={e => setNewFlow(f => ({...f, targetType: e.target.value as any}))} className="w-full p-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 outline-none">
                 <option value="TIMESHEET">{t('payloadTypes.TIMESHEET')}</option>
                 <option value="LEAVE">{t('payloadTypes.LEAVE')}</option>
                 <option value="ATTENDANCE_CORRECTION">{t('payloadTypes.ATTENDANCE_CORRECTION')}</option>
@@ -117,7 +117,7 @@ export default function WorkflowsSettings() {
                     <select 
                       value={step.requiredRole} 
                       onChange={e => updateStepRole(idx, e.target.value as 'ADMIN' | 'MANAGER' | 'HR' | 'DIRECT_MANAGER')}
-                      className="w-full outline-none font-semibold text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 rounded-lg p-1"
+                      className="w-full outline-none font-semibold text-gray-700 bg-white rounded-lg p-1"
                     >
                       <option value="MANAGER">{t('roles.MANAGER')}</option>
                       <option value="DIRECT_MANAGER">{t('roles.DIRECT_MANAGER')}</option>

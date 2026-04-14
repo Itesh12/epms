@@ -2,7 +2,7 @@
 
 import React, { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Building, Mail, Lock, CheckCircle, ArrowRight, Eye, EyeOff } from 'lucide-react';
+import { User, Building, Mail, Lock, CheckCircle, ArrowRight, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
@@ -86,7 +86,7 @@ function SignupForm() {
             name={name}
             value={(formData as any)[name]}
             onChange={handleChange}
-            className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 dark:border-gray-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900 dark:text-gray-100 bg-white dark:bg-gray-950"
+            className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900 bg-white"
           />
           {isPassword && (
             <button
@@ -105,7 +105,7 @@ function SignupForm() {
   return (
     <motion.div 
       layout
-      className="max-w-md w-full bg-white rounded-2xl shadow-xl shadow-blue-100 p-8 border border-blue-50"
+      className="max-w-md w-full bg-white rounded-2xl shadow-xl shadow-blue-100 p-8 border border-blue-50 transition-all"
     >
       <AnimatePresence mode="wait">
         {step === 1 && (
@@ -155,8 +155,14 @@ function SignupForm() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 20 }}
           >
-            <div className="flex items-center gap-4 mb-6">
-              <button onClick={() => setStep(1)} className="text-gray-400 hover:text-gray-600 transition-colors">← {t('back')}</button>
+            <div className="flex items-center gap-3 mb-6">
+              <button 
+                onClick={() => setStep(1)} 
+                className="p-2 rounded-full hover:bg-gray-50 text-gray-400 hover:text-blue-600 transition-all active:scale-95 group"
+                title={t('back')}
+              >
+                <ArrowLeft size={20} className="group-hover:-translate-x-0.5 transition-transform" />
+              </button>
               <h2 className="text-2xl font-bold text-gray-900">
                 {role === 'admin' ? t('registerTitle') : t('joinTitle')}
               </h2>

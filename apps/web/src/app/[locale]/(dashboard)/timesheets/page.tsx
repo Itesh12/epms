@@ -165,7 +165,7 @@ export default function TimesheetsPage() {
                         disabled={!isEditable}
                         value={getHours(task, date)}
                         onChange={(e) => handleHoursChange(task, date, e.target.value)}
-                        className="w-full h-10 text-center bg-transparent border border-transparent hover:border-gray-200 dark:hover:border-gray-700 focus:bg-white dark:focus:bg-gray-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900 rounded-lg outline-none transition-all disabled:opacity-75 font-medium text-gray-700 dark:text-gray-200"
+                        className="w-full h-10 text-center bg-transparent border border-transparent hover:border-gray-200 focus:bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100 rounded-lg outline-none transition-all disabled:opacity-75 font-medium text-gray-700"
                         placeholder="-"
                       />
                     </td>

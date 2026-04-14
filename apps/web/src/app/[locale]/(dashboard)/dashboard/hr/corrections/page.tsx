@@ -53,7 +53,7 @@ export default function HRCorrectionsPage() {
             <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
             <input 
               placeholder="Search employee..." 
-              className="pl-12 pr-4 py-3 bg-white dark:bg-gray-950 border border-gray-100 dark:border-gray-800 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-100 dark:focus:ring-blue-900/40 outline-none w-64 transition-all text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-600"
+              className="pl-12 pr-4 py-3 bg-white border border-gray-100 rounded-2xl text-sm font-bold focus:ring-4 focus:ring-blue-100 outline-none w-64 transition-all text-gray-900 placeholder:text-gray-400"
             />
           </div>
           <button className="p-3 bg-white border border-gray-100 rounded-2xl text-gray-400 hover:text-blue-600 transition-all">
