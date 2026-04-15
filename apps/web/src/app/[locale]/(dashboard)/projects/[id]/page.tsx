@@ -3,25 +3,29 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getProjectById } from '@/services/projects';
-import { getTasksByProject, createTask, updateTask, addComment } from '@/services/tasks';
-import { Project, Task, TaskStatus, TaskPriority } from '@epms/shared';
-import { io, Socket } from 'socket.io-client';
+import { getTasksByProject, createTask, addComment } from '@/services/tasks';
+import { Task, TaskStatus, TaskPriority } from '@epms/shared';
+import { getSocket } from '@/services/socket';
 import { useAuthStore } from '@/store/authStore';
 import KanbanBoard from '@/components/projects/KanbanBoard';
-import { Activity, Clock, CheckCircle2, ChevronLeft, Calendar } from 'lucide-react';
+import { Activity, Clock, CheckCircle2, ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { format } from 'date-fns';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+
+interface Comment {
+  text: string;
+  createdAt: string;
+}
 
 export default function ProjectDashboard({ params }: { params: Promise<{ id: string }> }) {
   const t = useTranslations('Projects');
   const taskT = useTranslations('Tasks');
   const attendanceT = useTranslations('Attendance');
   const queryClient = useQueryClient();
-  const { user } = useAuthStore();
+  const { user, token } = useAuthStore();
   const { id } = React.use(params);
-  const [socket, setSocket] = useState<Socket | null>(null);
 
   // Modals state
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
@@ -40,26 +44,22 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
 
   // Socket Setup for Real-time
   useEffect(() => {
-    if (!user?.organizationId) return;
-    const newSocket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:5000', {
-      withCredentials: true,
-    });
+    if (!user?.organizationId || !token) return;
     
-    newSocket.on('connect', () => {
-      newSocket.emit('join-org', user.organizationId);
+    const socket = getSocket(token);
+    
+    socket.on('connect', () => {
+      socket.emit('join-org', user.organizationId);
     });
 
-    newSocket.on(`project:${id}:task-created`, (task: Task) => {
+    socket.on(`project:${id}:task-created`, () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', id] });
     });
 
-    newSocket.on(`project:${id}:task-updated`, (task: Task) => {
+    socket.on(`project:${id}:task-updated`, () => {
       queryClient.invalidateQueries({ queryKey: ['tasks', id] });
     });
-
-    setSocket(newSocket);
-    return () => { newSocket.disconnect(); };
-  }, [id, user?.organizationId, queryClient]);
+  }, [id, user?.organizationId, token, queryClient]);
 
   const createTaskMutation = useMutation({
     mutationFn: (data: Partial<Task>) => createTask({ ...data, projectId: id }),
@@ -94,7 +94,7 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
   return (
     <div className="h-[calc(100vh-8rem)] flex flex-col space-y-6">
       {/* Header & Metrics */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex-shrink-0">
+      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 shrink-0">
         <Link href="/projects" className="text-gray-400 hover:text-blue-600 inline-flex items-center gap-1 mb-4 text-sm font-medium transition-colors">
           <ChevronLeft size={16} /> {t('back')}
         </Link>
@@ -106,7 +106,7 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
           </div>
           
           <div className="flex gap-4 items-center">
-            <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex items-center gap-4 min-w-[200px]">
+            <div className="bg-blue-50/50 p-4 rounded-xl border border-blue-100 flex items-center gap-4 min-w-50">
               <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center">
                 <CheckCircle2 size={24} />
               </div>
@@ -125,7 +125,7 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
               </div>
             </div>
 
-            <div className="bg-purple-50/50 p-4 rounded-xl border border-purple-100 flex items-center gap-4 min-w-[200px]">
+            <div className="bg-purple-50/50 p-4 rounded-xl border border-purple-100 flex items-center gap-4 min-w-50">
                <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-full flex items-center justify-center">
                 <Clock size={24} />
               </div>
@@ -214,7 +214,7 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
                 
                 <h4 className="font-bold text-gray-900 mb-4 flex items-center gap-2 border-b pb-2"><Activity size={18}/> {taskT('activityTitle')} </h4>
                 <div className="space-y-4">
-                  {selectedTask.comments?.map((comment: any, idx) => (
+                  {selectedTask.comments?.map((comment: Comment, idx: number) => (
                     <div key={idx} className="bg-gray-50 p-4 rounded-xl text-sm">
                       <p className="text-gray-800">{comment.text}</p>
                       <p className="text-xs text-gray-400 mt-2">{format(new Date(comment.createdAt), 'MMM d, h:mm a')}</p>
@@ -222,9 +222,11 @@ export default function ProjectDashboard({ params }: { params: Promise<{ id: str
                   ))}
                   <form onSubmit={e => {
                     e.preventDefault();
-                    const input = (e.target as any).comment.value;
+                    const target = e.target as HTMLFormElement;
+                    const input = (target.comment as HTMLInputElement).value;
                     if(input) {
-                      addComment(selectedTask.id || (selectedTask as any)._id, input).then(() => {
+                      const taskId = selectedTask.id || (selectedTask as Record<string, unknown>)._id as string;
+                      addComment(taskId, input).then(() => {
                          queryClient.invalidateQueries({ queryKey: ['tasks', id] });
                          (e.target as HTMLFormElement).reset();
                          // Update local view optimistically simply by closing or letting queryClient refresh and the user clicks again.

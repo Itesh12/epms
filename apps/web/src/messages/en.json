@@ -153,6 +153,8 @@
     "clockIn": "Clock In",
     "clockOut": "Clock Out",
     "efficiency": "Efficiency",
+    "timelineUnavailable": "History Unavailable",
+    "timelineHint": "Your daily activity timeline will appear here once you start your shift.",
     "status": {
       "dayComplete": "Day Complete",
       "onBreak": "On Break",
@@ -184,22 +186,21 @@
       "activeNow": "Active Now",
       "ongoing": "Ongoing"
     },
+    "heatmap": {
+      "title": "Consistency Heatmap",
+      "subtitle": "Your attendance frequency for {year}",
+      "mon": "Mon",
+      "wed": "Wed",
+      "fri": "Fri",
+      "less": "Less",
+      "more": "More",
+      "zeroStateTitle": "Getting Started?",
+      "zeroStateDesc": "Mark your first check-in today to see your consistency map grow!"
+    },
     "correction": "Attendance Correction",
     "modal": {
       "requestSubmitted": "Request Submitted!",
       "hrReview": "Your HR department will review this correction shortly.",
-      "timelineHint": "Your daily activity timeline will appear here once you start your shift.",
-      "heatmap": {
-        "title": "Consistency Heatmap",
-        "subtitle": "Your attendance frequency for {year}",
-        "mon": "Mon",
-        "wed": "Wed",
-        "fri": "Fri",
-        "less": "Less",
-        "more": "More",
-        "zeroStateTitle": "Getting Started?",
-        "zeroStateDesc": "Mark your first check-in today to see your consistency map grow!"
-      },
       "typeLabel": "Correction Type",
       "types": {
         "checkIn": "Check-In Entry",

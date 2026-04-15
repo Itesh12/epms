@@ -7,7 +7,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Shield, Zap, Users, BarChart3 } from 'lucide-react';
 import { useAuthStore } from '@/store/authStore';
 
-const FeatureCard = ({ icon: Icon, title, description }: any) => (
+const FeatureCard = ({ icon: Icon, title, description }: { icon: React.ComponentType<{ size: number }>, title: string, description: string }) => (
   <div className="p-8 bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
     <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6">
       <Icon size={24} />
@@ -73,7 +73,7 @@ export default function LandingPage() {
         </div>
         
         {/* Background Gradients */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-50/50 via-white to-white pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full -z-10 bg-[radial-gradient(circle_at_top,var(--tw-gradient-stops))] from-blue-50/50 via-white to-white pointer-events-none" />
       </header>
 
       {/* Feature Grid */}

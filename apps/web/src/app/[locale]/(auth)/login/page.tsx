@@ -32,10 +32,22 @@ export default function LoginPage() {
     setError(null);
 
     try {
+      console.log("🔐 Login: Submitting credentials...");
       const { data } = await api.post('/auth/login', { email, password });
+      
+      console.log("🔐 Login: API response received", {
+        hasUser: !!data.user,
+        hasToken: !!data.token,
+        tokenLength: data.token?.length ?? 0,
+        tokenPreview: data.token?.substring(0, 20) + "..."
+      });
+      
       setAuth(data.user, data.token);
+      
+      console.log("🔐 Login: Auth store updated, redirecting...");
       router.push('/dashboard');
     } catch (err: any) {
+      console.error("🔐 Login: Error occurred", err);
       setError(err.response?.data?.message || t('loginFailed'));
     } finally {
       setIsLoading(false);

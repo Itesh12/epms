@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface User {
   id: string;
   name: string;
   email: string;
-  role: 'ADMIN' | 'MANAGER' | 'HR' | 'EMPLOYEE';
+  role: "ADMIN" | "MANAGER" | "HR" | "EMPLOYEE";
   organizationId?: string;
 }
 
@@ -21,9 +21,30 @@ export const useAuthStore = create<AuthState>()(
     (set) => ({
       user: null,
       token: null,
-      setAuth: (user, token) => set({ user, token }),
-      logout: () => set({ user: null, token: null }),
+      setAuth: (user, token) => {
+        console.log("🔐 Auth: setAuth called", {
+          userId: user.id,
+          tokenLength: token.length,
+          tokenPreview: token.substring(0, 20) + "...",
+        });
+        set({ user, token });
+      },
+      logout: () => {
+        console.log("🔐 Auth: logout called");
+        set({ user: null, token: null });
+      },
     }),
-    { name: 'auth-storage' }
-  )
+    {
+      name: "auth-storage",
+      onRehydrateStorage: () => (state) => {
+        if (state) {
+          console.log("🔐 Auth: Hydrated from storage", {
+            hasUser: !!state.user,
+            hasToken: !!state.token,
+            tokenLength: state.token?.length ?? 0,
+          });
+        }
+      },
+    },
+  ),
 );

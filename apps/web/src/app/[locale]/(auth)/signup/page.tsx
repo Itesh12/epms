@@ -8,6 +8,37 @@ import { useAuthStore } from '@/store/authStore';
 import api from '@/services/api';
 import { useTranslations } from 'next-intl';
 
+const FormInput = ({ icon: Icon, label, name, value, onChange, type = 'text', ...props }: any) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === 'password';
+
+  return (
+    <div className="mb-4">
+      <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
+      <div className="relative">
+        <Icon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+        <input 
+          {...props}
+          type={isPassword ? (showPassword ? 'text' : 'password') : type}
+          name={name}
+          value={value}
+          onChange={onChange}
+          className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900 bg-white"
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+};
+
 function SignupForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -69,37 +100,6 @@ function SignupForm() {
       setError(err.response?.data?.message || t('regFailed'));
       setIsLoading(false);
     }
-  };
-
-  const FormInput = ({ icon: Icon, label, name, type = 'text', ...props }: any) => {
-    const [showPassword, setShowPassword] = useState(false);
-    const isPassword = type === 'password';
-
-    return (
-      <div className="mb-4">
-        <label className="block text-sm font-semibold text-gray-700 mb-2">{label}</label>
-        <div className="relative">
-          <Icon size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
-          <input 
-            {...props}
-            type={isPassword ? (showPassword ? 'text' : 'password') : type}
-            name={name}
-            value={(formData as any)[name]}
-            onChange={handleChange}
-            className="w-full pl-12 pr-12 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none text-gray-900 bg-white"
-          />
-          {isPassword && (
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-            </button>
-          )}
-        </div>
-      </div>
-    );
   };
 
   return (
@@ -175,16 +175,16 @@ function SignupForm() {
             )}
 
             <form onSubmit={handleSubmit} autoComplete="off">
-              <FormInput icon={User} label={t('fullName')} name="name" placeholder={t('fullNamePlaceholder')} autoComplete="off" required />
-              <FormInput icon={Mail} label={t('emailLabel')} name="email" type="email" placeholder={t('emailPlaceholderSignup')} autoComplete="off" required />
+              <FormInput icon={User} label={t('fullName')} name="name" placeholder={t('fullNamePlaceholder')} autoComplete="off" required value={formData.name} onChange={handleChange} />
+              <FormInput icon={Mail} label={t('emailLabel')} name="email" type="email" placeholder={t('emailPlaceholderSignup')} autoComplete="off" required value={formData.email} onChange={handleChange} />
               
               {role === 'admin' ? (
-                <FormInput icon={Building} label={t('orgName')} name="organizationName" placeholder={t('orgNamePlaceholder')} autoComplete="off" required />
+                <FormInput icon={Building} label={t('orgName')} name="organizationName" placeholder={t('orgNamePlaceholder')} autoComplete="off" required value={formData.organizationName} onChange={handleChange} />
               ) : (
-                <FormInput icon={Building} label={t('inviteCode')} name="inviteCode" placeholder={t('invitePlaceholder')} autoComplete="off" required />
+                <FormInput icon={Building} label={t('inviteCode')} name="inviteCode" placeholder={t('invitePlaceholder')} autoComplete="off" required value={formData.inviteCode} onChange={handleChange} />
               )}
               
-              <FormInput icon={Lock} label={t('passwordLabel')} name="password" type="password" placeholder={t('passwordPlaceholderSignup')} autoComplete="new-password" required />
+              <FormInput icon={Lock} label={t('passwordLabel')} name="password" type="password" placeholder={t('passwordPlaceholderSignup')} autoComplete="new-password" required value={formData.password} onChange={handleChange} />
               
               <button 
                 type="submit"

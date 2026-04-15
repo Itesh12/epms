@@ -8,7 +8,7 @@ import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '.
 
 export const registerAdmin = async (req: Request, res: Response) => {
   try {
-    const { email, password, name, orgName } = req.body;
+    const { email, password, name, organizationName } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: 'User already exists' });
@@ -17,9 +17,10 @@ export const registerAdmin = async (req: Request, res: Response) => {
     
     const user = await User.create({ email, name, passwordHash, role: 'ADMIN' });
 
+    const finalOrgName = organizationName || 'My Organization';
     const org = await Organization.create({ 
-      name: orgName, 
-      slug: orgName.toLowerCase().replace(/ /g, '-'),
+      name: finalOrgName, 
+      slug: finalOrgName.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-').replace(/^-+|-+$/g, ''),
       adminId: user._id 
     });
 

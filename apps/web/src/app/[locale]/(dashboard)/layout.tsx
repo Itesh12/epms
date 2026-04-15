@@ -1,20 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
-  Menu, X, Home, Users, BarChart2, Settings, LogOut, ChevronLeft, ChevronRight, Shield, Briefcase, Clock, CheckSquare
+  Menu, Home, Users, BarChart2, Settings, LogOut, ChevronLeft, ChevronRight, Shield, Briefcase, Clock, CheckSquare
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStore } from '@/store/authStore';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { AttendanceProvider } from '@/contexts/AttendanceContext';
+import { disconnectSocket } from '@/services/socket';
+import api from '@/services/api';
 import NotificationCenter from '@/components/layout/NotificationCenter';
 import LocaleSwitcher from '@/components/layout/LocaleSwitcher';
 import { useTranslations } from 'next-intl';
 
 const SidebarItem = ({ icon: Icon, label, href, isCollapsed, isActive }: { 
-  icon: any, label: string, href: string, isCollapsed: boolean, isActive: boolean 
+  icon: React.ComponentType<{ size: number }>, label: string, href: string, isCollapsed: boolean, isActive: boolean 
 }) => (
   <Link href={href}>
     <div className={`
@@ -32,9 +35,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const [isCollapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
   const { user, logout } = useAuthStore();
   const t = useTranslations('Navigation');
   const commonT = useTranslations('Common');
+
+  const handleLogout = async () => {
+    try {
+      // Call logout endpoint to clear server-side session
+      await api.post('/auth/logout');
+    } catch (error) {
+      console.error('Error calling logout endpoint:', error);
+    } finally {
+      // Disconnect socket
+      disconnectSocket();
+      
+      // Clear local auth state
+      logout();
+      
+      // Redirect to login
+      router.push('/login');
+    }
+  };
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -106,7 +128,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
           {/* Bottom Actions */}
           <div className="p-4 border-t bg-gray-50/50">
-            <button onClick={logout} className="w-full">
+            <button onClick={handleLogout} className="w-full">
               <SidebarItem icon={LogOut} label={t('signOut')} href="#" isCollapsed={isCollapsed} isActive={false} />
             </button>
           </div>

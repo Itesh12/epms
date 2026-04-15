@@ -1,8 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { io, Socket } from 'socket.io-client';
 import api from '@/services/api';
+import { getSocket } from '@/services/socket';
 import { useAuthStore } from '@/store/authStore';
 import { Attendance } from '@epms/shared';
 import { toast } from 'sonner';
@@ -28,6 +28,18 @@ export interface EmployeeProfile {
   skills: string[];
 }
 
+interface ApiResponse {
+  [key: string]: unknown;
+}
+
+interface ApiError {
+  response?: {
+    data?: {
+      message?: string;
+    };
+  };
+}
+
 interface AttendanceContextType {
   attendance: Attendance | null;
   isLoading: boolean;
@@ -39,8 +51,8 @@ interface AttendanceContextType {
   toggleBreak: () => Promise<void>;
   refreshStatus: () => Promise<void>;
   refreshMetrics: () => Promise<void>;
-  getReports: (startDate: string, endDate: string) => Promise<any>;
-  getHeatmapData: (year: string) => Promise<any>;
+  getReports: (startDate: string, endDate: string) => Promise<ApiResponse>;
+  getHeatmapData: (year: string) => Promise<ApiResponse>;
 }
 
 const AttendanceContext = createContext<AttendanceContextType | undefined>(undefined);
@@ -52,7 +64,6 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [metricsLoading, setMetricsLoading] = useState(true);
   const [profile, setProfile] = useState<EmployeeProfile | null>(null);
   const { user, token } = useAuthStore();
-  const [socket, setSocket] = useState<Socket | null>(null);
 
   const refreshStatus = useCallback(async () => {
     if (!user) return;
@@ -95,10 +106,8 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       refreshMetrics();
       fetchProfile();
 
-      const newSocket = io(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000', {
-        auth: { token },
-        withCredentials: true
-      });
+      // Use centralized socket service instead of creating a new socket
+      const newSocket = getSocket(token);
 
       newSocket.on('connect', () => {
         if (user.organizationId) {
@@ -114,10 +123,9 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         }
       });
 
-      setSocket(newSocket);
-
       return () => {
-        newSocket.disconnect();
+        // Don't disconnect - let the service manage the lifecycle
+        // newSocket.disconnect();
       };
     }
   }, [user, token, refreshStatus, refreshMetrics, fetchProfile]);
@@ -127,8 +135,14 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const { data } = await api.post('/attendance/check-in');
       setAttendance(data);
       await refreshMetrics();
-    } catch (error: any) {
-      const msg = error.response?.data?.message || 'Check-in failed';
+    } catch (error) {
+      let msg = 'Check-in failed';
+      if (error instanceof Error) {
+        msg = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        const apiErr = error as ApiError;
+        msg = apiErr.response?.data?.message || msg;
+      }
       toast.error(msg);
       throw new Error(msg);
     }
@@ -139,8 +153,14 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const { data } = await api.post('/attendance/check-out');
       setAttendance(data);
       await refreshMetrics();
-    } catch (error: any) {
-      const msg = error.response?.data?.message || 'Check-out failed';
+    } catch (error) {
+      let msg = 'Check-out failed';
+      if (error instanceof Error) {
+        msg = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        const apiErr = error as ApiError;
+        msg = apiErr.response?.data?.message || msg;
+      }
       toast.error(msg);
       throw new Error(msg);
     }
@@ -150,8 +170,14 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     try {
       const { data } = await api.post('/attendance/toggle-break');
       setAttendance(data);
-    } catch (error: any) {
-      const msg = error.response?.data?.message || 'Toggle break failed';
+    } catch (error) {
+      let msg = 'Toggle break failed';
+      if (error instanceof Error) {
+        msg = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        const apiErr = error as ApiError;
+        msg = apiErr.response?.data?.message || msg;
+      }
       toast.error(msg);
       throw new Error(msg);
     }
@@ -163,19 +189,47 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         params: { startDate, endDate }
       });
       return data;
-    } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch reports');
+    } catch (error) {
+      let msg = 'Failed to fetch reports';
+      if (error instanceof Error) {
+        msg = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        const apiErr = error as ApiError;
+        msg = apiErr.response?.data?.message || msg;
+      }
+      throw new Error(msg);
     }
   };
 
   const getHeatmapData = async (year: string) => {
     try {
+      console.log("📊 Heatmap: Fetching heatmap data for year:", year);
+      const authState = useAuthStore.getState();
+      console.log("📊 Heatmap: Current auth state", {
+        hasUser: !!authState.user,
+        hasToken: !!authState.token,
+        tokenLength: authState.token?.length ?? 0
+      });
+      
       const { data } = await api.get('/attendance/heatmap', {
         params: { year }
       });
+      
+      console.log("📊 Heatmap: Data fetched successfully", {
+        dataLength: data?.length ?? 0
+      });
+      
       return data;
-    } catch (error: any) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch heatmap data');
+    } catch (error) {
+      console.error("📊 Heatmap: Error fetching heatmap", error);
+      let msg = 'Failed to fetch heatmap data';
+      if (error instanceof Error) {
+        msg = error.message;
+      } else if (typeof error === 'object' && error !== null) {
+        const apiErr = error as ApiError;
+        msg = apiErr.response?.data?.message || msg;
+      }
+      throw new Error(msg);
     }
   };
 
