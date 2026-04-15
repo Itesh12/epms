@@ -257,8 +257,8 @@
       "subtitle": "Welcome back, Admin. Here is what is happening today.",
       "totalOrgs": "Total Organizations",
       "activeEmployees": "Active Employees",
-      "monthlyRevenue": "Monthly Revenue",
-      "growthRate": "Growth Rate",
+      "totalProjects": "Total Projects",
+      "completionRate": "Task Completion Rate",
       "chartPlaceholder": "Analytics Chart Placeholder",
       "topRegions": "Top Performing Regions"
     },

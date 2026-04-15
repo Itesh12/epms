@@ -257,8 +257,8 @@
       "subtitle": "वापस स्वागत है, एडमिन। आज क्या हो रहा है, यहाँ देखें।",
       "totalOrgs": "कुल संगठन",
       "activeEmployees": "सक्रिय कर्मचारी",
-      "monthlyRevenue": "मासिक राजस्व",
-      "growthRate": "विकास दर",
+      "totalProjects": "कुल प्रोजेक्ट्स",
+      "completionRate": "कार्य पूर्णता दर",
       "chartPlaceholder": "एनालिटिक्स चार्ट प्लेसहोल्डर",
       "topRegions": "शीर्ष प्रदर्शन करने वाले क्षेत्र"
     },
