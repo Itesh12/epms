@@ -4,6 +4,7 @@ import Attendance from '../../models/Attendance';
 import Task from '../../models/Task';
 import Project from '../../models/Project';
 import Organization from '../../models/Organization';
+import User from '../../models/User';
 import { differenceInDays, isBefore, parse } from 'date-fns';
 import { getCache, setCache } from '../../lib/cache';
 
@@ -205,6 +206,39 @@ export const getInsights = async (req: any, res: Response) => {
     }
 
     res.status(200).json(insights);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getAdminOverview = async (req: any, res: Response) => {
+  try {
+    const organizationId = new mongoose.Types.ObjectId(req.user.organizationId);
+
+    const cacheKey = `analytics:overview:${organizationId}`;
+    const cached = await getCache(cacheKey);
+    if (cached) return res.status(200).json(JSON.parse(cached));
+
+    const [totalOrganizations, activeEmployees, totalProjects, completedTasks, totalTasks] =
+      await Promise.all([
+        Organization.countDocuments(),
+        User.countDocuments({ organizationId, status: 'ACTIVE', role: { $ne: 'ADMIN' } }),
+        Project.countDocuments({ organizationId }),
+        Task.countDocuments({ organizationId, status: 'DONE' }),
+        Task.countDocuments({ organizationId }),
+      ]);
+
+    const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
+    const result = {
+      totalOrganizations,
+      activeEmployees,
+      totalProjects,
+      completionRate,
+    };
+
+    await setCache(cacheKey, JSON.stringify(result), 60);
+    res.status(200).json(result);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

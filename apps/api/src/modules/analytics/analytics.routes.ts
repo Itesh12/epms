@@ -7,6 +7,7 @@ const router = express.Router();
 router.use(authenticate);
 router.use(authorize(['ADMIN', 'MANAGER', 'HR']));
 
+router.get('/overview', analyticsController.getAdminOverview);
 router.get('/attendance', analyticsController.getAttendanceAnalytics);
 router.get('/productivity', analyticsController.getProductivityAnalytics);
 router.get('/projects', analyticsController.getProjectPerformance);
