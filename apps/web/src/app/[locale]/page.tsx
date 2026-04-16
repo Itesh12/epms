@@ -23,7 +23,8 @@ export default function LandingPage() {
 
   useEffect(() => {
     if (user) {
-      router.push('/employees');
+      const dashboardUrl = `/dashboard/${user.role.toLowerCase()}`;
+      router.push(dashboardUrl);
     }
   }, [user, router]);
 

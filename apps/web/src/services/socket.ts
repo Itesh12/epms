@@ -33,13 +33,13 @@ export const getSocket = (token: string | null) => {
       "📡 Socket: Creating new connection with token:",
       token.substring(0, 20) + "...",
     );
-    socket = io(process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || "http://localhost:5000", {
+    socket = io(process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || "http://127.0.0.1:5000", {
       auth: { token },
-      transports: ["websocket"],
+      transports: ["polling", "websocket"],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: 10,
     });
 
     socket.on("connect", () => {

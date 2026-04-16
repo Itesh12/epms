@@ -32,26 +32,40 @@ const PORT = process.env.PORT || 5000;
 // Initialize Socket.io
 initSocket(httpServer);
 
-// Connect to Database
-if (process.env.NODE_ENV !== 'test') {
-  connectDB();
-}
-
-app.use(apiRateLimiter);
-app.use(helmet());
-app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:3000',
-  credentials: true
-}));
-app.use(express.json());
-app.use(cookieParser());
-
-// HTTP Request Logging
+// 1. Logging (Top priority)
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms', {
   stream: {
     write: (message) => logger.info(message.trim()),
   },
 }));
+
+// Debug log for every request
+app.use((req, res, next) => {
+  logger.info(`🔍 Incoming ${req.method} ${req.url} [IP: ${req.ip}]`);
+  next();
+});
+
+// 2. CORS (Must be before any logic)
+app.use(cors({
+  origin: [
+    process.env.CLIENT_URL || 'http://localhost:3000',
+    'http://127.0.0.1:3000'
+  ],
+  credentials: true
+}));
+
+// 3. Basic Parsers
+app.use(express.json());
+app.use(cookieParser());
+
+// 4. Security & Rate Limiting (Now safe)
+// app.use(apiRateLimiter);
+app.use(helmet());
+
+// Connect to Database
+if (process.env.NODE_ENV !== 'test') {
+  connectDB();
+}
 
 
 app.get('/health', (req, res) => {

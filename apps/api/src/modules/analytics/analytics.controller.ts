@@ -221,7 +221,7 @@ export const getAdminOverview = async (req: any, res: Response) => {
 
     const [totalOrganizations, activeEmployees, totalProjects, completedTasks, totalTasks] =
       await Promise.all([
-        Organization.countDocuments(),
+        Organization.countDocuments({ adminId: req.user.userId }),
         User.countDocuments({ organizationId, status: 'ACTIVE', role: { $ne: 'ADMIN' } }),
         Project.countDocuments({ organizationId }),
         Task.countDocuments({ organizationId, status: 'DONE' }),
