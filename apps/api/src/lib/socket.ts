@@ -1,6 +1,6 @@
 import { Server as SocketServer } from "socket.io";
 import { Server as HttpServer } from "http";
-import jwt from "jsonwebtoken";
+import { verifyAccessToken } from "../utils/jwt";
 
 let io: SocketServer;
 
@@ -25,10 +25,7 @@ export const initSocket = (server: HttpServer) => {
     }
 
     try {
-      const decoded = jwt.verify(
-        token,
-        process.env.ACCESS_TOKEN_SECRET || "access_secret",
-      ) as any;
+      const decoded = verifyAccessToken(token);
       (socket as any).user = decoded;
       next();
     } catch (err) {

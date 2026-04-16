@@ -14,6 +14,7 @@ import { disconnectSocket } from '@/services/socket';
 import api from '@/services/api';
 import NotificationCenter from '@/components/layout/NotificationCenter';
 import LocaleSwitcher from '@/components/layout/LocaleSwitcher';
+import OrganizationSwitcher from '@/components/layout/OrganizationSwitcher';
 import { useTranslations } from 'next-intl';
 
 const SidebarItem = ({ icon: Icon, label, href, isCollapsed, isActive }: { 
@@ -114,8 +115,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             )}
           </div>
 
+          <OrganizationSwitcher isCollapsed={isCollapsed} />
+
           {/* Navigation Items */}
-          <nav className="flex-1 px-4 space-y-1.5 mt-6">
+          <nav className="flex-1 px-4 space-y-1.5 mt-2">
             {navItems.map((item) => (
               <SidebarItem 
                 key={item.href}

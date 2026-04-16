@@ -50,9 +50,9 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     console.error("🔗 API Error:", {
-      status: error.response?.status,
+      status: error.response?.status || 'NETWORK_ERROR',
       endpoint: error.config?.url,
-      message: error.response?.data?.message,
+      message: error.response?.data?.message || error.message || "Connection failed",
       hasRetry: !originalRequest._retry,
     });
 

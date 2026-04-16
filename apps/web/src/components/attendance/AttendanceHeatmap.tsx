@@ -27,7 +27,7 @@ export default function AttendanceHeatmap() {
       }
     };
     fetchHeatmap();
-  }, [year, getHeatmapData, attendance]);
+  }, [year, getHeatmapData]);
 
   const days = eachDayOfInterval({
     start: startOfYear(new Date(year, 0, 1)),

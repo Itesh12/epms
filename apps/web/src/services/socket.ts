@@ -33,7 +33,7 @@ export const getSocket = (token: string | null) => {
       "📡 Socket: Creating new connection with token:",
       token.substring(0, 20) + "...",
     );
-    socket = io(process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000", {
+    socket = io(process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || "http://localhost:5000", {
       auth: { token },
       transports: ["websocket"],
       reconnection: true,

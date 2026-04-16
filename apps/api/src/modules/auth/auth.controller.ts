@@ -141,3 +141,40 @@ export const refreshToken = async (req: Request, res: Response) => {
     res.status(401).json({ message: 'Invalid refresh token' });
   }
 };
+
+export const switchOrganization = async (req: any, res: Response) => {
+  try {
+    const { orgId } = req.params;
+    const userId = req.user?.userId;
+
+    // Verify user is an admin of this organization
+    const org = await Organization.findOne({ _id: orgId, adminId: userId });
+    if (!org) {
+      return res.status(403).json({ message: 'Forbidden: You do not have permission to manage this organization' });
+    }
+
+    // Update active organizationId
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.organizationId = org._id as any;
+    await user.save();
+
+    // Generate new access token
+    const token = generateAccessToken(user.id, org.id, user.role);
+
+    res.json({
+      message: `Switched to ${org.name}`,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        organizationId: org.id
+      },
+      token
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error', error });
+  }
+};

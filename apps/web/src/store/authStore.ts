@@ -14,6 +14,7 @@ interface AuthState {
   token: string | null;
   setAuth: (user: User, token: string) => void;
   logout: () => void;
+  switchOrg: (user: User, token: string) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -32,6 +33,13 @@ export const useAuthStore = create<AuthState>()(
       logout: () => {
         console.log("🔐 Auth: logout called");
         set({ user: null, token: null });
+      },
+      switchOrg: (user, token) => {
+        console.log("🔄 Auth: switchOrg called", {
+          newOrgId: user.organizationId,
+          tokenPreview: token.substring(0, 20) + "...",
+        });
+        set({ user, token });
       },
     }),
     {

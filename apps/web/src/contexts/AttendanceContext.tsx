@@ -28,9 +28,7 @@ export interface EmployeeProfile {
   skills: string[];
 }
 
-interface ApiResponse {
-  [key: string]: unknown;
-}
+type ApiResponse = any;
 
 interface ApiError {
   response?: {
@@ -52,7 +50,7 @@ interface AttendanceContextType {
   refreshStatus: () => Promise<void>;
   refreshMetrics: () => Promise<void>;
   getReports: (startDate: string, endDate: string) => Promise<ApiResponse>;
-  getHeatmapData: (year: string) => Promise<ApiResponse>;
+  getHeatmapData: (year: string) => Promise<any[]>;
 }
 
 const AttendanceContext = createContext<AttendanceContextType | undefined>(undefined);
@@ -130,7 +128,7 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   }, [user, token, refreshStatus, refreshMetrics, fetchProfile]);
 
-  const checkIn = async () => {
+  const checkIn = useCallback(async () => {
     try {
       const { data } = await api.post('/attendance/check-in');
       setAttendance(data);
@@ -146,9 +144,9 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       toast.error(msg);
       throw new Error(msg);
     }
-  };
+  }, [refreshMetrics]);
 
-  const checkOut = async () => {
+  const checkOut = useCallback(async () => {
     try {
       const { data } = await api.post('/attendance/check-out');
       setAttendance(data);
@@ -164,9 +162,9 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       toast.error(msg);
       throw new Error(msg);
     }
-  };
+  }, [refreshMetrics]);
 
-  const toggleBreak = async () => {
+  const toggleBreak = useCallback(async () => {
     try {
       const { data } = await api.post('/attendance/toggle-break');
       setAttendance(data);
@@ -181,9 +179,9 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       toast.error(msg);
       throw new Error(msg);
     }
-  };
+  }, []);
 
-  const getReports = async (startDate: string, endDate: string) => {
+  const getReports = useCallback(async (startDate: string, endDate: string) => {
     try {
       const { data } = await api.get('/attendance/reports', {
         params: { startDate, endDate }
@@ -199,26 +197,13 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       }
       throw new Error(msg);
     }
-  };
+  }, []);
 
-  const getHeatmapData = async (year: string) => {
+  const getHeatmapData = useCallback(async (year: string) => {
     try {
-      console.log("📊 Heatmap: Fetching heatmap data for year:", year);
-      const authState = useAuthStore.getState();
-      console.log("📊 Heatmap: Current auth state", {
-        hasUser: !!authState.user,
-        hasToken: !!authState.token,
-        tokenLength: authState.token?.length ?? 0
-      });
-      
       const { data } = await api.get('/attendance/heatmap', {
         params: { year }
       });
-      
-      console.log("📊 Heatmap: Data fetched successfully", {
-        dataLength: data?.length ?? 0
-      });
-      
       return data;
     } catch (error) {
       console.error("📊 Heatmap: Error fetching heatmap", error);
@@ -231,7 +216,7 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       }
       throw new Error(msg);
     }
-  };
+  }, []);
 
   return (
     <AttendanceContext.Provider value={{ 

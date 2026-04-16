@@ -14,6 +14,7 @@ router.post('/signup-employee', authRateLimiter, auditLog('SIGNUP_EMPLOYEE', 'AU
 router.post('/login', authRateLimiter, auditLog('LOGIN', 'AUTH'), authController.login);
 router.post('/logout', authController.logout);
 router.post('/refresh', authController.refreshToken);
+router.post('/switch-org/:orgId', authenticate, authorize(['ADMIN']), authController.switchOrganization);
 
 
 // Password Reset Routes

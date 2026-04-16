@@ -1,9 +1,11 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import { createServer } from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
-import dotenv from 'dotenv';
 import morgan from 'morgan';
 import logger from './lib/logger';
 import { errorHandler } from './middleware/error';
@@ -19,11 +21,9 @@ import timesheetsRoutes from './modules/timesheets/timesheets.routes';
 import leavesRoutes from './modules/leaves/leaves.routes';
 import analyticsRoutes from './modules/analytics/analytics.routes';
 import notificationsRoutes from './modules/notifications/notifications.routes';
+import organizationRoutes from './modules/organizations/organization.routes';
 import { initSocket } from './lib/socket';
 import { apiRateLimiter } from './middleware/rateLimit';
-
-
-dotenv.config();
 
 const app = express();
 const httpServer = createServer(app);
@@ -70,6 +70,7 @@ apiRouter.use('/timesheets', timesheetsRoutes);
 apiRouter.use('/leaves', leavesRoutes);
 apiRouter.use('/analytics', analyticsRoutes);
 apiRouter.use('/notifications', notificationsRoutes);
+apiRouter.use('/organizations', organizationRoutes);
 
 app.use('/api/v1', apiRouter);
 
