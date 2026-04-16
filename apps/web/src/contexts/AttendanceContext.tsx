@@ -122,8 +122,9 @@ export const AttendanceProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       });
 
       return () => {
-        // Don't disconnect - let the service manage the lifecycle
-        // newSocket.disconnect();
+        // Clean up listeners to prevent leaks
+        newSocket.off('connect');
+        newSocket.off('attendance:update');
       };
     }
   }, [user, token, refreshStatus, refreshMetrics, fetchProfile]);

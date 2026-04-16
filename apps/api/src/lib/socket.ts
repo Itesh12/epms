@@ -12,7 +12,11 @@ const socketToUser = new Map<string, string>();
 export const initSocket = (server: HttpServer) => {
   io = new SocketServer(server, {
     cors: {
-      origin: process.env.CLIENT_URL || "http://localhost:3000",
+      origin: [
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        process.env.CLIENT_URL || "http://localhost:3000"
+      ],
       credentials: true,
     },
   });
@@ -28,8 +32,12 @@ export const initSocket = (server: HttpServer) => {
       const decoded = verifyAccessToken(token);
       (socket as any).user = decoded;
       next();
-    } catch (err) {
-      next(new Error("Authentication error: Invalid token"));
+    } catch (err: any) {
+      console.error(`📡 Socket Auth Failure: ${err.message}`, {
+        tokenPreview: token.substring(0, 15) + "...",
+        error: err
+      });
+      next(new Error(`Authentication error: ${err.message || "Invalid token"}`));
     }
   });
 

@@ -60,11 +60,17 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   };
 
   useEffect(() => {
+    // Auth Guard: Redirect to login if user or token is missing
+    if (!user) {
+      console.log("🛡️ Dashboard Guard: No user found, redirecting to login");
+      router.push('/login');
+    }
+    
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [user, router]);
 
   const navItems = [
     { icon: Home, label: t('dashboard'), href: `/dashboard/${user?.role?.toLowerCase()}`, roles: ['ADMIN', 'HR', 'MANAGER', 'EMPLOYEE'] },

@@ -1653,3 +1653,297 @@
 {"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 304 - - 509.269 ms","timestamp":"2026-04-16 11:32:22"}
 {"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-16 11:32:39"}
 {"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-16 11:33:08"}
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-16 13:19:23"}
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-16 13:24:14"}
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-16 13:28:31"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/dashboard-metrics [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/dashboard-metrics 204 0 - 7.014 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 1.203 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"OPTIONS /api/v1/notifications 204 0 - 8.082 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 1.280 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 1.190 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/organizations/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"OPTIONS /api/v1/organizations/my 204 0 - 0.881 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/status [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/status 204 0 - 0.776 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/dashboard-metrics [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 401 38 - 11.175 ms","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:14"}
+{"level":"info","message":"GET /api/v1/employees/me 401 38 - 7.501 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/status [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"GET /api/v1/attendance/status 401 38 - 3.016 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"OPTIONS /api/v1/auth/refresh 204 0 - 0.923 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"OPTIONS /api/v1/auth/refresh 204 0 - 0.802 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"GET /api/v1/notifications 401 38 - 4.588 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 401 38 - 6.513 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"GET /api/v1/analytics/overview 401 38 - 5.900 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"GET /api/v1/organizations/my 401 38 - 7.594 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"OPTIONS /api/v1/auth/refresh 204 0 - 0.909 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 39.389 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 4.966 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 2.944 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 1.651 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 3.225 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 5.785 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 4.828 ms","timestamp":"2026-04-16 13:51:15"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:16"}
+{"level":"info","message":"GET /api/v1/notifications 401 26 - 1.273 ms","timestamp":"2026-04-16 13:51:16"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:16"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 2.193 ms","timestamp":"2026-04-16 13:51:16"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:18"}
+{"level":"info","message":"GET /api/v1/notifications 401 26 - 0.918 ms","timestamp":"2026-04-16 13:51:18"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/refresh [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:18"}
+{"level":"info","message":"POST /api/v1/auth/refresh 401 26 - 1.960 ms","timestamp":"2026-04-16 13:51:18"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/auth/login [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:34"}
+{"level":"info","message":"OPTIONS /api/v1/auth/login 204 0 - 0.586 ms","timestamp":"2026-04-16 13:51:34"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/login [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:34"}
+{"level":"info","message":"POST /api/v1/auth/login 200 421 - 1826.714 ms","timestamp":"2026-04-16 13:51:36"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/organizations/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/organizations/my 204 0 - 1.103 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/notifications 204 0 - 3.938 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/status [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/status 204 0 - 0.990 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 0.686 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/dashboard-metrics [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/dashboard-metrics 204 0 - 0.830 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/organizations/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/organizations/my 204 0 - 0.622 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/dashboard-metrics [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/dashboard-metrics 204 0 - 0.525 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 1.138 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/status [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/status 204 0 - 1.301 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/status [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/dashboard-metrics [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"GET /api/v1/organizations/my 304 - - 187.158 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 0.689 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 0.523 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 28.103 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 1.138 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"GET /api/v1/employees/me 304 - - 357.258 ms","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:38"}
+{"level":"info","message":"GET /api/v1/organizations/my 304 - - 548.840 ms","timestamp":"2026-04-16 13:51:39"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:39"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 304 - - 503.262 ms","timestamp":"2026-04-16 13:51:39"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:39"}
+{"level":"info","message":"GET /api/v1/attendance/status 304 - - 1263.994 ms","timestamp":"2026-04-16 13:51:39"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/status [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:39"}
+{"level":"info","message":"GET /api/v1/notifications 304 - - 1296.258 ms","timestamp":"2026-04-16 13:51:39"}
+{"level":"info","message":"GET /api/v1/employees/me 304 - - 788.382 ms","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 304 - - 678.913 ms","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"GET /api/v1/attendance/status 304 - - 377.004 ms","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 304 - - 1646.941 ms","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/dashboard-metrics [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 304 - - 521.571 ms","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"GET /api/v1/analytics/overview 304 - - 1963.479 ms","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:40"}
+{"level":"info","message":"GET /api/v1/analytics/overview 304 - - 204.509 ms","timestamp":"2026-04-16 13:51:41"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/timesheets?date=2026-04-13 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"OPTIONS /api/v1/timesheets?date=2026-04-13 204 0 - 0.621 ms","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/tasks/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"OPTIONS /api/v1/tasks/my 204 0 - 0.689 ms","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/timesheets?date=2026-04-13 [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/tasks/my [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"GET /api/v1/timesheets?date=2026-04-13 200 321 - 187.475 ms","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"GET /api/v1/tasks/my 200 2 - 175.395 ms","timestamp":"2026-04-16 13:51:46"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/projects [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:56"}
+{"level":"info","message":"OPTIONS /api/v1/projects 204 0 - 0.624 ms","timestamp":"2026-04-16 13:51:56"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/projects [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:51:56"}
+{"level":"info","message":"GET /api/v1/projects 200 2 - 176.986 ms","timestamp":"2026-04-16 13:51:57"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/workflows/pending [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:03"}
+{"level":"info","message":"OPTIONS /api/v1/workflows/pending 204 0 - 0.763 ms","timestamp":"2026-04-16 13:52:03"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/workflows/pending [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:03"}
+{"level":"info","message":"GET /api/v1/workflows/pending 200 2 - 177.718 ms","timestamp":"2026-04-16 13:52:03"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:08"}
+{"level":"info","message":"OPTIONS /api/v1/employees 204 0 - 2.043 ms","timestamp":"2026-04-16 13:52:08"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:08"}
+{"level":"info","message":"GET /api/v1/employees 200 381 - 192.313 ms","timestamp":"2026-04-16 13:52:08"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:10"}
+{"level":"info","message":"OPTIONS /api/v1/notifications 204 0 - 0.515 ms","timestamp":"2026-04-16 13:52:10"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:10"}
+{"level":"info","message":"GET /api/v1/notifications 304 - - 169.879 ms","timestamp":"2026-04-16 13:52:10"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/attendance [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/attendance 204 0 - 1.093 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/productivity [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/productivity 204 0 - 0.581 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/projects [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/projects 204 0 - 3.331 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/insights [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/insights 204 0 - 6.189 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/attendance [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/productivity [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/projects [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/insights [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"GET /api/v1/analytics/projects 200 2 - 184.140 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"GET /api/v1/analytics/productivity 200 85 - 344.175 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"GET /api/v1/analytics/insights 200 2 - 345.593 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"GET /api/v1/analytics/attendance 200 89 - 533.891 ms","timestamp":"2026-04-16 13:52:16"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"OPTIONS /api/v1/notifications 204 0 - 4.475 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/attendance [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/attendance 204 0 - 1.819 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/productivity [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/productivity 204 0 - 1.456 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/projects [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/projects 204 0 - 0.911 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/insights [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/insights 204 0 - 1.043 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/notifications [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/attendance [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/productivity [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/projects [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/insights [IP: ::ffff:127.0.0.1]","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"GET /api/v1/notifications 304 - - 189.455 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"GET /api/v1/analytics/projects 304 - - 188.969 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"GET /api/v1/analytics/productivity 304 - - 361.031 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"GET /api/v1/analytics/insights 304 - - 353.420 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"GET /api/v1/analytics/attendance 304 - - 536.835 ms","timestamp":"2026-04-16 14:06:10"}
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-16 17:05:26"}
+{"level":"info","message":"🚀 Server running on http://localhost:5000 in development mode","timestamp":"2026-04-16 17:12:18"}
+{"level":"info","message":"🚀 Server running on http://127.0.0.1:5000 in development mode","timestamp":"2026-04-16 17:13:26"}
+{"level":"info","message":"🚀 Server running on http://127.0.0.1:5000 in development mode","timestamp":"2026-04-16 17:14:24"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/auth/login [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:06"}
+{"level":"info","message":"OPTIONS /api/v1/auth/login 204 0 - 5.626 ms","timestamp":"2026-04-16 17:20:06"}
+{"level":"info","message":"🔍 Incoming POST /api/v1/auth/login [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:06"}
+{"level":"info","message":"POST /api/v1/auth/login 200 421 - 1078.900 ms","timestamp":"2026-04-16 17:20:07"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/organizations/my 204 0 - 1.712 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/notifications [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/notifications 204 0 - 1.160 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/status [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/status 204 0 - 2.565 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/dashboard-metrics [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/dashboard-metrics 204 0 - 0.931 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/dashboard-metrics [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/dashboard-metrics 204 0 - 5.544 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/status [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/status 204 0 - 0.935 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 1.063 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 3.108 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"OPTIONS /api/v1/organizations/my 204 0 - 2.954 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/notifications [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/status [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/dashboard-metrics [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"GET /api/v1/notifications 304 - - 184.583 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"GET /api/v1/organizations/my 304 - - 181.876 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"GET /api/v1/attendance/status 304 - - 188.406 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/status [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"GET /api/v1/employees/me 304 - - 185.753 ms","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:09"}
+{"level":"info","message":"GET /api/v1/organizations/my 304 - - 181.155 ms","timestamp":"2026-04-16 17:20:10"}
+{"level":"info","message":"GET /api/v1/attendance/status 304 - - 174.409 ms","timestamp":"2026-04-16 17:20:10"}
+{"level":"info","message":"GET /api/v1/employees/me 304 - - 190.423 ms","timestamp":"2026-04-16 17:20:10"}
+{"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 304 - - 550.776 ms","timestamp":"2026-04-16 17:20:10"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/dashboard-metrics [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:10"}
+{"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 304 - - 537.896 ms","timestamp":"2026-04-16 17:20:10"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 0.810 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 0.656 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 0.704 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 0.626 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 304 - - 181.523 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 304 - - 176.370 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"GET /api/v1/analytics/overview 304 - - 355.620 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"GET /api/v1/analytics/overview 304 - - 182.515 ms","timestamp":"2026-04-16 17:20:12"}
+{"level":"info","message":"🚀 Server running on http://127.0.0.1:5000 in development mode","timestamp":"2026-04-16 17:21:40"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 4.700 ms","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 1.536 ms","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 1.651 ms","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"OPTIONS /api/v1/organizations/my 204 0 - 1.195 ms","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:21:41"}
+{"level":"info","message":"GET /api/v1/employees/me 304 - - 1679.055 ms","timestamp":"2026-04-16 17:21:43"}
+{"level":"info","message":"GET /api/v1/organizations/my 304 - - 2333.745 ms","timestamp":"2026-04-16 17:21:43"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 304 - - 2527.873 ms","timestamp":"2026-04-16 17:21:43"}
+{"level":"info","message":"GET /api/v1/analytics/overview 304 - - 2664.321 ms","timestamp":"2026-04-16 17:21:44"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/organizations/my 204 0 - 2.003 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 0.822 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 1.244 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/status [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/status 204 0 - 0.950 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/dashboard-metrics [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/dashboard-metrics 204 0 - 1.011 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/attendance/heatmap?year=2026 204 0 - 1.622 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/analytics/overview 204 0 - 2.408 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 0.762 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming OPTIONS /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"OPTIONS /api/v1/employees/me 204 0 - 0.610 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/status [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/dashboard-metrics [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/organizations/my 304 - - 181.455 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/organizations/my [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 304 - - 180.083 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/heatmap?year=2026 [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/analytics/overview 304 - - 188.336 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/analytics/overview [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/employees/me 304 - - 266.757 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/employees/me [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/organizations/my 304 - - 198.521 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/attendance/heatmap?year=2026 304 - - 171.083 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/analytics/overview 304 - - 275.250 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/employees/me 304 - - 190.514 ms","timestamp":"2026-04-16 17:22:11"}
+{"level":"info","message":"GET /api/v1/attendance/status 304 - - 1237.392 ms","timestamp":"2026-04-16 17:22:12"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/status [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:12"}
+{"level":"info","message":"GET /api/v1/attendance/status 304 - - 172.999 ms","timestamp":"2026-04-16 17:22:12"}
+{"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 304 - - 1579.125 ms","timestamp":"2026-04-16 17:22:12"}
+{"level":"info","message":"🔍 Incoming GET /api/v1/attendance/dashboard-metrics [IP: 127.0.0.1]","timestamp":"2026-04-16 17:22:12"}
+{"level":"info","message":"GET /api/v1/attendance/dashboard-metrics 304 - - 516.957 ms","timestamp":"2026-04-16 17:22:13"}

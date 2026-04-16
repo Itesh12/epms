@@ -48,8 +48,9 @@ app.use((req, res, next) => {
 // 2. CORS (Must be before any logic)
 app.use(cors({
   origin: [
-    process.env.CLIENT_URL || 'http://localhost:3000',
-    'http://127.0.0.1:3000'
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    process.env.CLIENT_URL || 'http://localhost:3000'
   ],
   credentials: true
 }));
@@ -93,8 +94,9 @@ app.use(errorHandler);
 
 
 if (process.env.NODE_ENV !== 'test') {
-  httpServer.listen(PORT, () => {
-    logger.info(`🚀 Server running on http://localhost:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
+  const HOST = process.env.API_HOST || '0.0.0.0';
+  httpServer.listen(Number(PORT), HOST, () => {
+    logger.info(`🚀 Server running on http://${HOST}:${PORT} in ${process.env.NODE_ENV || 'development'} mode`);
   });
 }
 

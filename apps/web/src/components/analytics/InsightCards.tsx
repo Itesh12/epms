@@ -8,22 +8,23 @@ import { useTranslations } from 'next-intl';
 
 export default function InsightCards({ insights }: { insights: InsightPattern[] }) {
   const t = useTranslations('Analytics');
+  
   const getIcon = (type: string) => {
     switch (type) {
       case 'BURNOUT': return <Flame size={24} className="text-orange-500" />;
-      case 'DELAY': return <AlertCircle size={24} className="text-red-500" />;
-      case 'IMBALANCE': return <Zap size={24} className="text-purple-500" />;
-      case 'EXCELLENCE': return <ShieldCheck size={24} className="text-green-500" />;
+      case 'DELAY': return <AlertCircle size={24} className="text-rose-500" />;
+      case 'IMBALANCE': return <Zap size={24} className="text-amber-500" />;
+      case 'EXCELLENCE': return <ShieldCheck size={24} className="text-emerald-500" />;
       default: return <ArrowUpRight size={24} className="text-blue-500" />;
     }
   };
 
-  const getBg = (severity: string) => {
+  const getTheme = (severity: string) => {
     switch (severity) {
-      case 'HIGH': return 'bg-red-50 border-red-100 shadow-red-100/50';
-      case 'MEDIUM': return 'bg-orange-50 border-orange-100 shadow-orange-100/50';
-      case 'LOW': return 'bg-purple-50 border-purple-100 shadow-purple-100/50';
-      default: return 'bg-blue-50 border-blue-100 shadow-blue-100/50';
+      case 'HIGH': return 'from-rose-500/10 to-transparent border-rose-200/50 text-rose-600';
+      case 'MEDIUM': return 'from-orange-500/10 to-transparent border-orange-200/50 text-orange-600';
+      case 'LOW': return 'from-amber-500/10 to-transparent border-amber-200/50 text-amber-600';
+      default: return 'from-blue-500/10 to-transparent border-blue-200/50 text-blue-600';
     }
   };
 
@@ -34,34 +35,47 @@ export default function InsightCards({ insights }: { insights: InsightPattern[] 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: idx * 0.1 }}
+          whileHover={{ y: -8, transition: { duration: 0.2 } }}
           key={idx}
-          className={`p-6 rounded-3xl border shadow-xl flex gap-4 ${getBg(insight.severity)}`}
+          className={`group relative p-8 rounded-[2.5rem] border backdrop-blur-xl bg-white/60 shadow-2xl shadow-gray-200/50 flex flex-col gap-6 overflow-hidden bg-gradient-to-br ${getTheme(insight.severity)}`}
         >
-          <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shrink-0 shadow-sm">
-            {getIcon(insight.type)}
+          <div className="flex justify-between items-start">
+            <div className="w-14 h-14 bg-white/80 rounded-2xl flex items-center justify-center shadow-inner-lg group-hover:scale-110 transition-transform duration-300">
+              {getIcon(insight.type)}
+            </div>
+            <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] bg-white shadow-sm border ${getTheme(insight.severity)}`}>
+              {insight.severity}
+            </div>
           </div>
-          <div className="flex-1 min-w-0">
-             <div className="flex justify-between items-start mb-2">
-               <span className="px-2 py-0.5 bg-white/60 text-[10px] font-bold rounded uppercase tracking-wider text-gray-500">{t('intelligentPattern')}</span>
-               <span className={`w-2 h-2 rounded-full ${
-                 insight.severity === 'HIGH' ? 'bg-red-500' :
-                 insight.severity === 'MEDIUM' ? 'bg-orange-500' :
-                 'bg-blue-500'
-               }`}></span>
-             </div>
-             <p className="text-sm font-bold text-gray-900 leading-tight">{insight.message}</p>
-             <button className="flex items-center gap-1 text-xs font-bold mt-4 opacity-70 hover:opacity-100 transition-opacity">
-               {t('viewPlan')} <ArrowUpRight size={14}/>
-             </button>
+
+          <div className="space-y-4">
+             <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{t('intelligentPattern')}</span>
+             <p className="text-lg font-bold text-gray-900 leading-tight group-hover:text-gray-800 tracking-tight">
+               {insight.message}
+             </p>
+          </div>
+
+          <div className="mt-auto pt-6 border-t border-gray-100/50 flex items-center justify-between">
+            <button className="text-sm font-black flex items-center gap-2 group-hover:gap-3 transition-all">
+              {t('viewPlan')} <ArrowUpRight size={18} className="opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all"/>
+            </button>
+            <div className="w-1.5 h-1.5 rounded-full bg-current opacity-20" />
           </div>
         </motion.div>
       ))}
+      
       {insights.length === 0 && (
-        <div className="col-span-full py-12 text-center text-gray-400 bg-gray-50/50 border-2 border-dashed border-gray-100 rounded-3xl">
-           <ShieldCheck size={48} className="mx-auto mb-4 opacity-30" />
-           <p className="font-bold text-lg">{t('allSystemsGreen')}</p>
-           <p className="text-sm">{t('noCriticalPatterns')}</p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="col-span-full py-20 text-center bg-white/40 border-2 border-dashed border-gray-200/50 rounded-[3rem] backdrop-blur-sm"
+        >
+           <div className="w-20 h-20 bg-emerald-50 text-emerald-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-emerald-100/50">
+             <ShieldCheck size={40} />
+           </div>
+           <h3 className="text-2xl font-black text-gray-900 mb-2">{t('allSystemsGreen')}</h3>
+           <p className="text-gray-500 font-medium">{t('noCriticalPatterns')}</p>
+        </motion.div>
       )}
     </div>
   );

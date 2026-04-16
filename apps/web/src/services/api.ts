@@ -74,6 +74,10 @@ api.interceptors.response.use(
       } catch (refreshError) {
         console.error("🔗 API: Token refresh failed, logging out");
         useAuthStore.getState().logout();
+        // Force redirect to login
+        if (typeof window !== 'undefined') {
+          window.location.href = '/login';
+        }
         return Promise.reject(refreshError);
       }
     }

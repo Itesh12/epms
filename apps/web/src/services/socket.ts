@@ -35,7 +35,7 @@ export const getSocket = (token: string | null) => {
     );
     socket = io(process.env.NEXT_PUBLIC_API_URL?.replace('/api/v1', '') || "http://127.0.0.1:5000", {
       auth: { token },
-      transports: ["polling", "websocket"],
+      transports: ["websocket", "polling"],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
