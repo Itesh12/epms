@@ -2,11 +2,13 @@ import { Injectable, BadRequestException, NotFoundException } from '@nestjs/comm
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Attendance, AttendanceStatus } from './schemas/attendance.schema';
+import { User } from '../users/schemas/user.schema';
 
 @Injectable()
 export class AttendanceService {
   constructor(
     @InjectModel(Attendance.name) private attendanceModel: Model<Attendance>,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
   private getTodayString(): string {
@@ -128,6 +130,27 @@ export class AttendanceService {
     return this.attendanceModel.find({ organizationId: orgId as any })
       .populate('userId', 'firstName lastName email')
       .sort({ date: -1, createdAt: -1 });
+  }
+
+  async markAbsentForDate(date: string, orgId: string): Promise<{ marked: number }> {
+    const allUsers = await this.userModel.find({ organizationId: orgId as any, isActive: true }).lean();
+    const existing = await this.attendanceModel.find({ organizationId: orgId as any, date } as any).lean();
+    const existingUserIds = new Set(existing.map((r: any) => r.userId.toString()));
+    const absentUsers = allUsers.filter((u: any) => !existingUserIds.has(u._id.toString()));
+
+    if (absentUsers.length === 0) return { marked: 0 };
+
+    const absentRecords = absentUsers.map((u: any) => ({
+      userId: u._id,
+      organizationId: orgId as any,
+      date,
+      status: AttendanceStatus.ABSENT,
+      totalWorkMinutes: 0,
+      breaks: [],
+    }));
+
+    await this.attendanceModel.insertMany(absentRecords, { ordered: false }).catch(() => {});
+    return { marked: absentUsers.length };
   }
 
   async adminCreate(data: any, orgId: string): Promise<Attendance> {

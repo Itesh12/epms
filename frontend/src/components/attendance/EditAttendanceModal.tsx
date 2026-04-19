@@ -39,7 +39,7 @@ export function EditAttendanceModal({ record, onClose, onSaved }: EditAttendance
   useEffect(() => {
     if (isCreateMode) {
       setLoadingEmployees(true);
-      api.get('/users/organization').then(res => {
+      api.get('/users').then(res => {
         setEmployees(res.data);
       }).catch(() => {
         toast.error('Failed to load employees');

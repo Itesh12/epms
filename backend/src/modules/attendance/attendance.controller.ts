@@ -47,6 +47,13 @@ export class AttendanceController {
     return this.attendanceService.getAllHistory(req.user.orgId);
   }
 
+  @Post('admin/mark-absent')
+  @Roles(UserRole.ADMIN)
+  markAbsent(@Body('date') date: string, @Request() req: any) {
+    const targetDate = date || new Date().toISOString().split('T')[0];
+    return this.attendanceService.markAbsentForDate(targetDate, req.user.orgId);
+  }
+
   @Post('admin/create')
   @Roles(UserRole.ADMIN)
   adminCreate(@Body() data: any, @Request() req: any) {
