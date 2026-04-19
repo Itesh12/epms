@@ -10,7 +10,8 @@ import {
   LayoutDashboard,
   LogOut,
   Trophy,
-  X
+  X,
+  Clock
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -21,6 +22,7 @@ const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
   { label: 'Projects', icon: Briefcase, href: '/projects' },
   { label: 'Employees', icon: Users, href: '/employees' },
+  { label: 'Attendance', icon: Clock, href: '/attendance' },
   { label: 'Performance', icon: Trophy, href: '/performance' },
   { label: 'Analytics', icon: BarChart3, href: '/analytics' },
   { label: 'Settings', icon: Settings, href: '/settings' },
