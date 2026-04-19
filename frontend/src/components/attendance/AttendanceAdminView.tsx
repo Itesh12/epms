@@ -53,19 +53,24 @@ export function AttendanceAdminView() {
     try {
       const res = await api.get('/attendance/history');
       setHistory(res.data);
-      // If we have a selected record, update it from history to keep data in sync after edits
-      if (selectedRecord) {
-        const updated = res.data.find((r: any) => r._id === selectedRecord._id);
-        if (updated) setSelectedRecord(updated);
-      }
     } catch {
       toast.error('Failed to load attendance history');
     } finally {
       setLoading(false);
     }
-  }, [selectedRecord]);
+  }, []);
 
   useEffect(() => { fetchHistory(); }, [fetchHistory]);
+
+  // Sync selected record with fresh history data when it changes
+  useEffect(() => {
+    if (selectedRecord && history.length > 0) {
+      const updated = history.find((r: any) => r._id === selectedRecord._id);
+      if (updated && JSON.stringify(updated) !== JSON.stringify(selectedRecord)) {
+        setSelectedRecord(updated);
+      }
+    }
+  }, [history, selectedRecord]);
 
   const handleExport = async () => {
     setExporting(true);
@@ -161,26 +166,26 @@ export function AttendanceAdminView() {
           />
         </div>
 
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-6 items-center">
           <CustomSelect
             value={statusFilter}
             onChange={setStatusFilter}
             options={STATUS_FILTER_OPTIONS}
-            className="h-10 w-44"
+            className="h-10 w-44 shrink-0"
           />
 
           <Button
             variant="outline"
-            onClick={() => setShowMarkAbsent(true)}
-            className="h-10 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest gap-2 border-divider text-amber-500 hover:bg-amber-500/10 hover:border-amber-500/30"
+            onClick={(e) => { e.stopPropagation(); setShowMarkAbsent(true); }}
+            className="h-10 rounded-xl px-6 text-[10px] font-black uppercase tracking-widest gap-2 border-divider text-amber-500 hover:bg-amber-500/10 hover:border-amber-500/30 whitespace-nowrap w-fit shrink-0"
           >
             <UserMinus size={14} />
             Mark Absent
           </Button>
 
           <Button
-            onClick={() => setEditRecord(null)}
-            className="h-10 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest gap-2 shadow-lg shadow-primary/10"
+            onClick={(e) => { e.stopPropagation(); setEditRecord(null); }}
+            className="h-10 rounded-xl px-6 text-[10px] font-black uppercase tracking-widest gap-2 shadow-lg shadow-primary/10 whitespace-nowrap w-fit shrink-0"
           >
             <Plus size={14} />
             Manual Entry

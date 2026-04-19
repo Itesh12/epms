@@ -168,9 +168,11 @@ export function AttendanceCalendar({ history, onDayClick, isLoading }: Attendanc
               )}
               
               {isSelectedDay && (
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-1.5 px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-full">
-                   <div className="w-1 h-1 bg-primary rounded-full animate-pulse" />
-                   <span className="text-[7px] font-black text-primary uppercase tracking-widest">Today</span>
+                <div className="mt-2 flex items-center justify-center">
+                  <div className="flex items-center gap-1.5 px-2 py-0.5 bg-primary/10 border border-primary/20 rounded-full">
+                     <div className="w-1 h-1 bg-primary rounded-full animate-pulse" />
+                     <span className="text-[7px] font-black text-primary uppercase tracking-widest">Today</span>
+                  </div>
                 </div>
               )}
             </div>

@@ -13,7 +13,7 @@ import {
   AlertCircle,
   Zap,
   User,
-  History,
+  History as HistoryIcon,
   Download
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
@@ -27,6 +27,7 @@ import { AttendanceCalendar } from '@/components/attendance/AttendanceCalendar';
 import { EditAttendanceModal } from '@/components/attendance/EditAttendanceModal';
 import { StreakWidget } from '@/components/attendance/StreakWidget';
 import { LeaderboardPanel } from '@/components/attendance/LeaderboardPanel';
+import { ExportAttendanceModal } from '@/components/attendance/ExportAttendanceModal';
 import { useAuthStore } from '@/store/useAuthStore';
 import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect';
 
@@ -54,6 +55,7 @@ export default function AttendancePage() {
   // Late notification state to avoid double toasts
   const [hasWarned, setHasWarned] = useState(false);
   const [hasLateAlert, setHasLateAlert] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
@@ -98,30 +100,22 @@ export default function AttendancePage() {
   };
 
   useEffect(() => { 
+    const role = user?.role?.toUpperCase();
+    if (role === 'ADMIN' || role === 'MANAGER') {
+      api.get('/users').then(res => {
+        // If res is the success object {success: true, data: [...]}, res.data is the array.
+        // If res is already the data because of some other interceptor level, handle it.
+        const users = Array.isArray(res) ? res : (res.data || []);
+        setEmployees(users);
+      }).catch(err => {
+        console.error('Failed to fetch employees for list:', err.response?.status, err.response?.data || err.message);
+        toast.error('Could not load employee list');
+      });
+    }
     fetchData();
-    if (user?.role === 'ADMIN') {
-      api.get('/users').then(res => setEmployees(res.data));
-    }
-  }, []);
+  }, [user?.role]);
 
-  const handleExport = async () => {
-    setExporting(true);
-    try {
-      const res = await api.get('/attendance/export');
-      const blob = new Blob([res.data.csv], { type: 'text/csv' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = res.data.filename;
-      a.click();
-      window.URL.revokeObjectURL(url);
-      toast.success('Your attendance record exported');
-    } catch {
-      toast.error('Export failed');
-    } finally {
-      setExporting(false);
-    }
-  };
+
 
   // Handle calendar employee change
   useEffect(() => {
@@ -136,11 +130,12 @@ export default function AttendancePage() {
   }, [selectedCalendarEmployee, activeTab, history, user?.id]);
 
   const employeeOptions = useMemo<SelectOption[]>(() => {
+    const userName = `${user?.firstName || 'My'} ${user?.lastName || 'History'}`.trim();
     return [
-      { value: user?.id || '', label: `My History (${user?.firstName} ${user?.lastName})`, icon: <History size={14} /> },
-      ...employees.filter(e => e._id !== user?.id).map(e => ({
+      { value: user?.id || '', label: `My History (${userName})`, icon: <HistoryIcon size={14} /> },
+      ...employees.filter(e => String(e._id) !== String(user?.id)).map(e => ({
         value: e._id,
-        label: `${e.firstName} ${e.lastName}`,
+        label: `${e.firstName || 'Employee'} ${e.lastName || ''}`.trim(),
         icon: <User size={14} />
       }))
     ];
@@ -271,11 +266,10 @@ export default function AttendancePage() {
         <div className="flex items-center gap-4">
            <Button 
              variant="outline" 
-             onClick={handleExport} 
-             disabled={exporting}
+             onClick={() => setIsExportModalOpen(true)} 
              className="h-14 px-6 rounded-2xl border-divider text-[10px] font-black uppercase tracking-widest gap-2 bg-card"
            >
-              {exporting ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+              <Download size={14} />
               Export History
            </Button>
            <div className="flex items-center gap-4 bg-muted/60 p-2 rounded-2xl border border-divider shadow-sm">
@@ -521,11 +515,11 @@ export default function AttendancePage() {
                     >
                       {dayNum}
                     </div>
-                  );
-                })}
-              </div>
+                );
+              })}
+            </div>
 
-              <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-sm bg-emerald-500/30" />
                   <span className="text-[8px] font-black text-muted-foreground opacity-40 uppercase">Present</span>
@@ -590,6 +584,14 @@ export default function AttendancePage() {
           }}
         />
       )}
+
+      <ExportAttendanceModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        userRole={user?.role}
+        currentUserId={user?.id}
+        employees={employees}
+      />
     </div>
   );
 }

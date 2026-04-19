@@ -14,8 +14,8 @@ export function LiveActivityFeed() {
     try {
       const res = await api.get('/attendance/admin/live');
       setLiveUsers(res.data);
-    } catch (error) {
-      console.error('Failed to fetch live activity');
+    } catch (error: any) {
+      console.error('Failed to fetch live activity:', error.response?.status, error.response?.data || error.message);
     } finally {
       setLoading(false);
     }

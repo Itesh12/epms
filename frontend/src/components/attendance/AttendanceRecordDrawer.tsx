@@ -32,13 +32,17 @@ export function AttendanceRecordDrawer({ record, isOpen, onClose, onEdit, onDele
           "fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] transition-opacity duration-300",
           isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
-        onClick={onClose}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClose();
+        }}
       />
 
       {/* Drawer */}
       <div 
+        onClick={(e) => e.stopPropagation()}
         className={cn(
-          "fixed top-0 right-0 h-full w-full max-w-lg bg-card border-l border-divider z-[101] shadow-2xl transition-transform duration-500 ease-out flex flex-col",
+          "fixed top-0 right-0 h-full w-full max-w-lg bg-card border-l border-divider z-[101] shadow-2xl transition-transform duration-500 ease-out flex flex-col cursor-default",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -56,7 +60,10 @@ export function AttendanceRecordDrawer({ record, isOpen, onClose, onEdit, onDele
             </div>
           </div>
           <button 
-            onClick={onClose}
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
             className="p-3 text-muted-foreground hover:text-foreground hover:bg-muted rounded-2xl transition-all"
           >
             <X size={20} />
