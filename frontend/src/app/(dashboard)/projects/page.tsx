@@ -8,8 +8,8 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { CustomSelect } from '@/components/ui/CustomSelect';
-import { CreateProjectModal } from '@/components/projects/CreateProjectModal';
-import { EditProjectModal } from '@/components/projects/EditProjectModal';
+import { CreateProjectDrawer } from '@/components/projects/CreateProjectDrawer';
+import { EditProjectDrawer } from '@/components/projects/EditProjectDrawer';
 import api from '@/services/api';
 import toast from 'react-hot-toast';
 import { useAuthStore } from '@/store/useAuthStore';
@@ -400,12 +400,12 @@ export default function ProjectsPage() {
         </>
       )}
 
-      <CreateProjectModal
+      <CreateProjectDrawer
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSuccess={() => fetchProjects(true)}
       />
-      <EditProjectModal
+      <EditProjectDrawer
         isOpen={isEditModalOpen}
         onClose={() => setIsEditModalOpen(false)}
         onSuccess={() => fetchProjects(true)}

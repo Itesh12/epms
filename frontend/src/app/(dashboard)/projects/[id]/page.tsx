@@ -9,7 +9,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { TaskBoard } from '@/components/tasks/TaskBoard';
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
-import { EditProjectModal } from '@/components/projects/EditProjectModal';
+import { EditProjectDrawer } from '@/components/projects/EditProjectDrawer';
 import { useAuthStore } from '@/store/useAuthStore';
 import api from '@/services/api';
 import Link from 'next/link';
@@ -463,7 +463,7 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
         projectId={id}
       />
       {project && isAdmin && (
-        <EditProjectModal
+        <EditProjectDrawer
           isOpen={isEditProjectModalOpen}
           onClose={() => setIsEditProjectModalOpen(false)}
           project={project}
