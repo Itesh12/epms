@@ -14,6 +14,7 @@ import {
   XCircle,
   UserMinus,
   UserX,
+  Activity,
 } from 'lucide-react';
 import { format } from 'date-fns';
 import api from '@/services/api';
@@ -21,29 +22,69 @@ import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { EditAttendanceModal } from './EditAttendanceModal';
+import { MarkAbsentModal } from './MarkAbsentModal';
+import { AttendanceRecordDrawer } from './AttendanceRecordDrawer';
+import { LiveActivityFeed } from './LiveActivityFeed';
+import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect';
+import { Download } from 'lucide-react';
+
+const STATUS_FILTER_OPTIONS: SelectOption[] = [
+  { value: 'ALL', label: 'All Statuses' },
+  { value: 'PRESENT', label: 'Present', icon: <CheckCircle2 size={14} />, color: 'text-emerald-500' },
+  { value: 'LATE', label: 'Late', icon: <Clock size={14} />, color: 'text-amber-500' },
+  { value: 'HALF_DAY', label: 'Half Day', icon: <AlertTriangle size={14} />, color: 'text-blue-500' },
+  { value: 'ABSENT', label: 'Absent', icon: <UserX size={14} />, color: 'text-red-500' },
+];
 
 export function AttendanceAdminView() {
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
   const [editRecord, setEditRecord] = useState<any | null | undefined>(undefined); // undefined=closed, null=create
+  const [showMarkAbsent, setShowMarkAbsent] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState<any | null>(null);
+  const [showLiveFeed, setShowLiveFeed] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
-  const [markingAbsent, setMarkingAbsent] = useState(false);
 
   const fetchHistory = useCallback(async () => {
     setLoading(true);
     try {
       const res = await api.get('/attendance/history');
       setHistory(res.data);
+      // If we have a selected record, update it from history to keep data in sync after edits
+      if (selectedRecord) {
+        const updated = res.data.find((r: any) => r._id === selectedRecord._id);
+        if (updated) setSelectedRecord(updated);
+      }
     } catch {
       toast.error('Failed to load attendance history');
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [selectedRecord]);
 
   useEffect(() => { fetchHistory(); }, [fetchHistory]);
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const res = await api.get('/attendance/export');
+      const blob = new Blob([res.data.csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = res.data.filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      toast.success('Attendance data exported');
+    } catch {
+      toast.error('Export failed');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   const handleDelete = async (id: string, empName: string) => {
     if (!confirm(`Remove attendance record for ${empName}? This cannot be undone.`)) return;
@@ -53,28 +94,12 @@ export function AttendanceAdminView() {
       toast.success('Record deleted');
       // Instant optimistic update + re-fetch
       setHistory(prev => prev.filter(r => r._id !== id));
+      if (selectedRecord?._id === id) setSelectedRecord(null);
       fetchHistory();
     } catch (error: any) {
       toast.error(error.response?.data?.message || 'Failed to delete');
     } finally {
       setDeletingId(null);
-    }
-  };
-
-  const handleMarkAbsent = async () => {
-    const today = format(new Date(), 'yyyy-MM-dd');
-    if (!confirm(`Mark all employees without a check-in record for today (${today}) as ABSENT?`)) return;
-    setMarkingAbsent(true);
-    try {
-      const res = await api.post('/attendance/admin/mark-absent', { date: today });
-      const marked = res.data?.marked ?? 0;
-      if (marked === 0) toast.success('All employees already have a record for today');
-      else toast.success(`${marked} employee(s) marked as Absent`);
-      fetchHistory(); // instant refresh
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to mark absent');
-    } finally {
-      setMarkingAbsent(false);
     }
   };
 
@@ -97,6 +122,32 @@ export function AttendanceAdminView() {
 
   return (
     <div className="space-y-6">
+      {/* Live Feed Toggle */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+           <Activity size={12} className="text-primary opacity-40" />
+           <span className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Operations Pulse</span>
+        </div>
+        <div className="flex items-center gap-4">
+           <button 
+             onClick={handleExport}
+             disabled={exporting}
+             className="flex items-center gap-1.5 text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
+           >
+              {exporting ? <Loader2 size={10} className="animate-spin" /> : <Download size={10} />}
+              Export CSV
+           </button>
+           <button 
+             onClick={() => setShowLiveFeed(!showLiveFeed)}
+             className="text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors"
+           >
+             {showLiveFeed ? 'Hide Live Feed' : 'Show Live Feed'}
+           </button>
+        </div>
+      </div>
+
+      {showLiveFeed && <LiveActivityFeed />}
+
       {/* Controls */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="relative flex-1 max-w-md">
@@ -111,22 +162,16 @@ export function AttendanceAdminView() {
         </div>
 
         <div className="flex gap-3 items-center">
-          <select
+          <CustomSelect
             value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
-            className="h-10 bg-muted/20 border border-divider rounded-xl px-3 text-[10px] font-black uppercase tracking-widest text-muted-foreground outline-none focus:ring-1 focus:ring-primary transition-all"
-          >
-            <option value="ALL">All Statuses</option>
-            <option value="PRESENT">Present</option>
-            <option value="LATE">Late</option>
-            <option value="HALF_DAY">Half Day</option>
-            <option value="ABSENT">Absent</option>
-          </select>
+            onChange={setStatusFilter}
+            options={STATUS_FILTER_OPTIONS}
+            className="h-10 w-44"
+          />
 
           <Button
             variant="outline"
-            onClick={handleMarkAbsent}
-            isLoading={markingAbsent}
+            onClick={() => setShowMarkAbsent(true)}
             className="h-10 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest gap-2 border-divider text-amber-500 hover:bg-amber-500/10 hover:border-amber-500/30"
           >
             <UserMinus size={14} />
@@ -179,7 +224,11 @@ export function AttendanceAdminView() {
                   const { Icon: StatusIcon } = s;
 
                   return (
-                    <tr key={record._id} className="group hover:bg-muted/10 transition-colors">
+                    <tr 
+                      key={record._id} 
+                      onClick={() => setSelectedRecord(record)}
+                      className="group hover:bg-muted/10 transition-colors cursor-pointer"
+                    >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary text-[10px] font-black border border-primary/20 uppercase">
@@ -215,7 +264,7 @@ export function AttendanceAdminView() {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
-                        <div className="flex items-center justify-end gap-2">
+                        <div className="flex items-center justify-end gap-2" onClick={e => e.stopPropagation()}>
                           <button
                             onClick={() => setEditRecord(record)}
                             className="p-2 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-all"
@@ -244,12 +293,28 @@ export function AttendanceAdminView() {
         </div>
       </div>
 
-      {/* Edit / Create Modal — renders when editRecord !== undefined */}
+      {/* Modals & Drawer */}
+      <AttendanceRecordDrawer
+        record={selectedRecord}
+        isOpen={!!selectedRecord}
+        onClose={() => setSelectedRecord(null)}
+        onEdit={(rec) => { setEditRecord(rec); }}
+        onDelete={handleDelete}
+      />
+
+      {/* Modals */}
       {editRecord !== undefined && (
         <EditAttendanceModal
           record={editRecord}
           onClose={() => setEditRecord(undefined)}
-          onSaved={fetchHistory}  // instant refresh after save
+          onSaved={fetchHistory}
+        />
+      )}
+
+      {showMarkAbsent && (
+        <MarkAbsentModal
+          onClose={() => setShowMarkAbsent(false)}
+          onSaved={fetchHistory}
         />
       )}
     </div>

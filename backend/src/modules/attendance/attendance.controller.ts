@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -35,6 +35,11 @@ export class AttendanceController {
     return this.attendanceService.getTodayStatus(req.user.userId, req.user.orgId);
   }
 
+  @Get('leaderboard')
+  getLeaderboard(@Request() req: any) {
+    return this.attendanceService.getLeaderboard(req.user.orgId);
+  }
+
   @Get('me')
   getMyHistory(@Request() req: any) {
     return this.attendanceService.getMyHistory(req.user.userId, req.user.orgId);
@@ -47,11 +52,30 @@ export class AttendanceController {
     return this.attendanceService.getAllHistory(req.user.orgId);
   }
 
+  @Get('admin/user/:userId')
+  @Roles(UserRole.ADMIN, UserRole.MANAGER)
+  getUserHistory(@Param('userId') userId: string, @Request() req: any) {
+    return this.attendanceService.getUserHistory(userId, req.user.orgId);
+  }
+
   @Post('admin/mark-absent')
   @Roles(UserRole.ADMIN)
-  markAbsent(@Body('date') date: string, @Request() req: any) {
+  markAbsent(@Body('date') date: string, @Body('userIds') userIds: string[], @Request() req: any) {
     const targetDate = date || new Date().toISOString().split('T')[0];
-    return this.attendanceService.markAbsentForDate(targetDate, req.user.orgId);
+    return this.attendanceService.markAbsentForDate(targetDate, req.user.orgId, userIds);
+  }
+
+  @Get('admin/missing')
+  @Roles(UserRole.ADMIN)
+  getMissing(@Query('date') date: string, @Request() req: any) {
+    const targetDate = date || new Date().toISOString().split('T')[0];
+    return this.attendanceService.getMissingEmployees(targetDate, req.user.orgId);
+  }
+
+  @Get('admin/live')
+  @Roles(UserRole.ADMIN, UserRole.MANAGER)
+  getLive(@Request() req: any) {
+    return this.attendanceService.getLiveActivity(req.user.orgId);
   }
 
   @Post('admin/create')
@@ -74,5 +98,18 @@ export class AttendanceController {
   @Roles(UserRole.ADMIN)
   adminDelete(@Param('id') id: string, @Request() req: any) {
     return this.attendanceService.delete(id, req.user.orgId);
+  }
+
+  @Get('export')
+  async export(
+    @Query('userId') userId: string,
+    @Query('startDate') start: string,
+    @Query('endDate') end: string,
+    @Request() req: any
+  ) {
+    // If not admin, force userId to self
+    const targetUserId = req.user.role === UserRole.ADMIN ? userId : req.user.userId;
+    const csv = await this.attendanceService.exportAttendance(req.user.orgId, targetUserId, start, end);
+    return { csv, filename: `attendance_export_${new Date().toISOString().split('T')[0]}.csv` };
   }
 }

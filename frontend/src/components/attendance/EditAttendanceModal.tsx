@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { X, Calendar, Clock, User, CheckCircle2, AlertTriangle, Save, Loader2, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import api from '@/services/api';
 import { toast } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect';
 
 interface EditAttendanceModalProps {
   record?: any;       // null = create/backfill mode
@@ -14,11 +15,11 @@ interface EditAttendanceModalProps {
   onSaved: () => void;
 }
 
-const STATUS_OPTIONS = [
-  { value: 'PRESENT', label: 'Present', color: 'text-emerald-500' },
-  { value: 'LATE', label: 'Late', color: 'text-amber-500' },
-  { value: 'HALF_DAY', label: 'Half Day', color: 'text-blue-500' },
-  { value: 'ABSENT', label: 'Absent', color: 'text-red-500' },
+const STATUS_SELECT_OPTIONS: SelectOption[] = [
+  { value: 'PRESENT', label: 'Present', icon: <CheckCircle2 size={14} />, color: 'text-emerald-500' },
+  { value: 'LATE', label: 'Late', icon: <Clock size={14} />, color: 'text-amber-500' },
+  { value: 'HALF_DAY', label: 'Half Day', icon: <AlertTriangle size={14} />, color: 'text-blue-500' },
+  { value: 'ABSENT', label: 'Absent', icon: <X size={14} />, color: 'text-red-500' },
 ];
 
 export function EditAttendanceModal({ record, onClose, onSaved }: EditAttendanceModalProps) {
@@ -46,6 +47,14 @@ export function EditAttendanceModal({ record, onClose, onSaved }: EditAttendance
       }).finally(() => setLoadingEmployees(false));
     }
   }, [isCreateMode]);
+
+  const employeeOptions = useMemo<SelectOption[]>(() => {
+    return employees.map(emp => ({
+      value: emp._id,
+      label: `${emp.firstName} ${emp.lastName} (${emp.email})`,
+      icon: <User size={14} />,
+    }));
+  }, [employees]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -124,25 +133,13 @@ export function EditAttendanceModal({ record, onClose, onSaved }: EditAttendance
               <label className="text-[9px] font-black text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
                 <User size={10} /> Employee
               </label>
-              {loadingEmployees ? (
-                <div className="h-11 bg-muted/20 border border-divider rounded-xl flex items-center px-4">
-                  <Loader2 size={14} className="animate-spin text-muted-foreground" />
-                </div>
-              ) : (
-                <select
-                  value={form.userId}
-                  onChange={e => setForm(f => ({ ...f, userId: e.target.value }))}
-                  required
-                  className="w-full bg-muted/20 border border-divider rounded-xl py-3 px-4 text-xs font-medium focus:ring-1 focus:ring-primary outline-none transition-all text-foreground"
-                >
-                  <option value="">Select employee...</option>
-                  {employees.map(emp => (
-                    <option key={emp._id} value={emp._id}>
-                      {emp.firstName} {emp.lastName} ({emp.email})
-                    </option>
-                  ))}
-                </select>
-              )}
+              <CustomSelect
+                value={form.userId}
+                onChange={val => setForm(f => ({ ...f, userId: val }))}
+                options={employeeOptions}
+                placeholder="Select employee..."
+                disabled={loadingEmployees}
+              />
             </div>
           )}
 
@@ -188,23 +185,12 @@ export function EditAttendanceModal({ record, onClose, onSaved }: EditAttendance
           {/* Status */}
           <div className="space-y-1.5">
             <label className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Attendance Status</label>
-            <div className="grid grid-cols-4 gap-2">
-              {STATUS_OPTIONS.map(opt => (
-                <button
-                  key={opt.value}
-                  type="button"
-                  onClick={() => setForm(f => ({ ...f, status: opt.value }))}
-                  className={cn(
-                    "px-2 py-2.5 rounded-xl text-[9px] font-black uppercase tracking-widest border transition-all",
-                    form.status === opt.value
-                      ? "bg-primary text-white border-primary shadow-lg shadow-primary/20"
-                      : "bg-muted/20 border-divider text-muted-foreground hover:border-primary/30"
-                  )}
-                >
-                  {opt.label}
-                </button>
-              ))}
-            </div>
+            <CustomSelect
+              value={form.status}
+              onChange={val => setForm(f => ({ ...f, status: val }))}
+              options={STATUS_SELECT_OPTIONS}
+              placeholder="Select status..."
+            />
           </div>
 
           {/* Notes */}

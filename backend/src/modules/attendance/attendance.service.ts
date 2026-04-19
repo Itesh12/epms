@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Attendance, AttendanceStatus } from './schemas/attendance.schema';
 import { User } from '../users/schemas/user.schema';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
 
 @Injectable()
 export class AttendanceService {
@@ -126,17 +127,44 @@ export class AttendanceService {
     }).sort({ date: -1 }).limit(30);
   }
 
+  async getUserHistory(userId: string, orgId: string): Promise<Attendance[]> {
+    return this.attendanceModel.find({ 
+      userId: userId as any,
+      organizationId: orgId as any
+    }).sort({ date: -1 });
+  }
+
   async getAllHistory(orgId: string): Promise<Attendance[]> {
     return this.attendanceModel.find({ organizationId: orgId as any })
       .populate('userId', 'firstName lastName email')
       .sort({ date: -1, createdAt: -1 });
   }
 
-  async markAbsentForDate(date: string, orgId: string): Promise<{ marked: number }> {
-    const allUsers = await this.userModel.find({ organizationId: orgId as any, isActive: true }).lean();
-    const existing = await this.attendanceModel.find({ organizationId: orgId as any, date } as any).lean();
+  async markAbsentForDate(date: string, orgId: string, userIds?: string[]): Promise<{ marked: number }> {
+    let targetUsers;
+    
+    if (userIds && userIds.length > 0) {
+      // Validate requested users are in the org
+      targetUsers = await this.userModel.find({ 
+        _id: { $in: userIds },
+        organizationId: orgId as any,
+        isActive: true 
+      }).lean();
+    } else {
+      // Fallback: Get ALL active users in the org who are missing records
+      const allUsers = await this.userModel.find({ organizationId: orgId as any, isActive: true }).lean();
+      targetUsers = allUsers;
+    }
+
+    // Find who already has a record on that date
+    const existing = await this.attendanceModel.find({ 
+      organizationId: orgId as any, 
+      date 
+    } as any).lean();
     const existingUserIds = new Set(existing.map((r: any) => r.userId.toString()));
-    const absentUsers = allUsers.filter((u: any) => !existingUserIds.has(u._id.toString()));
+
+    // Filter out users who already have records
+    const absentUsers = targetUsers.filter((u: any) => !existingUserIds.has(u._id.toString()));
 
     if (absentUsers.length === 0) return { marked: 0 };
 
@@ -151,6 +179,47 @@ export class AttendanceService {
 
     await this.attendanceModel.insertMany(absentRecords, { ordered: false }).catch(() => {});
     return { marked: absentUsers.length };
+  }
+
+  async getLeaderboard(orgId: string): Promise<any[]> {
+    const start = startOfMonth(new Date());
+    const end = endOfMonth(new Date());
+    
+    const records = await this.attendanceModel.find({
+      organizationId: orgId as any,
+      date: { $gte: format(start, 'yyyy-MM-dd'), $lte: format(end, 'yyyy-MM-dd') },
+      status: { $in: ['PRESENT', 'LATE', 'HALF_DAY'] }
+    }).populate('userId', 'firstName lastName').lean();
+
+    const userStats = new Map<string, { name: string; minutes: number }>();
+    records.forEach((r: any) => {
+      const uid = r.userId?._id.toString();
+      if (!uid) return;
+      const current = userStats.get(uid) || { name: `${r.userId.firstName} ${r.userId.lastName}`, minutes: 0 };
+      current.minutes += (r.totalWorkMinutes || 0);
+      userStats.set(uid, current);
+    });
+
+    return Array.from(userStats.values())
+      .sort((a, b) => b.minutes - a.minutes)
+      .slice(0, 3);
+  }
+
+  async getMissingEmployees(date: string, orgId: string): Promise<User[]> {
+    const allUsers = await this.userModel.find({ organizationId: orgId as any, isActive: true }).lean();
+    const existing = await this.attendanceModel.find({ organizationId: orgId as any, date } as any).lean();
+    const existingUserIds = new Set(existing.map((r: any) => r.userId.toString()));
+    
+    return allUsers.filter((u: any) => !existingUserIds.has(u._id.toString())) as any;
+  }
+
+  async getLiveActivity(orgId: string): Promise<Attendance[]> {
+    return this.attendanceModel.find({
+      organizationId: orgId as any,
+      date: this.getTodayString(),
+      checkIn: { $exists: true },
+      checkOut: { $exists: false },
+    }).populate('userId', 'firstName lastName email').lean();
   }
 
   async adminCreate(data: any, orgId: string): Promise<Attendance> {
@@ -213,6 +282,35 @@ export class AttendanceService {
     if (result.deletedCount === 0) {
       throw new NotFoundException('Attendance record not found');
     }
+  }
+
+  async exportAttendance(orgId: string, userId?: string, startDate?: string, endDate?: string): Promise<string> {
+    const query: any = { organizationId: orgId as any };
+    if (userId) query.userId = userId as any;
+    if (startDate || endDate) {
+      query.date = {};
+      if (startDate) query.date.$gte = startDate;
+      if (endDate) query.date.$lte = endDate;
+    }
+
+    const records = await this.attendanceModel.find(query)
+      .populate('userId', 'firstName lastName email')
+      .sort({ date: -1, checkIn: -1 })
+      .lean();
+
+    const headers = ['Date', 'Employee', 'Email', 'Status', 'Check In', 'Check Out', 'Work Minutes', 'Notes'];
+    const rows = records.map((r: any) => [
+      r.date,
+      `${r.userId?.firstName} ${r.userId?.lastName}`,
+      r.userId?.email,
+      r.status,
+      r.checkIn ? format(new Date(r.checkIn), 'HH:mm:ss') : '',
+      r.checkOut ? format(new Date(r.checkOut), 'HH:mm:ss') : '',
+      r.totalWorkMinutes || 0,
+      (r.notes || '').replace(/,/g, ';')
+    ]);
+
+    return [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
   }
 
   private calculateWorkMinutes(attendance: Attendance): number {

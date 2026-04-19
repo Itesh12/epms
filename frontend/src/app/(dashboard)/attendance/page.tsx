@@ -12,6 +12,9 @@ import {
   Timer,
   AlertCircle,
   Zap,
+  User,
+  History,
+  Download
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import api from '@/services/api';
@@ -20,24 +23,59 @@ import { cn } from '@/lib/utils';
 import { format, differenceInSeconds, startOfMonth, endOfMonth, getDaysInMonth, parseISO } from 'date-fns';
 import { AttendanceTimeline } from '@/components/attendance/AttendanceTimeline';
 import { AttendanceAdminView } from '@/components/attendance/AttendanceAdminView';
+import { AttendanceCalendar } from '@/components/attendance/AttendanceCalendar';
+import { EditAttendanceModal } from '@/components/attendance/EditAttendanceModal';
+import { StreakWidget } from '@/components/attendance/StreakWidget';
+import { LeaderboardPanel } from '@/components/attendance/LeaderboardPanel';
 import { useAuthStore } from '@/store/useAuthStore';
+import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect';
 
 const MONTHLY_GOAL_HOURS = 210;
 const MONTHLY_GOAL_MINUTES = MONTHLY_GOAL_HOURS * 60;
+const LATE_THRESHOLD = '10:30';
+const WARNING_THRESHOLD = '10:25';
 
 export default function AttendancePage() {
   const user = useAuthStore((state) => state.user);
-  const [activeTab, setActiveTab] = useState<'my' | 'admin'>('my');
+  const [activeTab, setActiveTab] = useState<'my' | 'calendar' | 'admin'>('my');
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState(false);
   const [todayRecord, setTodayRecord] = useState<any>(null);
   const [history, setHistory] = useState<any[]>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
 
+  // Calendar specific state
+  const [calendarHistory, setCalendarHistory] = useState<any[]>([]);
+  const [selectedCalendarEmployee, setSelectedCalendarEmployee] = useState(user?.id || '');
+  const [employees, setEmployees] = useState<any[]>([]);
+  const [loadingCalendar, setLoadingCalendar] = useState(false);
+  const [selectedDayRecord, setSelectedDayRecord] = useState<any | undefined>(undefined);
+
+  // Late notification state to avoid double toasts
+  const [hasWarned, setHasWarned] = useState(false);
+  const [hasLateAlert, setHasLateAlert] = useState(false);
+  const [exporting, setExporting] = useState(false);
+
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    const timer = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+
+      // Smart Late Warning logic
+      if (!todayRecord?.checkIn) {
+        const timeStr = format(now, 'HH:mm');
+        if (timeStr === WARNING_THRESHOLD && !hasWarned) {
+          toast('5 minutes until Late mark! Clock in soon.', { icon: '️⏰', duration: 10000 });
+          setHasWarned(true);
+        }
+        if (timeStr === LATE_THRESHOLD && !hasLateAlert) {
+          toast.error('You are now past the punctuality threshold. Late mark will be applied on check-in.', { duration: 10000 });
+          setHasLateAlert(true);
+        }
+      }
+    }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [todayRecord, hasWarned, hasLateAlert]);
 
   const fetchData = async () => {
     try {
@@ -47,6 +85,10 @@ export default function AttendancePage() {
       ]);
       setTodayRecord(todayRes.data);
       setHistory(historyRes.data);
+      // If we are on 'my' or 'calendar' tab and user is not admin selecting someone else
+      if (activeTab !== 'admin' && (!selectedCalendarEmployee || selectedCalendarEmployee === user?.id)) {
+        setCalendarHistory(historyRes.data);
+      }
     } catch (error) {
       console.error('Failed to fetch attendance data', error);
       toast.error('Failed to load attendance data');
@@ -55,11 +97,59 @@ export default function AttendancePage() {
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => { 
+    fetchData();
+    if (user?.role === 'ADMIN') {
+      api.get('/users').then(res => setEmployees(res.data));
+    }
+  }, []);
+
+  const handleExport = async () => {
+    setExporting(true);
+    try {
+      const res = await api.get('/attendance/export');
+      const blob = new Blob([res.data.csv], { type: 'text/csv' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = res.data.filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+      toast.success('Your attendance record exported');
+    } catch {
+      toast.error('Export failed');
+    } finally {
+      setExporting(false);
+    }
+  };
+
+  // Handle calendar employee change
+  useEffect(() => {
+    if (activeTab === 'calendar' && selectedCalendarEmployee && selectedCalendarEmployee !== user?.id) {
+      setLoadingCalendar(true);
+      api.get(`/attendance/admin/user/${selectedCalendarEmployee}`)
+        .then(res => setCalendarHistory(res.data))
+        .finally(() => setLoadingCalendar(false));
+    } else if (activeTab === 'calendar' && selectedCalendarEmployee === user?.id) {
+      setCalendarHistory(history);
+    }
+  }, [selectedCalendarEmployee, activeTab, history, user?.id]);
+
+  const employeeOptions = useMemo<SelectOption[]>(() => {
+    return [
+      { value: user?.id || '', label: `My History (${user?.firstName} ${user?.lastName})`, icon: <History size={14} /> },
+      ...employees.filter(e => e._id !== user?.id).map(e => ({
+        value: e._id,
+        label: `${e.firstName} ${e.lastName}`,
+        icon: <User size={14} />
+      }))
+    ];
+  }, [employees, user]);
 
   // ─── 210h Monthly Analytics Engine ──────────────────────────────────────
   const analytics = useMemo(() => {
     const now = new Date();
+// ... (omitting lines for brevity in this replace_file_content chunk, but ensuring I don't break logic)
     const monthStart = startOfMonth(now);
     const monthEnd = endOfMonth(now);
     const totalDaysInMonth = getDaysInMonth(now);
@@ -178,22 +268,33 @@ export default function AttendancePage() {
             Record your daily check-ins, manage breaks, and track your 210h monthly target.
           </p>
         </div>
-        <div className="flex items-center gap-4 bg-muted/60 p-2 rounded-2xl border border-divider shadow-sm">
-          <div className="px-4 py-2 border-r border-divider">
-            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Current Date</p>
-            <p className="text-sm font-bold text-foreground">{format(currentTime, 'MMMM dd, yyyy')}</p>
-          </div>
-          <div className="px-4 py-2">
-            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Current Time</p>
-            <p className="text-sm font-black text-primary tabular-nums">{format(currentTime, 'HH:mm:ss')}</p>
-          </div>
+        <div className="flex items-center gap-4">
+           <Button 
+             variant="outline" 
+             onClick={handleExport} 
+             disabled={exporting}
+             className="h-14 px-6 rounded-2xl border-divider text-[10px] font-black uppercase tracking-widest gap-2 bg-card"
+           >
+              {exporting ? <Loader2 size={14} className="animate-spin" /> : <Download size={14} />}
+              Export History
+           </Button>
+           <div className="flex items-center gap-4 bg-muted/60 p-2 rounded-2xl border border-divider shadow-sm">
+             <div className="px-4 py-2 border-r border-divider">
+               <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Current Date</p>
+               <p className="text-sm font-bold text-foreground">{format(currentTime, 'MMMM dd, yyyy')}</p>
+             </div>
+             <div className="px-4 py-2">
+               <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Current Time</p>
+               <p className="text-sm font-black text-primary tabular-nums">{format(currentTime, 'HH:mm:ss')}</p>
+             </div>
+           </div>
         </div>
       </div>
 
       {/* ── Admin Tab Nav ───────────────────────────────── */}
-      {user?.role === 'ADMIN' && (
+      {(user?.role === 'ADMIN' || user?.role === 'MANAGER') && (
         <div className="flex p-1 bg-muted/40 border border-divider rounded-2xl w-fit">
-          {(['my', 'admin'] as const).map(tab => (
+          {(['my', 'calendar', 'admin'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -204,7 +305,7 @@ export default function AttendancePage() {
                   : "text-muted-foreground hover:text-foreground ml-1"
               )}
             >
-              {tab === 'my' ? 'My Attendance' : 'Attendance Ledger'}
+              {tab === 'my' ? 'My Insights' : tab === 'calendar' ? 'Attendance Calendar' : 'Attendance Ledger'}
             </button>
           ))}
         </div>
@@ -320,6 +421,12 @@ export default function AttendancePage() {
 
           {/* ── Right: Analytics ── */}
           <div className="space-y-8">
+            
+            {/* Streak Widget */}
+            <StreakWidget history={history} />
+
+            {/* Leaderboard Panel */}
+            <LeaderboardPanel />
 
             {/* 210h Monthly Progress */}
             <div className="bg-card border border-divider rounded-[32px] p-8 space-y-6 shadow-sm">
@@ -435,10 +542,53 @@ export default function AttendancePage() {
             </div>
           </div>
         </div>
+      ) : activeTab === 'calendar' ? (
+        <div className="space-y-6 animate-in fade-in slide-in-from-bottom-5 duration-700">
+           {user?.role === 'ADMIN' && (
+             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-card border border-divider p-6 rounded-[24px] shadow-sm">
+                <div>
+                  <h3 className="text-sm font-black text-foreground uppercase tracking-widest">Employee Selection</h3>
+                  <p className="text-[9px] text-muted-foreground font-black uppercase tracking-widest opacity-40">View history for a specific team member</p>
+                </div>
+                <CustomSelect
+                  value={selectedCalendarEmployee}
+                  onChange={setSelectedCalendarEmployee}
+                  options={employeeOptions}
+                  className="w-full md:w-80 h-11"
+                  placeholder="Select employee..."
+                />
+             </div>
+           )}
+           <AttendanceCalendar 
+             history={calendarHistory} 
+             isLoading={loadingCalendar}
+             onDayClick={(date, record) => {
+               if (user?.role === 'ADMIN') {
+                 setSelectedDayRecord(record || { date, userId: selectedCalendarEmployee });
+               } else if (record) {
+                 toast.success(`Record for ${date} selected`);
+               }
+             }}
+           />
+        </div>
       ) : (
         <div className="animate-in fade-in slide-in-from-bottom-5 duration-700">
           <AttendanceAdminView />
         </div>
+      )}
+
+      {/* Day Edit Modal for Calendar */}
+      {selectedDayRecord && (
+        <EditAttendanceModal
+          record={selectedDayRecord?._id ? selectedDayRecord : null}
+          onClose={() => setSelectedDayRecord(undefined)}
+          onSaved={() => {
+             fetchData();
+             if (selectedCalendarEmployee !== user?.id) {
+               api.get(`/attendance/admin/user/${selectedCalendarEmployee}`).then(res => setCalendarHistory(res.data));
+             }
+          }}
+        />
       )}
     </div>
   );
