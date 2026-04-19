@@ -45,8 +45,8 @@ export function CustomSelect({
     if (isOpen && containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect();
       setCoords({
-        top: rect.bottom + window.scrollY,
-        left: rect.left + window.scrollX,
+        top: rect.bottom,
+        left: rect.left,
         width: rect.width
       });
     }

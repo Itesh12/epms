@@ -158,7 +158,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
         onClick={onClose}
       />
       <div className={cn(
-        "fixed inset-y-0 right-0 z-[80] w-full max-w-[650px] bg-background border-l border-white/10 shadow-2xl transition-transform duration-500 transform",
+        "fixed inset-y-0 right-0 z-[80] w-full max-w-[650px] bg-background border-l border-divider shadow-2xl transition-transform duration-500 transform",
         isOpen ? 'translate-x-0' : 'translate-x-full'
       )}>
         {/* Subtle Background Elements */}
@@ -166,7 +166,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
         <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 blur-[80px] opacity-40 pointer-events-none" />
 
         <div className="relative h-full flex flex-col z-10">
-          <div className="p-8 sm:p-10 border-b border-white/5 flex justify-between items-start">
+          <div className="p-8 sm:p-10 border-b border-divider flex justify-between items-start">
             <div className="space-y-4 flex-1 pr-6">
               {taskHistory.length > 0 && (
                 <button 
@@ -202,13 +202,13 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                         { value: TaskPriority.URGENT, label: 'URGENT', color: 'text-red-400' },
                       ]}
                       className={cn(
-                        "rounded-full py-1 px-3 bg-white/5 border border-white/10 text-[9px] uppercase tracking-widest font-black",
+                        "rounded-full py-1 px-3 bg-muted border border-divider text-[9px] uppercase tracking-widest font-black",
                         task.priority === 'URGENT' ? 'bg-red-400/10 border-red-400/30' :
                         task.priority === 'HIGH' ? 'bg-orange-400/10 border-orange-400/30' :
                         task.priority === 'MEDIUM' ? 'bg-blue-400/10 border-blue-400/30' :
                         ''
                       )}
-                      dropdownClassName="text-[9px] uppercase tracking-widest w-40 shadow-xl shadow-black/50"
+                      dropdownClassName="text-[9px] uppercase tracking-widest w-40 shadow-xl shadow-black/20 font-black"
                     />
                   </div>
                  </div>
@@ -218,11 +218,11 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                 value={localTitle}
                 onChange={(e) => setLocalTitle(e.target.value)}
                 onBlur={(e) => handleUpdate('title', e.target.value)}
-                className="w-full text-xl font-black text-white tracking-tight leading-snug bg-transparent border-none outline-none focus:ring-0 placeholder:text-white/20 p-0"
+                className="w-full text-xl font-black text-foreground tracking-tight leading-snug bg-transparent border-none outline-none focus:ring-0 placeholder:text-muted-foreground/20 p-0"
                 placeholder="Task Title..."
               />
             </div>
-            <button onClick={onClose} className="p-1.5 bg-white/5 hover:bg-white/10 rounded-lg transition-all text-muted-foreground hover:text-white border border-white/5">
+            <button onClick={onClose} className="p-1.5 bg-muted/50 hover:bg-muted rounded-lg transition-all text-muted-foreground hover:text-foreground border border-divider shadow-sm">
               <X size={18} />
             </button>
           </div>
@@ -231,12 +231,12 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
             
             {/* Properties Grid */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 flex items-center gap-3">
+              <div className="bg-muted/10 border border-divider rounded-2xl p-3 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center text-purple-400 flex-shrink-0">
                   <User size={14} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-[9px] font-black text-white/30 uppercase tracking-[0.05em] block mb-0.5 leading-none">Assignee</span>
+                  <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.05em] block mb-0.5 leading-none opacity-40">Assignee</span>
                   <CustomSelect 
                     value={getAssigneeId(task)}
                     onChange={(v) => handleUpdate('assigneeId', v)}
@@ -244,23 +244,23 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                       { value: '', label: 'Unassigned', color: 'text-muted-foreground' },
                       ...projectMembers.map(m => ({ value: m._id, label: m.email }))
                     ]}
-                    className="bg-transparent border-none p-0 hover:bg-transparent focus:ring-0 text-[11px] font-bold text-white h-auto"
+                    className="bg-transparent border-none p-0 hover:bg-transparent focus:ring-0 text-[11px] font-bold text-foreground h-auto"
                     dropdownClassName="w-56 -right-4 text-[10px] uppercase font-black tracking-widest"
                   />
                 </div>
               </div>
 
-              <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3 flex items-center gap-3">
+              <div className="bg-muted/10 border border-divider rounded-2xl p-3 flex items-center gap-3">
                 <div className="w-8 h-8 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400 flex-shrink-0">
                   <Calendar size={14} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <span className="text-[9px] font-black text-white/30 uppercase tracking-[0.05em] block mb-0.5 leading-none">Due Date</span>
+                  <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.05em] block mb-0.5 leading-none opacity-40">Due Date</span>
                   <input 
                     type="date"
                     value={task.dueDate ? new Date(task.dueDate).toISOString().split('T')[0] : ''}
                     onChange={(e) => handleUpdate('dueDate', e.target.value)}
-                    className="w-full bg-transparent text-[11px] font-bold text-white outline-none cursor-pointer p-0 border-none focus:ring-0 [&::-webkit-calendar-picker-indicator]:filter [&::-webkit-calendar-picker-indicator]:invert h-auto"
+                    className="w-full bg-transparent text-[11px] font-bold text-foreground outline-none cursor-pointer p-0 border-none focus:ring-0 h-auto"
                   />
                 </div>
               </div>
@@ -268,7 +268,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
 
             {/* Description */}
             <div className="space-y-4">
-               <h4 className="flex items-center gap-2.5 text-[10px] font-black text-white uppercase tracking-widest">
+               <h4 className="flex items-center gap-2.5 text-[10px] font-black text-foreground uppercase tracking-widest">
                  <div className="w-5 h-5 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
                    <AlignLeft size={12} strokeWidth={2.5} />
                  </div>
@@ -278,56 +278,56 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                  value={localDescription}
                  onChange={(e) => setLocalDescription(e.target.value)}
                  onBlur={(e) => handleUpdate('description', e.target.value)}
-                 className="w-full min-h-[80px] text-muted-foreground/80 font-medium text-xs leading-relaxed bg-white/[0.02] p-4 rounded-xl border border-white/5 outline-none focus:border-primary/50 transition-colors resize-none placeholder:italic placeholder:opacity-50"
+                 className="w-full min-h-[80px] text-foreground/80 font-medium text-xs leading-relaxed bg-muted/10 p-4 rounded-xl border border-divider outline-none focus:border-primary/50 transition-colors resize-none placeholder:italic placeholder:opacity-50 shadow-inner"
                  placeholder="Add a detailed description here..."
                />
             </div>
 
             {/* Metrics */}
             <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 bg-white/[0.02] rounded-2xl border border-white/5 relative group transition-all focus-within:border-primary/50">
+                <div className="p-4 bg-muted/10 rounded-2xl border border-divider relative group transition-all focus-within:border-primary/50 shadow-sm">
                    <div className="absolute top-0 right-0 p-3 opacity-5 pointer-events-none">
                      <Activity size={32} />
                    </div>
-                   <span className="text-[9px] font-black text-white/30 uppercase tracking-[0.05em] block mb-1">Estimate</span>
+                   <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.05em] block mb-1 opacity-40">Estimate</span>
                    <div className="flex items-end gap-1.5">
                       <input
                         type="number"
                         value={localEstimate}
                         onChange={(e) => setLocalEstimate(e.target.value)}
                         onBlur={(e) => handleUpdate('estimatedHours', Number(e.target.value) || 0)}
-                        className="w-14 text-xl font-black text-white bg-transparent border-none p-0 focus:ring-0"
+                        className="w-14 text-xl font-black text-foreground bg-transparent border-none p-0 focus:ring-0"
                         min="0"
                       />
                       <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest pb-1 leading-none">Hrs</span>
                    </div>
                   {totalSubtaskEstimate > 0 && (
-                    <div className="mt-3 pt-3 border-t border-white/5 text-[11px] font-bold text-primary/80">
+                    <div className="mt-3 pt-3 border-t border-divider text-[11px] font-bold text-primary">
                       + {totalSubtaskEstimate}h from subtasks<br/>
-                      <span className="text-white">= {(task.estimatedHours || 0) + totalSubtaskEstimate}h Total Target</span>
+                      <span className="text-foreground">= {(task.estimatedHours || 0) + totalSubtaskEstimate}h Total Target</span>
                     </div>
                   )}
                </div>
-               <div className="p-4 bg-white/[0.02] rounded-2xl border border-white/5 relative group transition-all focus-within:border-primary/50">
+               <div className="p-4 bg-muted/10 rounded-2xl border border-divider relative group transition-all focus-within:border-primary/50 shadow-sm">
                    <div className="absolute top-0 right-0 p-3 opacity-5 pointer-events-none">
                      <Clock size={32} />
                    </div>
-                   <span className="text-[9px] font-black text-white/30 uppercase tracking-[0.05em] block mb-1">Actual</span>
+                   <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.05em] block mb-1 opacity-40">Actual</span>
                    <div className="flex items-end gap-1.5">
                       <input
                         type="number"
                         value={localActual}
                         onChange={(e) => setLocalActual(e.target.value)}
                         onBlur={(e) => handleUpdate('actualHours', Number(e.target.value) || 0)}
-                        className="w-14 text-xl font-black text-white bg-transparent border-none p-0 focus:ring-0"
+                        className="w-14 text-xl font-black text-foreground bg-transparent border-none p-0 focus:ring-0"
                         min="0"
                       />
                       <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest pb-1 leading-none">Hrs</span>
                    </div>
                   {totalSubtaskActual > 0 && (
-                    <div className="mt-3 pt-3 border-t border-white/5 text-[11px] font-bold text-blue-400/80">
+                    <div className="mt-3 pt-3 border-t border-divider text-[11px] font-bold text-blue-500">
                       + {totalSubtaskActual}h from subtasks<br/>
-                      <span className="text-white">= {(task.actualHours || 0) + totalSubtaskActual}h Total Logged</span>
+                      <span className="text-foreground">= {(task.actualHours || 0) + totalSubtaskActual}h Total Logged</span>
                     </div>
                   )}
                </div>
@@ -336,7 +336,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
             {/* Subtasks */}
             <div className="space-y-5">
                <div className="flex items-center justify-between">
-                 <h4 className="flex items-center gap-2.5 text-[10px] font-black text-white uppercase tracking-widest">
+                 <h4 className="flex items-center gap-2.5 text-[10px] font-black text-foreground uppercase tracking-widest">
                    <div className="w-5 h-5 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-400">
                      <CheckCircle2 size={12} strokeWidth={2.5} />
                    </div>
@@ -356,7 +356,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                             setTask(sub);
                           }}
                           className={cn(
-                            'flex items-center justify-between p-2.5 bg-white/[0.03] border border-white/5 rounded-xl hover:bg-white/[0.06] hover:border-primary/20 transition-all cursor-pointer group',
+                            'flex items-center justify-between p-2.5 bg-muted/10 border border-divider rounded-xl hover:bg-muted/20 hover:border-primary/20 transition-all cursor-pointer group shadow-sm',
                             isUpdatingSub && 'opacity-50 pointer-events-none'
                           )}
                         >
@@ -373,7 +373,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                                handleSubtaskStatusChange(sub._id, next[sub.status] || TaskStatus.TODO);
                              }}
                              title={`Status: ${sub.status.replace('_', ' ')} — click to advance`}
-                             className="flex-shrink-0 flex items-center justify-center w-6 h-6 transition-transform hover:scale-110 bg-background/50 rounded-full border border-white/5"
+                             className="flex-shrink-0 flex items-center justify-center w-6 h-6 transition-transform hover:scale-110 bg-background rounded-full border border-divider shadow-sm"
                            >
                              {isUpdatingSub ? (
                                <Loader2 size={12} className="animate-spin text-primary" />
@@ -394,7 +394,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
 
                            <span className={cn(
                              'text-sm font-bold truncate transition-all flex items-center gap-2',
-                             sub.status === 'DONE' ? 'line-through text-muted-foreground/30' : 'text-white/90 group-hover:text-primary'
+                             sub.status === 'DONE' ? 'line-through text-muted-foreground/30' : 'text-foreground/90 group-hover:text-primary'
                            )}>
                              {sub.title}
                            </span>
@@ -403,7 +403,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                          {/* Status dropdown */}
                           <div className="flex items-center gap-2">
                             {sub.estimatedHours ? (
-                              <span className="text-[9px] font-bold text-white/20 bg-white/5 px-1.5 py-0.5 rounded hidden sm:block">
+                              <span className="text-[9px] font-bold text-muted-foreground/40 bg-muted px-1.5 py-0.5 rounded hidden sm:block border border-divider">
                                 {sub.estimatedHours}h
                               </span>
                             ) : null}
@@ -440,7 +440,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                     </div>
                   )}
                   {!isLoadingSubtasks && subtasks.length === 0 && (
-                     <div className="flex flex-col items-center justify-center py-10 border border-dashed border-white/10 rounded-2xl bg-white/[0.01]">
+                     <div className="flex flex-col items-center justify-center py-10 border border-dashed border-divider rounded-2xl bg-muted/5">
                        <span className="text-xs font-bold text-muted-foreground/40 uppercase tracking-widest">No subtasks found</span>
                      </div>
                   )}
@@ -448,24 +448,24 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
 
                <form onSubmit={handleAddSubtask} className="flex gap-2.5 pt-1">
                   <input 
-                    className="flex-1 bg-white/[0.03] border border-white/5 rounded-xl px-4 py-2.5 text-xs focus:bg-white/[0.05] focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all font-medium text-white placeholder:text-muted-foreground/30"
+                    className="flex-1 bg-muted/10 border border-divider rounded-xl px-4 py-2.5 text-xs focus:bg-muted/20 focus:outline-none focus:ring-1 focus:ring-primary/30 transition-all font-medium text-foreground placeholder:text-muted-foreground/30 shadow-inner"
                     placeholder="Add a new subtask..."
                     value={newSubtaskTitle}
                     onChange={(e) => setNewSubtaskTitle(e.target.value)}
                   />
-                  <Button type="submit" disabled={!newSubtaskTitle.trim()} className="h-full px-4 rounded-xl bg-primary hover:bg-primary/90 text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                  <Button type="submit" disabled={!newSubtaskTitle.trim()} className="h-full px-4 rounded-xl bg-primary hover:bg-primary/90 text-primary-foreground disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md">
                      <Plus size={16} strokeWidth={2.5} />
                   </Button>
                </form>
             </div>
           </div>
 
-          <div className="p-6 border-t border-white/5 bg-background flex gap-3 z-20">
+          <div className="p-6 border-t border-divider bg-muted/10 flex gap-3 z-20">
              {task.status !== 'DONE' ? (
                 <Button 
                   onClick={() => handleUpdateStatus(TaskStatus.DONE)} 
                   disabled={isUpdating}
-                  className="flex-1 h-10 rounded-xl bg-primary text-white text-[10px] font-black uppercase tracking-widest transition-all"
+                  className="flex-1 h-10 rounded-xl bg-primary text-primary-foreground text-[10px] font-black uppercase tracking-widest transition-all shadow-md"
                 >
                   {isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Complete Task'}
                 </Button>
@@ -473,7 +473,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                 <Button 
                   onClick={() => handleUpdateStatus(TaskStatus.TODO)} 
                   disabled={isUpdating}
-                  className="flex-1 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/10 text-[10px] font-black uppercase tracking-widest transition-all"
+                  className="flex-1 h-10 rounded-xl bg-card hover:bg-muted text-foreground border border-divider text-[10px] font-black uppercase tracking-widest transition-all shadow-sm"
                 >
                   {isUpdating ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Reopen Task'}
                 </Button>

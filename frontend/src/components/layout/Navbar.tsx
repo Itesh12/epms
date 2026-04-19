@@ -26,11 +26,11 @@ export function Navbar({ onMenuClick }: NavbarProps) {
         </button>
 
         <div className="relative max-w-md w-full hidden md:block">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground/60" size={18} />
           <input
             type="text"
             placeholder="Search anything..."
-            className="w-full bg-muted/50 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary transition-all placeholder:text-muted-foreground/50 font-medium"
+            className="w-full bg-muted/50 border border-divider rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary transition-all placeholder:text-muted-foreground/40 font-medium"
           />
         </div>
       </div>

@@ -144,13 +144,13 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
           { label: 'Administrators', value: stats.admins, icon: Shield, color: 'text-purple-400', bg: 'bg-purple-500/10' },
           { label: 'Departments', value: stats.departments, icon: Building2, color: 'text-blue-400', bg: 'bg-blue-500/10' },
         ].map(stat => (
-          <div key={stat.label} className="bg-muted/50 border border-divider rounded-2xl p-4 flex items-center gap-3 shadow-sm">
+          <div key={stat.label} className="bg-card border border-divider rounded-2xl p-4 flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
             <div className={cn('p-1.5 rounded-xl', stat.bg)}>
               <stat.icon size={16} className={stat.color} />
             </div>
             <div>
               <div className="text-xl font-black text-foreground tabular-nums leading-none">{stat.value}</div>
-              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1 opacity-60">{stat.label}</div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1 opacity-80">{stat.label}</div>
             </div>
           </div>
         ))}
@@ -178,7 +178,7 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
             { value: 'TEAM_LEADER', label: 'Team Lead', color: 'text-purple-400' },
             { value: 'EMPLOYEE', label: 'Employee', color: 'text-slate-400' }
           ]}
-          className="bg-muted/50 border border-divider rounded-xl h-9 px-4 text-[10px] font-black text-foreground/70 uppercase tracking-widest min-w-[140px] hover:bg-muted"
+          className="bg-card border border-divider rounded-xl h-9 px-4 text-[10px] font-black text-foreground/70 uppercase tracking-widest min-w-[140px] hover:bg-muted shadow-sm transition-all"
         />
       </div>
 
@@ -187,33 +187,33 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-divider bg-muted/20">
-                <th className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50">
+              <tr className="border-b border-divider bg-muted/30">
+                <th className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/80">
                   ID
                 </th>
                 <th
-                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/80 cursor-pointer hover:text-primary transition-colors"
                   onClick={() => toggleSort('name')}
                 >
                   Employee <SortIcon field="name" />
                 </th>
                 <th
-                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/80 cursor-pointer hover:text-primary transition-colors"
                   onClick={() => toggleSort('department')}
                 >
                   Department <SortIcon field="department" />
                 </th>
-                <th className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50">
+                <th className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/80">
                   Status
                 </th>
                 <th
-                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/80 cursor-pointer hover:text-primary transition-colors"
                   onClick={() => toggleSort('role')}
                 >
                   Role <SortIcon field="role" />
                 </th>
                 <th
-                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors text-right w-32"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/80 cursor-pointer hover:text-primary transition-colors text-right w-32"
                   onClick={() => toggleSort('joined')}
                 >
                   Joined <SortIcon field="joined" />

@@ -96,8 +96,8 @@ export class AnalyticsService {
             $avg: {
               $cond: [
                 { $gt: ['$actualHours', 0] },
-                { $divide: ['$estimatedHours', '$actualHours'] },
-                1 // Default efficiency if actualHours not logged
+                { $min: [1.25, { $divide: ['$estimatedHours', '$actualHours'] }] },
+                1.0 // Default efficiency if actualHours not logged
               ]
             }
           },

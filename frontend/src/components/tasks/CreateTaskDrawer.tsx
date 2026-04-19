@@ -96,25 +96,25 @@ export function CreateTaskDrawer({ isOpen, onClose, onSuccess, projectId }: Crea
       {/* Drawer */}
       <div
         className={cn(
-          "fixed top-0 right-0 h-full w-full sm:w-[450px] bg-background border-l border-white/10 z-[101] shadow-2xl transition-transform duration-500 ease-in-out",
+          "fixed top-0 right-0 h-full w-full sm:w-[450px] bg-background border-l border-divider z-[101] shadow-2xl transition-transform duration-500 ease-in-out",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-5 border-b border-white/5 flex items-center justify-between bg-white/[0.02]">
+          <div className="p-5 border-b border-divider flex items-center justify-between bg-muted/20">
             <div className="flex items-center gap-3">
-              <div className="p-2 bg-primary/10 rounded-xl text-primary">
+              <div className="p-2 bg-primary/10 rounded-xl text-primary border border-primary/10">
                 <Plus size={16} />
               </div>
               <div>
-                <h2 className="text-sm font-black text-white uppercase tracking-widest leading-none">Create Task</h2>
-                <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">Add work to project workspace</p>
+                <h2 className="text-sm font-black text-foreground uppercase tracking-widest leading-none">Create Task</h2>
+                <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1 opacity-60">Add work to project workspace</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="p-1.5 hover:bg-white/5 rounded-lg text-muted-foreground transition-colors"
+              className="p-1.5 hover:bg-muted rounded-lg text-muted-foreground transition-colors border border-divider shadow-sm"
             >
               <X size={18} />
             </button>
@@ -124,20 +124,20 @@ export function CreateTaskDrawer({ isOpen, onClose, onSuccess, projectId }: Crea
           <div className="flex-1 overflow-y-auto p-6 scrollbar-none">
             <form id="create-task-form" onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Task Title</label>
+                <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 opacity-60">Task Title</label>
                 <Input
                   placeholder="What needs to be done?"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className="bg-white/5 border-white/5 rounded-xl h-10 px-4 text-xs font-bold"
+                  className="bg-muted/10 border-divider rounded-xl h-10 px-4 text-xs font-bold"
                   required
                 />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Description</label>
+                <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 opacity-60">Description</label>
                 <textarea
-                  className="w-full bg-white/5 border border-white/5 rounded-xl p-4 text-xs focus:ring-1 focus:ring-primary/50 outline-none transition-all min-h-[120px] font-medium text-white placeholder:text-muted-foreground/30"
+                  className="w-full bg-muted/10 border border-divider rounded-xl p-4 text-xs focus:ring-1 focus:ring-primary/50 outline-none transition-all min-h-[120px] font-medium text-foreground placeholder:text-muted-foreground/30"
                   placeholder="Describe the scope of work..."
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
@@ -146,7 +146,7 @@ export function CreateTaskDrawer({ isOpen, onClose, onSuccess, projectId }: Crea
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Assign To</label>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 opacity-60">Assign To</label>
                   <CustomSelect
                     value={assigneeId}
                     onChange={setAssigneeId}
@@ -154,12 +154,12 @@ export function CreateTaskDrawer({ isOpen, onClose, onSuccess, projectId }: Crea
                       { value: '', label: 'Assignee', color: 'text-muted-foreground' },
                       ...employees.map(emp => ({ value: emp._id, label: emp.email.split('@')[0] }))
                     ]}
-                    className="bg-white/5 border-white/5 rounded-xl h-10 px-4 text-xs font-black uppercase tracking-widest"
+                    className="bg-muted/10 border-divider rounded-xl h-10 px-4 text-xs font-black uppercase tracking-widest"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Priority</label>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 opacity-60">Priority</label>
                   <CustomSelect
                     value={priority}
                     onChange={(v) => setPriority(v as TaskPriority)}
@@ -169,25 +169,25 @@ export function CreateTaskDrawer({ isOpen, onClose, onSuccess, projectId }: Crea
                       { value: TaskPriority.HIGH, label: 'HIGH', color: 'text-orange-400' },
                       { value: TaskPriority.URGENT, label: 'URGENT', color: 'text-red-400' }
                     ]}
-                    className="bg-white/5 border-white/5 rounded-xl h-10 px-4 text-xs font-black uppercase tracking-widest"
+                    className="bg-muted/10 border-divider rounded-xl h-10 px-4 text-xs font-black uppercase tracking-widest"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Due Date</label>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 opacity-60">Due Date</label>
                   <input
                     type="date"
-                    className="w-full bg-white/5 border border-white/5 rounded-xl h-10 px-4 text-xs focus:ring-1 focus:ring-primary/50 outline-none transition-all font-bold text-white [color-scheme:dark]"
+                    className="w-full bg-muted/10 border border-divider rounded-xl h-10 px-4 text-xs focus:ring-1 focus:ring-primary/50 outline-none transition-all font-bold text-foreground"
                     value={dueDate}
                     onChange={(e) => setDueDate(e.target.value)}
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">Est. Hours</label>
+                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1 opacity-60">Est. Hours</label>
                   <input
                     type="number"
-                    className="w-full bg-white/5 border border-white/5 rounded-xl h-10 px-4 text-xs focus:ring-1 focus:ring-primary/50 outline-none transition-all font-bold text-white"
+                    className="w-full bg-muted/10 border border-divider rounded-xl h-10 px-4 text-xs focus:ring-1 focus:ring-primary/50 outline-none transition-all font-bold text-foreground shadow-sm"
                     placeholder="0"
                     value={estimatedHours}
                     onChange={(e) => setEstimatedHours(Number(e.target.value))}
@@ -199,11 +199,11 @@ export function CreateTaskDrawer({ isOpen, onClose, onSuccess, projectId }: Crea
           </div>
 
           {/* Footer Actions */}
-          <div className="p-6 border-t border-white/5 flex gap-3 bg-white/[0.01]">
+          <div className="p-6 border-t border-divider flex gap-3 bg-muted/20">
             <Button
               type="submit"
               form="create-task-form"
-              className="flex-1 h-10 text-xs font-black uppercase tracking-widest rounded-xl"
+              className="flex-1 h-10 text-xs font-black uppercase tracking-widest rounded-xl text-primary-foreground"
               disabled={isLoading || isFetchingEmployees}
             >
               {isLoading ? <Loader2 className="animate-spin mr-2" size={14} /> : <Plus size={14} className="mr-2" />}
@@ -212,7 +212,7 @@ export function CreateTaskDrawer({ isOpen, onClose, onSuccess, projectId }: Crea
             <Button
               type="button"
               variant="outline"
-              className="px-6 h-10 text-xs font-black uppercase tracking-widest rounded-xl border-white/10"
+              className="px-6 h-10 text-xs font-black uppercase tracking-widest rounded-xl border-divider hover:bg-muted"
               onClick={onClose}
             >
               Cancel

@@ -9,21 +9,21 @@
   --primary-foreground: #ffffff;
   
   --muted: #f1f5f9;
-  --muted-foreground: #475569;
+  --muted-foreground: #334155; /* Darker Slate for better readability */
   
   --accent: #f8fafc;
   --accent-foreground: #020617;
   
   --border: #e2e8f0;
-  --input: #e2e8f0;
-  --divider: rgba(0, 0, 0, 0.05);
+  --input: #cbd5e1; /* Stronger input borders */
+  --divider: rgba(0, 0, 0, 0.1); /* Doubled opacity for definition */
   
   --card: #ffffff;
   --card-foreground: #020617;
   
   /* Aura Gradients */
   --aura-primary: linear-gradient(135deg, #5850ec 0%, #312e81 100%);
-  --aura-glass: rgba(255, 255, 255, 0.7);
+  --aura-glass: rgba(255, 255, 255, 0.9); /* More opaque glass in Light Mode */
   
   --radius: 1.25rem;
 }
@@ -88,15 +88,19 @@ body {
 }
 
 /* Custom Astra Utilities */
+.aura-bg-primary {
+  background: var(--aura-primary) !important;
+}
+
 .astra-glass {
   background: var(--aura-glass);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.08); /* More visible border in Light Mode */
 }
 
 .dark .astra-glass {
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .astra-glow {

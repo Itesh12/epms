@@ -95,14 +95,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     className={cn(
                       'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative overflow-hidden',
                       isActive 
-                        ? 'bg-[var(--aura-primary)] text-primary-foreground shadow-lg shadow-primary/20' 
-                        : 'hover:bg-primary/5 text-muted-foreground hover:text-foreground font-semibold'
+                        ? 'aura-bg-primary text-primary-foreground shadow-lg shadow-primary/20' 
+                        : 'hover:bg-primary/5 text-muted-foreground/80 hover:text-foreground font-semibold'
                     )}
                   >
                     <item.icon 
                       size={18} 
                       strokeWidth={isActive ? 2.5 : 2}
-                      className={cn(isActive ? 'text-primary-foreground rotate-0' : 'text-muted-foreground group-hover:text-primary group-hover:scale-110 group-hover:rotate-3 transition-all')} 
+                      className={cn(isActive ? 'text-primary-foreground rotate-0' : 'text-muted-foreground/60 group-hover:text-primary group-hover:scale-110 group-hover:rotate-3 transition-all')} 
                     />
                     <span className="tracking-tight text-sm">{item.label}</span>
                     {isActive && (

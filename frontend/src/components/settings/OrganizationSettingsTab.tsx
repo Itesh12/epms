@@ -61,7 +61,7 @@ export function OrganizationSettingsTab() {
            <div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20">
               <Building2 className="text-primary" size={16} strokeWidth={2.5} />
            </div>
-           <h2 className="text-sm font-black text-white uppercase tracking-widest">
+           <h2 className="text-sm font-black text-foreground uppercase tracking-widest">
              Organization Settings
            </h2>
         </div>
@@ -76,7 +76,7 @@ export function OrganizationSettingsTab() {
           placeholder="e.g. Nexus Global"
           value={orgName}
           onChange={(e) => setOrgName(e.target.value)}
-          className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
+          className="h-10 text-xs font-bold bg-muted/20 border-divider rounded-xl"
           required
         />
 
@@ -86,20 +86,20 @@ export function OrganizationSettingsTab() {
              Save Changes
           </Button>
           {orgName !== initialName && (
-            <Button type="button" variant="ghost" className="h-10 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white" onClick={() => setOrgName(initialName)}>
+            <Button type="button" variant="ghost" className="h-10 rounded-xl px-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/40 hover:text-foreground" onClick={() => setOrgName(initialName)}>
               Reset
             </Button>
           )}
         </div>
       </form>
 
-      <div className="mt-auto pt-8 border-t border-white/5 opacity-50">
+      <div className="mt-auto pt-8 border-t border-divider opacity-50">
          <div className="flex items-center gap-4">
             <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
                <Building2 size={14} className="text-primary" />
             </div>
             <div>
-               <p className="text-[9px] font-black uppercase tracking-widest text-white/40 leading-none mb-1">Organization ID</p>
+               <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/40 leading-none mb-1">Organization ID</p>
                <p className="text-[9px] font-black text-primary tracking-widest leading-none">EPMS-ORG-001</p>
             </div>
          </div>

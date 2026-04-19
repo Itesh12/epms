@@ -41,7 +41,7 @@ export function TaskCard({ task, onClick, allTasks = [] }: TaskCardProps) {
     <div 
       onClick={onClick}
       className={cn(
-        "bg-white/[0.02] p-2.5 rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing group border border-white/5 hover:border-primary/40 relative flex flex-col gap-2",
+        "bg-card hover:bg-muted/30 p-2.5 rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing group border border-divider hover:border-primary/40 relative flex flex-col gap-2 shadow-sm",
         isOverdue && "border-red-500/30 bg-red-500/[0.02]"
       )}
     >
@@ -57,13 +57,13 @@ export function TaskCard({ task, onClick, allTasks = [] }: TaskCardProps) {
         )} title={`${task.priority} Priority`} />
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 pt-2 border-t border-white/5">
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 pt-2 border-t border-divider">
         <div className="w-4.5 h-4.5 rounded-lg bg-primary/20 flex items-center justify-center text-[8px] font-black text-white" title={task.assigneeId?.email || 'Unassigned'}>
           {task.assigneeId?.email?.[0].toUpperCase() || <UserIcon size={9} />}
         </div>
 
         {hasSubtasks && (
-          <div className="flex items-center gap-1 text-[9px] font-black text-muted-foreground/40 bg-white/5 px-1.5 py-0.5 rounded-md">
+          <div className="flex items-center gap-1 text-[9px] font-black text-muted-foreground bg-muted px-1.5 py-0.5 rounded-md border border-divider">
             <GitBranch size={9} />
             {doneSubtasks}/{subtaskCount}
           </div>
@@ -72,7 +72,7 @@ export function TaskCard({ task, onClick, allTasks = [] }: TaskCardProps) {
         {task.dueDate && (
           <div className={cn(
             "flex items-center gap-1 text-[9px] font-black",
-            isOverdue ? "text-red-400" : "text-muted-foreground/30"
+            isOverdue ? "text-red-500" : "text-muted-foreground/60"
           )}>
             <Calendar size={9} />
             {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -80,7 +80,7 @@ export function TaskCard({ task, onClick, allTasks = [] }: TaskCardProps) {
         )}
 
         {(totalEst > 0 || totalAct > 0) && (
-          <div className="flex items-center gap-1 text-[9px] font-black text-muted-foreground/30 ml-auto">
+          <div className="flex items-center gap-1 text-[9px] font-black text-muted-foreground/60 ml-auto tabular-nums">
              <Clock size={9} />
              {totalAct}h / {totalEst}h
           </div>

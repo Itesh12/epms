@@ -43,7 +43,7 @@ export function ProfileSettingsTab() {
            <div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20">
               <Lock className="text-primary" size={16} strokeWidth={2.5} />
            </div>
-           <h2 className="text-sm font-black text-white uppercase tracking-widest">
+           <h2 className="text-sm font-black text-foreground uppercase tracking-widest">
              Security & Password
            </h2>
         </div>
@@ -59,7 +59,7 @@ export function ProfileSettingsTab() {
           placeholder="Existing password"
           value={oldPassword}
           onChange={(e) => setOldPassword(e.target.value)}
-          className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
+          className="h-10 text-xs font-bold bg-muted/20 border-divider rounded-xl shadow-sm"
           required
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -69,7 +69,7 @@ export function ProfileSettingsTab() {
             placeholder="Min 6 characters"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
+            className="h-10 text-xs font-bold bg-muted/20 border-divider rounded-xl shadow-sm"
             required
           />
           <Input 
@@ -78,7 +78,7 @@ export function ProfileSettingsTab() {
             placeholder="Repeat new password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
+            className="h-10 text-xs font-bold bg-muted/20 border-divider rounded-xl shadow-sm"
             required
           />
         </div>
@@ -91,8 +91,8 @@ export function ProfileSettingsTab() {
         </div>
       </form>
 
-      <div className="mt-auto pt-8 border-t border-white/5 opacity-50">
-         <p className="text-[9px] font-black uppercase tracking-widest mb-1 text-white/40 leading-none">Compliance Notice</p>
+      <div className="mt-auto pt-8 border-t border-divider opacity-50">
+         <p className="text-[9px] font-black uppercase tracking-widest mb-1 text-muted-foreground/40 leading-none">Compliance Notice</p>
          <p className="text-[9px] font-black uppercase tracking-widest text-primary leading-tight max-w-sm">
            Passwords are encrypted before server transmission.
          </p>

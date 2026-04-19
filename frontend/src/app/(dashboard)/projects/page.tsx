@@ -157,7 +157,7 @@ export default function ProjectsPage() {
           <button
             onClick={() => fetchProjects(true)}
             disabled={isRefreshing}
-            className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-muted-foreground hover:text-white hover:bg-white/10 transition-all disabled:opacity-50"
+            className="p-2.5 bg-card border border-divider rounded-xl text-muted-foreground hover:text-primary hover:bg-muted/50 transition-all disabled:opacity-50 shadow-sm"
             title="Refresh"
           >
             <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />
@@ -197,7 +197,7 @@ export default function ProjectsPage() {
                 </div>
                 <div>
                   <div className="text-xl font-black text-foreground tabular-nums leading-none">{s.value}</div>
-                  <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1 opacity-60">{s.label}</div>
+                  <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1 opacity-80">{s.label}</div>
                 </div>
               </div>
             ))}
@@ -212,7 +212,7 @@ export default function ProjectsPage() {
                 placeholder="Search projects..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full bg-muted/50 border border-divider rounded-xl h-9 pl-10 pr-4 text-xs text-foreground placeholder:text-muted-foreground/30 outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium"
+                className="w-full bg-card border border-divider rounded-xl h-9 pl-10 pr-4 text-xs text-foreground placeholder:text-muted-foreground/40 outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium shadow-sm"
               />
             </div>
             <CustomSelect
@@ -224,14 +224,14 @@ export default function ProjectsPage() {
                 { value: 'IN_PROGRESS', label: 'In Progress', color: 'text-amber-400' },
                 { value: 'DONE', label: 'Completed', color: 'text-emerald-400' }
               ]}
-              className="bg-muted/50 border border-divider rounded-xl h-9 px-4 text-[10px] font-black text-foreground/70 uppercase tracking-widest min-w-[140px] hover:bg-muted transition-all"
-              dropdownClassName="uppercase text-[9px] tracking-widest"
+              className="bg-card border border-divider rounded-xl h-9 px-4 text-[10px] font-black text-foreground/70 uppercase tracking-widest min-w-[140px] hover:bg-muted transition-all shadow-sm"
+              dropdownClassName="uppercase text-[9px] tracking-widest font-black"
             />
           </div>
 
           {/* Project Grid */}
           {filtered.length === 0 ? (
-            <div className="flex flex-col items-center gap-4 py-20 bg-white/[0.02] border border-white/5 rounded-2xl">
+            <div className="flex flex-col items-center gap-4 py-20 bg-muted/20 border border-divider rounded-[32px] border-dashed">
               <Briefcase size={36} className="text-muted-foreground/30" />
               <div className="text-center">
                 <p className="font-bold text-muted-foreground">No projects found</p>
@@ -328,11 +328,11 @@ export default function ProjectsPage() {
 
                     {/* Progress */}
                     <div className="space-y-2 mb-6 relative z-10">
-                       <div className="flex items-center justify-between">
-                          <span className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.2em]">Progress</span>
-                          <span className="text-[10px] font-black text-foreground/60 tabular-nums">{progress}%</span>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em]">Progress</span>
+                          <span className="text-[10px] font-black text-foreground/80 tabular-nums">{progress}%</span>
                        </div>
-                       <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                       <div className="h-1.5 bg-muted rounded-full overflow-hidden">
                           <div
                             className="h-full rounded-full transition-all duration-1000 ease-out"
                             style={{
@@ -367,9 +367,9 @@ export default function ProjectsPage() {
                         {memberCount > 0 ? (
                           <div className="flex -space-x-2.5 hover:space-x-0.5 transition-all">
                             {(p.members || []).slice(0, 3).map((m: any, i: number) => {
-                              const initials = m.firstName && m.lastName 
+                              const initials = m?.firstName && m?.lastName 
                                 ? `${m.firstName[0]}${m.lastName[0]}`.toUpperCase()
-                                : (m.firstName || m.email)[0].toUpperCase();
+                                : (m?.firstName || m?.email || '?')[0].toUpperCase();
                               return (
                                 <div
                                   key={m._id || i}

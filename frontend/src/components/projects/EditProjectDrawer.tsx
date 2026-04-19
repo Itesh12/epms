@@ -87,7 +87,7 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
         onClick={onClose}
       />
       <div className={cn(
-        "fixed inset-y-0 right-0 z-[80] w-full max-w-[600px] bg-[#0a0a0f] border-l border-white/10 shadow-2xl transition-transform duration-500 transform overflow-hidden flex flex-col",
+        "fixed inset-y-0 right-0 z-[80] w-full max-w-[600px] bg-background border-l border-divider shadow-2xl transition-transform duration-500 transform overflow-hidden flex flex-col",
         isOpen ? 'translate-x-0' : 'translate-x-full'
       )}>
         {/* Background Accents */}
@@ -99,14 +99,14 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
 
         <div className="relative h-full flex flex-col z-10">
           {/* Header */}
-          <div className="p-8 sm:p-10 border-b border-white/5 flex justify-between items-center bg-background/40">
+          <div className="p-8 sm:p-10 border-b border-divider flex justify-between items-center bg-muted/20">
             <div className="space-y-1">
               <h2 className="text-3xl font-black text-foreground tracking-tighter">Edit Project</h2>
               <p className="text-[10px] font-black text-primary/60 uppercase tracking-[0.2em]">{project?.title || 'Project Details'}</p>
             </div>
             <button 
               onClick={onClose} 
-              className="p-2.5 bg-white/5 hover:bg-white/10 rounded-2xl transition-all text-muted-foreground hover:text-white border border-white/5"
+              className="p-2.5 bg-muted/50 hover:bg-muted rounded-2xl transition-all text-muted-foreground hover:text-foreground border border-divider"
             >
               <X size={20} />
             </button>
@@ -132,7 +132,7 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
                <textarea
                  value={description}
                  onChange={(e) => setDescription(e.target.value)}
-                 className="w-full min-h-[120px] text-muted-foreground/80 font-medium text-sm leading-relaxed bg-white/[0.02] p-5 rounded-3xl border border-white/5 outline-none focus:border-primary/50 transition-colors resize-none placeholder:italic placeholder:opacity-50"
+                 className="w-full min-h-[120px] text-foreground/80 font-medium text-sm leading-relaxed bg-muted/10 p-5 rounded-3xl border border-divider outline-none focus:border-primary/50 transition-colors resize-none placeholder:italic placeholder:opacity-50"
                  placeholder="Enter project details and objectives..."
                  disabled={isLoading}
                />
@@ -144,7 +144,7 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
                 <label className="text-[11px] font-black uppercase tracking-[0.1em] text-muted-foreground/80 px-1 flex items-center gap-2">
                   <Palette size={14} className="text-primary" /> Theme Color
                 </label>
-                <div className="flex gap-4 items-center bg-white/[0.02] p-4 rounded-3xl border border-white/5 shadow-inner">
+                <div className="flex gap-4 items-center bg-muted/10 p-4 rounded-3xl border border-divider shadow-inner">
                   <input
                     type="color"
                     className="w-12 h-12 rounded-xl cursor-pointer bg-transparent border-none p-0 overflow-hidden shadow-lg"
@@ -160,7 +160,7 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
                   <ImageIcon size={14} className="text-primary" /> Project Image
                 </label>
                 <input
-                  className="flex h-14 w-full rounded-2xl border border-white/5 bg-white/[0.02] px-5 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/30 transition-all font-medium"
+                  className="flex h-14 w-full rounded-2xl border border-divider bg-card px-5 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary/30 transition-all font-medium shadow-sm"
                   placeholder="Asset URL (https://...)"
                   value={imageUrl}
                   onChange={(e) => setImageUrl(e.target.value)}
@@ -194,8 +194,8 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
                     { value: 'COMPLETED', label: 'COMPLETED', color: 'text-blue-400' },
                     { value: 'ON_HOLD', label: 'ON HOLD', color: 'text-amber-400' }
                   ]}
-                  className="h-14 rounded-2xl border-white/5 bg-white/[0.02] px-5 text-xs font-black uppercase tracking-widest hover:bg-white/[0.05]"
-                  dropdownClassName="text-xs font-black uppercase tracking-widest"
+                  className="h-14 rounded-2xl border-divider bg-card px-5 text-xs font-black uppercase tracking-widest hover:bg-muted transition-colors shadow-sm"
+                  dropdownClassName="text-xs font-black uppercase tracking-widest font-black"
                 />
               </div>
 
@@ -212,8 +212,8 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
                     { value: 'HIGH', label: 'HIGH', color: 'text-orange-400' },
                     { value: 'URGENT', label: 'URGENT', color: 'text-red-400' }
                   ]}
-                  className="h-14 rounded-2xl border-white/5 bg-white/[0.02] px-5 text-xs font-black uppercase tracking-widest hover:bg-white/[0.05]"
-                  dropdownClassName="text-xs font-black uppercase tracking-widest"
+                  className="h-14 rounded-2xl border-divider bg-card px-5 text-xs font-black uppercase tracking-widest hover:bg-muted transition-colors shadow-sm"
+                  dropdownClassName="text-xs font-black uppercase tracking-widest font-black"
                 />
               </div>
             </div>
@@ -223,7 +223,7 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
                <label className="text-[11px] font-black uppercase tracking-[0.1em] text-muted-foreground/80 px-1 flex items-center gap-2">
                  <Users size={14} className="text-primary" /> Team Members
                </label>
-               <div className="flex flex-wrap gap-2 p-5 bg-white/[0.02] rounded-[32px] border border-white/5 min-h-[120px]">
+               <div className="flex flex-wrap gap-2 p-5 bg-muted/10 rounded-[32px] border border-divider min-h-[120px]">
                  {employees.length > 0 ? employees.map(emp => (
                    <button
                      key={emp._id}
@@ -239,7 +239,7 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
                        "text-[10px] px-4 py-2.5 rounded-xl transition-all font-black uppercase tracking-wider border",
                        memberIds.includes(emp._id)
                          ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20 scale-105'
-                         : 'bg-white/5 text-muted-foreground border-white/5 hover:border-primary/40'
+                         : 'bg-muted text-muted-foreground/60 border-divider hover:border-primary/40'
                      )}
                    >
                      {emp.email.split('@')[0]}
@@ -259,14 +259,14 @@ export function EditProjectDrawer({ isOpen, onClose, onSuccess, project }: EditP
               size="lg" 
               onClick={onClose} 
               disabled={isLoading} 
-              className="flex-1 rounded-2xl border-white/10 hover:bg-white/5 bg-transparent h-14 font-black uppercase tracking-widest text-[11px]"
+              className="flex-1 rounded-2xl border-divider hover:bg-muted bg-transparent h-14 font-black uppercase tracking-widest text-[11px]"
             >
               Cancel
             </Button>
             <Button 
               onClick={handleSubmit}
               disabled={isLoading} 
-              className="flex-1 h-14 rounded-2xl bg-primary hover:bg-primary/90 text-white shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]"
+              className="flex-1 h-14 rounded-2xl bg-primary hover:bg-primary/90 text-primary-foreground shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 transition-transform hover:scale-[1.02]"
             >
               {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Save size={16} /> Save Changes</>}
             </Button>
