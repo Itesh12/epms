@@ -7,6 +7,7 @@ import {
   TrendingUp, Search
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 import { CreateProjectModal } from '@/components/projects/CreateProjectModal';
 import { EditProjectModal } from '@/components/projects/EditProjectModal';
 import api from '@/services/api';
@@ -202,16 +203,18 @@ export default function ProjectsPage() {
                 className="w-full bg-white/5 border border-white/10 rounded-xl h-10 pl-10 pr-4 text-sm text-white placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/50 transition-all"
               />
             </div>
-            <select
+            <CustomSelect
               value={filterStatus}
-              onChange={e => setFilterStatus(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-xl h-10 px-4 text-xs font-bold text-white uppercase tracking-widest outline-none focus:ring-1 focus:ring-primary/50 min-w-[160px]"
-            >
-              <option value="ALL">All Status</option>
-              <option value="TODO">Not Started</option>
-              <option value="IN_PROGRESS">In Progress</option>
-              <option value="DONE">Completed</option>
-            </select>
+              onChange={setFilterStatus}
+              options={[
+                { value: 'ALL', label: 'All Status' },
+                { value: 'TODO', label: 'Not Started', color: 'text-slate-400' },
+                { value: 'IN_PROGRESS', label: 'In Progress', color: 'text-amber-400' },
+                { value: 'DONE', label: 'Completed', color: 'text-emerald-400' }
+              ]}
+              className="bg-white/5 border border-white/10 rounded-xl h-10 px-4 text-xs font-bold text-white uppercase tracking-widest min-w-[160px] hover:bg-white/10"
+              dropdownClassName="uppercase text-[10px] tracking-widest"
+            />
           </div>
 
           {/* Project Grid */}

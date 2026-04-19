@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 import { Input } from '@/components/ui/Input';
 import api from '@/services/api';
 import toast from 'react-hot-toast';
@@ -131,16 +132,18 @@ export function AddEmployeeModal({ isOpen, onClose, onSuccess }: AddEmployeeModa
             <label className="text-[11px] font-black uppercase tracking-[0.1em] text-muted-foreground/80 px-1">
               Permission Role
             </label>
-            <select 
+            <CustomSelect 
               value={role}
-              onChange={(e) => setRole(e.target.value)}
+              onChange={setRole}
               disabled={isLoading}
-              className="flex h-12 w-full rounded-2xl border border-border bg-background/40 px-4 text-xs font-black uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 transition-all astra-glass appearance-none"
-            >
-              <option value="EMPLOYEE">Employee</option>
-              <option value="MANAGER">Manager</option>
-              <option value="ADMIN">Administrator</option>
-            </select>
+              options={[
+                { value: 'EMPLOYEE', label: 'EMPLOYEE', color: 'text-slate-400' },
+                { value: 'MANAGER', label: 'MANAGER', color: 'text-blue-400' },
+                { value: 'ADMIN', label: 'ADMINISTRATOR', color: 'text-emerald-400' }
+              ]}
+              className="flex h-12 w-full rounded-2xl border border-border bg-background/40 px-4 text-xs font-black uppercase tracking-widest hover:bg-background/80"
+              dropdownClassName="text-xs uppercase tracking-widest font-black"
+            />
           </div>
 
           <div className="space-y-2 mt-4">

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { X, Loader2, Type, AlignLeft, BarChart, Image as ImageIcon, Palette, Users } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 import { Input } from '@/components/ui/Input';
 import api from '@/services/api';
 import toast from 'react-hot-toast';
@@ -163,15 +164,17 @@ export function EditProjectModal({ isOpen, onClose, onSuccess, project }: EditPr
                <label className="text-[11px] font-black uppercase tracking-[0.1em] text-muted-foreground/80 px-1 flex items-center gap-2">
                   <BarChart size={14} className="text-primary" /> Node Status
                </label>
-               <select 
-                 className="flex h-12 w-full rounded-2xl border border-border bg-background/40 px-4 text-xs font-black uppercase tracking-widest focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 transition-all astra-glass appearance-none"
+               <CustomSelect 
                  value={status}
-                 onChange={(e) => setStatus(e.target.value)}
-               >
-                 <option value="ACTIVE">Operational</option>
-                 <option value="COMPLETED">Finalized</option>
-                 <option value="ON_HOLD">Suspended</option>
-               </select>
+                 onChange={setStatus}
+                 options={[
+                   { value: 'ACTIVE', label: 'OPERATIONAL', color: 'text-emerald-400' },
+                   { value: 'COMPLETED', label: 'FINALIZED', color: 'text-blue-400' },
+                   { value: 'ON_HOLD', label: 'SUSPENDED', color: 'text-amber-400' }
+                 ]}
+                 className="flex h-12 w-full rounded-2xl border border-border bg-background/40 px-4 text-xs font-black uppercase tracking-widest hover:bg-background/80"
+                 dropdownClassName="text-xs uppercase tracking-widest font-black"
+               />
             </div>
           </div>
 

@@ -30,6 +30,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 import { Input } from '@/components/ui/Input';
 import { ManagerSelect } from './ManagerSelect';
 import { SkillTagInput } from './SkillTagInput';
@@ -278,28 +279,31 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
                             <div className="space-y-6">
                               <div className="space-y-2">
                                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Work Location</label>
-                                <select 
-                                  value={formData.workLocation}
-                                  onChange={(e) => setFormData({...formData, workLocation: e.target.value})}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl h-12 px-4 text-xs font-bold text-white uppercase tracking-widest outline-none focus:ring-1 focus:ring-primary"
-                                >
-                                   <option value="REMOTE">Remote</option>
-                                   <option value="HYBRID">Hybrid</option>
-                                   <option value="ONSITE">Onsite</option>
-                                </select>
+                                <CustomSelect 
+                                  value={formData.workLocation || 'REMOTE'}
+                                  onChange={(v) => setFormData({...formData, workLocation: v})}
+                                  options={[
+                                    { value: 'REMOTE', label: 'REMOTE' },
+                                    { value: 'HYBRID', label: 'HYBRID' },
+                                    { value: 'ONSITE', label: 'ONSITE' }
+                                  ]}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl h-12 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
+                                />
                               </div>
                               <div className="space-y-2">
                                  <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Employment Type</label>
-                                <select 
-                                  value={formData.employmentType}
+                                <CustomSelect 
+                                  value={formData.employmentType || 'FULL_TIME'}
                                   disabled={!isAdmin}
-                                  onChange={(e) => setFormData({...formData, employmentType: e.target.value})}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl h-12 px-4 text-xs font-bold text-white uppercase tracking-widest outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
-                                >
-                                  <option value="FULL_TIME">Full Time</option>
-                                  <option value="CONTRACT">Contractor</option>
-                                  <option value="INTERN">Intern</option>
-                                </select>
+                                  onChange={(v) => setFormData({...formData, employmentType: v})}
+                                  options={[
+                                    { value: 'FULL_TIME', label: 'FULL TIME' },
+                                    { value: 'CONTRACT', label: 'CONTRACTOR' },
+                                    { value: 'PART_TIME', label: 'PART TIME' },
+                                    { value: 'INTERN', label: 'INTERNSHIP' }
+                                  ]}
+                                  className="w-full bg-white/5 border border-white/10 rounded-xl h-12 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
+                                />
                               </div>
                             </div>
                          ) : (
@@ -421,28 +425,30 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
                             </div>
                             <div className="space-y-2">
                               <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Gender</label>
-                              <select
+                              <CustomSelect
                                 value={formData.gender || ''}
-                                onChange={(e) => setFormData({...formData, gender: e.target.value})}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest outline-none focus:ring-1 focus:ring-primary"
-                              >
-                                <option value="">Select</option>
-                                <option value="MALE">Male</option>
-                                <option value="FEMALE">Female</option>
-                                <option value="OTHER">Other</option>
-                                <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
-                              </select>
+                                onChange={(v) => setFormData({...formData, gender: v})}
+                                options={[
+                                  { value: '', label: 'SELECT GENDER', color: 'text-muted-foreground' },
+                                  { value: 'MALE', label: 'MALE' },
+                                  { value: 'FEMALE', label: 'FEMALE' },
+                                  { value: 'OTHER', label: 'OTHER' },
+                                  { value: 'PREFER_NOT_TO_SAY', label: 'PREFER NOT TO SAY' }
+                                ]}
+                                className="w-full bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
+                              />
                             </div>
                             <div className="space-y-2">
                               <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Blood Group</label>
-                              <select
+                              <CustomSelect
                                 value={formData.bloodGroup || ''}
-                                onChange={(e) => setFormData({...formData, bloodGroup: e.target.value})}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest outline-none focus:ring-1 focus:ring-primary"
-                              >
-                                <option value="">Select</option>
-                                {['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(g => <option key={g} value={g}>{g}</option>)}
-                              </select>
+                                onChange={(v) => setFormData({...formData, bloodGroup: v})}
+                                options={[
+                                  { value: '', label: 'SELECT GROUP', color: 'text-muted-foreground' },
+                                  ...['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(g => ({ value: g, label: g }))
+                                ]}
+                                className="w-full bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
+                              />
                             </div>
                           </div>
                         ) : (

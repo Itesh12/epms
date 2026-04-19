@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/Input';
 import api from '@/services/api';
 import toast from 'react-hot-toast';
 import { TaskStatus, TaskPriority } from '@/types/task';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 
 interface CreateTaskModalProps {
   isOpen: boolean;
@@ -123,33 +124,32 @@ export function CreateTaskModal({ isOpen, onClose, onSuccess, projectId }: Creat
               <label className="text-sm font-bold text-foreground flex items-center gap-2">
                 <Users size={14} className="text-primary" /> Assign To
               </label>
-              <select 
-                className="w-full bg-muted/50 border rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary transition-all font-medium appearance-none"
+              <CustomSelect 
                 value={assigneeId}
-                onChange={(e) => setAssigneeId(e.target.value)}
-                required
-              >
-                <option value="">Select Employee</option>
-                {employees.map(emp => (
-                  <option key={emp._id} value={emp._id}>{emp.email} ({emp.role})</option>
-                ))}
-              </select>
+                onChange={setAssigneeId}
+                options={[
+                  { value: '', label: 'Select Employee', color: 'text-muted-foreground' },
+                  ...employees.map(emp => ({ value: emp._id, label: `${emp.email} (${emp.role})` }))
+                ]}
+                className="bg-muted/50 border rounded-xl py-3 px-4 text-sm font-medium hover:bg-muted focus:ring-2 focus:ring-primary/50"
+              />
             </div>
 
             <div className="space-y-1.5">
               <label className="text-sm font-bold text-foreground flex items-center gap-2">
                 <BarChart size={14} className="text-primary" /> Priority
               </label>
-              <select 
-                className="w-full bg-muted/50 border rounded-xl p-3 text-sm focus:ring-2 focus:ring-primary transition-all font-medium appearance-none"
+              <CustomSelect 
                 value={priority}
-                onChange={(e) => setPriority(e.target.value as TaskPriority)}
-              >
-                <option value={TaskPriority.LOW}>Low</option>
-                <option value={TaskPriority.MEDIUM}>Medium</option>
-                <option value={TaskPriority.HIGH}>High</option>
-                <option value={TaskPriority.URGENT}>Urgent</option>
-              </select>
+                onChange={(v) => setPriority(v as TaskPriority)}
+                options={[
+                  { value: TaskPriority.LOW, label: 'Low', color: 'text-slate-400' },
+                  { value: TaskPriority.MEDIUM, label: 'Medium', color: 'text-blue-400' },
+                  { value: TaskPriority.HIGH, label: 'High', color: 'text-orange-400' },
+                  { value: TaskPriority.URGENT, label: 'Urgent', color: 'text-red-400' }
+                ]}
+                className="bg-muted/50 border rounded-xl py-3 px-4 text-sm font-medium hover:bg-muted focus:ring-2 focus:ring-primary/50"
+              />
             </div>
 
             <div className="space-y-1.5">

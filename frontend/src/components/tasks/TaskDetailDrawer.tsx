@@ -11,6 +11,7 @@ import api from '@/services/api';
 import toast from 'react-hot-toast';
 import { Task, TaskStatus, TaskPriority } from '@/types/task';
 import { cn } from '@/lib/utils';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 
 interface TaskDetailDrawerProps {
   task: Task | null;
@@ -190,22 +191,25 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                  </div>
                  
                  {/* Priority Dropdown */}
-                 <div className="relative group">
-                   <select 
+                 <div className="relative group min-w-[170px]">
+                   <CustomSelect 
                      value={task.priority}
-                     onChange={(e) => handleUpdate('priority', e.target.value)}
+                     onChange={(v) => handleUpdate('priority', v)}
+                     options={[
+                       { value: TaskPriority.LOW, label: 'LOW PRIORITY', color: 'text-slate-400' },
+                       { value: TaskPriority.MEDIUM, label: 'MEDIUM PRIORITY', color: 'text-blue-400' },
+                       { value: TaskPriority.HIGH, label: 'HIGH PRIORITY', color: 'text-orange-400' },
+                       { value: TaskPriority.URGENT, label: 'URGENT PRIORITY', color: 'text-red-400' },
+                     ]}
                      className={cn(
-                       "appearance-none text-[10px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest border cursor-pointer outline-none",
-                       task.priority === 'URGENT' ? 'text-red-400 bg-red-400/10 border-red-400/20' :
-                       task.priority === 'HIGH' ? 'text-orange-400 bg-orange-400/10 border-orange-400/20' :
-                       task.priority === 'MEDIUM' ? 'text-blue-400 bg-blue-400/10 border-blue-400/20' :
-                       'text-slate-400 bg-white/5 border-white/10'
+                       "rounded-full py-1.5 px-4 bg-white/5 border border-white/10 text-[10px] uppercase tracking-widest",
+                       task.priority === 'URGENT' ? 'bg-red-400/10 border-red-400/30' :
+                       task.priority === 'HIGH' ? 'bg-orange-400/10 border-orange-400/30' :
+                       task.priority === 'MEDIUM' ? 'bg-blue-400/10 border-blue-400/30' :
+                       ''
                      )}
-                   >
-                     {Object.values(TaskPriority).map(p => (
-                       <option key={p} value={p} className="bg-background">{p} Priority</option>
-                     ))}
-                   </select>
+                     dropdownClassName="text-[10px] uppercase tracking-widest w-48 shadow-xl shadow-black/50"
+                   />
                  </div>
               </div>
               
@@ -233,16 +237,16 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                 </div>
                 <div className="flex-1 min-w-0">
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">Assignee</span>
-                  <select 
+                  <CustomSelect 
                     value={getAssigneeId(task)}
-                    onChange={(e) => handleUpdate('assigneeId', e.target.value)}
-                    className="w-full bg-transparent text-sm font-bold text-white outline-none cursor-pointer appearance-none truncate"
-                  >
-                    <option value="" className="bg-background">Unassigned</option>
-                    {projectMembers.map(m => (
-                      <option key={m._id} value={m._id} className="bg-background">{m.email}</option>
-                    ))}
-                  </select>
+                    onChange={(v) => handleUpdate('assigneeId', v)}
+                    options={[
+                      { value: '', label: 'Unassigned', color: 'text-muted-foreground' },
+                      ...projectMembers.map(m => ({ value: m._id, label: m.email }))
+                    ]}
+                    className="bg-transparent border-none p-0 hover:bg-transparent focus:ring-0 text-white"
+                    dropdownClassName="w-64 -right-4"
+                  />
                 </div>
               </div>
 
@@ -397,24 +401,21 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                                {sub.estimatedHours}h
                              </span>
                            ) : null}
-                           <select
+                           <CustomSelect
                              value={sub.status}
-                             onChange={e => {
-                               e.stopPropagation();
-                               handleSubtaskStatusChange(sub._id, e.target.value as TaskStatus);
-                             }}
-                             onClick={e => e.stopPropagation()}
+                             onChange={(v) => handleSubtaskStatusChange(sub._id, v as TaskStatus)}
+                             options={[
+                               { value: 'TODO', label: 'To Do', color: 'text-slate-400' },
+                               { value: 'IN_PROGRESS', label: 'In Progress', color: 'text-amber-400' },
+                               { value: 'DONE', label: 'Done', color: 'text-emerald-400' },
+                             ]}
                              className={cn(
-                               'text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-lg border outline-none appearance-none cursor-pointer transition-all flex-shrink-0 bg-background/50',
-                               sub.status === 'DONE'        ? 'text-emerald-400 border-emerald-500/20' :
-                               sub.status === 'IN_PROGRESS' ? 'text-amber-400 border-amber-500/20' :
-                               'text-slate-400 border-white/10'
+                               "px-3 py-1.5 rounded-lg border outline-none text-[10px] uppercase tracking-widest flex-shrink-0 w-32",
+                               sub.status === 'DONE' ? 'text-emerald-400 border-emerald-500/20 bg-emerald-500/10' :
+                               sub.status === 'IN_PROGRESS' ? 'text-amber-400 border-amber-500/20 bg-amber-500/10' :
+                               'text-slate-400 border-white/10 bg-background/50'
                              )}
-                           >
-                             <option value="TODO">To Do</option>
-                             <option value="IN_PROGRESS">In Progress</option>
-                             <option value="DONE">Done</option>
-                           </select>
+                           />
                            <ChevronRight size={16} className="text-muted-foreground/30 group-hover:text-primary/50 transition-colors ml-1" />
                          </div>
                        </div>

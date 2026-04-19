@@ -6,6 +6,7 @@ import {
   Users, Briefcase, Building2, Loader2, UserCheck, UserX
 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 import api from '@/services/api';
 import { useAuthStore } from '@/store/useAuthStore';
 import { cn } from '@/lib/utils';
@@ -167,17 +168,18 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
             className="w-full bg-white/5 border border-white/10 rounded-xl h-11 pl-10 pr-4 text-sm text-white placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/50 transition-all"
           />
         </div>
-        <select
+        <CustomSelect
           value={filterRole}
-          onChange={e => setFilterRole(e.target.value)}
-          className="bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest outline-none focus:ring-1 focus:ring-primary/50 min-w-[160px]"
-        >
-          <option value="ALL">All Roles</option>
-          <option value="ADMIN">Admin</option>
-          <option value="MANAGER">Manager</option>
-          <option value="TEAM_LEADER">Team Lead</option>
-          <option value="EMPLOYEE">Employee</option>
-        </select>
+          onChange={setFilterRole}
+          options={[
+            { value: 'ALL', label: 'All Roles' },
+            { value: 'ADMIN', label: 'Admin', color: 'text-emerald-400' },
+            { value: 'MANAGER', label: 'Manager', color: 'text-blue-400' },
+            { value: 'TEAM_LEADER', label: 'Team Lead', color: 'text-purple-400' },
+            { value: 'EMPLOYEE', label: 'Employee', color: 'text-slate-400' }
+          ]}
+          className="bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest min-w-[160px] hover:bg-white/10"
+        />
       </div>
 
       {/* Desktop Table */}
@@ -295,16 +297,18 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
                     </td>
                     <td className="px-6 py-5 whitespace-nowrap" onClick={e => e.stopPropagation()}>
                       {isAdmin ? (
-                        <select
+                        <CustomSelect
                           value={emp.role}
-                          onChange={e => { e.stopPropagation(); handleRoleChange(emp._id, e.target.value); }}
-                          className={cn('text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border outline-none appearance-none cursor-pointer transition-all', role.bg, role.color)}
-                        >
-                          <option value="EMPLOYEE">Employee</option>
-                          <option value="TEAM_LEADER">Team Lead</option>
-                          <option value="MANAGER">Manager</option>
-                          <option value="ADMIN">Admin</option>
-                        </select>
+                          onChange={(v) => handleRoleChange(emp._id, v)}
+                          options={[
+                            { value: 'EMPLOYEE', label: 'EMPLOYEE' },
+                            { value: 'TEAM_LEADER', label: 'TEAM LEAD' },
+                            { value: 'MANAGER', label: 'MANAGER' },
+                            { value: 'ADMIN', label: 'ADMIN' }
+                          ]}
+                          className={cn('text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border outline-none cursor-pointer transition-all min-w-[110px]', role.bg, role.color)}
+                          dropdownClassName="text-[10px] w-32 tracking-widest font-black uppercase"
+                        />
                       ) : (
                         <span className={cn('inline-flex items-center text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border', role.bg, role.color)}>
                           {role.label}
