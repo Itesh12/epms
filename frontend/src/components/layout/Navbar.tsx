@@ -70,11 +70,11 @@ export function Navbar({ onMenuClick }: NavbarProps) {
                     className="w-full text-left px-5 py-3 text-xs font-bold text-foreground hover:bg-white/5 flex items-center gap-3 transition-colors group"
                   >
                     <User className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
-                    My Grid Node
+                    My Profile
                   </button>
                   <button className="w-full text-left px-5 py-3 text-xs font-bold text-foreground hover:bg-white/5 flex items-center gap-3 transition-colors group">
                     <Settings className="w-4 h-4 text-muted-foreground group-hover:rotate-45 transition-transform" />
-                    Matrix Settings
+                    General Settings
                   </button>
                 </div>
               </div>

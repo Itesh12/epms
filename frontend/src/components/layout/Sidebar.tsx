@@ -95,7 +95,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     className={cn(
                       'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-300 group relative overflow-hidden',
                       isActive 
-                        ? 'aura-bg-primary text-primary-foreground shadow-lg shadow-primary/20' 
+                        ? 'bg-primary text-white shadow-lg shadow-primary/20' 
                         : 'hover:bg-primary/5 text-muted-foreground/80 hover:text-foreground font-semibold'
                     )}
                   >

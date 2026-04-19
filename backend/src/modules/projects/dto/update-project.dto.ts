@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, IsString, IsMongoId } from 'class-validator';
-import { ProjectStatus } from '../schemas/project.schema';
+import { ProjectStatus, ProjectPriority } from '../schemas/project.schema';
 
 export class UpdateProjectDto {
   @IsOptional()
@@ -13,6 +13,10 @@ export class UpdateProjectDto {
   @IsOptional()
   @IsEnum(ProjectStatus)
   status?: ProjectStatus;
+
+  @IsOptional()
+  @IsEnum(ProjectPriority)
+  priority?: ProjectPriority;
 
   @IsOptional()
   @IsString()

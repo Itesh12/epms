@@ -33,6 +33,7 @@ export function CustomSelect({
 }: CustomSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const [coords, setCoords] = useState({ top: 0, left: 0, width: 0 });
   const [mounted, setMounted] = useState(false);
 
@@ -55,7 +56,10 @@ export function CustomSelect({
   // Click outside to close
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+      const isSelectClick = containerRef.current && containerRef.current.contains(event.target as Node);
+      const isDropdownClick = dropdownRef.current && dropdownRef.current.contains(event.target as Node);
+
+      if (!isSelectClick && !isDropdownClick) {
         setIsOpen(false);
       }
     };
@@ -73,6 +77,7 @@ export function CustomSelect({
 
   const dropdown = isOpen && mounted ? createPortal(
     <div 
+      ref={dropdownRef}
       className={cn(
         "fixed z-[9999] mt-2 rounded-2xl border border-divider shadow-2xl overflow-hidden overflow-y-auto max-h-[300px]",
         "bg-card/95 backdrop-blur-3xl animate-in fade-in slide-in-from-top-2 duration-200 scrollbar-none",

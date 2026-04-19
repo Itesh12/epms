@@ -55,7 +55,7 @@ export default function AnalyticsPage() {
           Analytics Deep Dive
         </h1>
         <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1 opacity-60">
-          Metrics across 30-day velocity and team stratification.
+          Activity metrics and team performance breakdown.
         </p>
       </div>
 
@@ -121,9 +121,9 @@ export default function AnalyticsPage() {
         </div>
       </div>
 
-      {/* 30-Day Velocity Chart */}
+      {/* Monthly Activity Chart */}
       <div className="bg-card border border-white/5 rounded-2xl p-4 shadow-sm">
-        <h3 className="font-black text-[10px] uppercase tracking-widest text-white/40 mb-6">30-Day Velocity Streaming</h3>
+        <h3 className="font-black text-[10px] uppercase tracking-widest text-white/40 mb-6">Monthly Project Progress</h3>
         <div className="w-full h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data?.monthlyVelocity || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>

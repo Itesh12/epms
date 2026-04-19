@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsOptional, IsEnum, IsMongoId } from 'class-validator';
-import { ProjectStatus } from '../schemas/project.schema';
+import { ProjectStatus, ProjectPriority } from '../schemas/project.schema';
 
 export class CreateProjectDto {
   @IsNotEmpty()
@@ -13,6 +13,10 @@ export class CreateProjectDto {
   @IsOptional()
   @IsEnum(ProjectStatus)
   status?: ProjectStatus;
+
+  @IsOptional()
+  @IsEnum(ProjectPriority)
+  priority?: ProjectPriority;
 
   @IsOptional()
   @IsString()

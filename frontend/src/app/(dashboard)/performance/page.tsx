@@ -32,7 +32,7 @@ export default function PerformancePage() {
       <div className="flex-1 flex items-center justify-center min-h-[400px]">
         <div className="flex flex-col items-center gap-4">
           <Loader2 className="w-10 h-10 animate-spin text-primary/50" />
-          <span className="text-sm font-black uppercase tracking-widest text-muted-foreground/50">Analyzing Workforce...</span>
+          <span className="text-sm font-black uppercase tracking-widest text-muted-foreground/50">Loading Analytics...</span>
         </div>
       </div>
     );
@@ -55,13 +55,13 @@ export default function PerformancePage() {
             <div className="p-1.5 bg-primary/10 rounded-lg">
               <Award size={14} className="text-primary" />
             </div>
-            <span className="text-[11px] font-black text-primary uppercase tracking-[0.2em]">Efficiency Protocol</span>
+            <span className="text-[11px] font-black text-primary uppercase tracking-[0.2em]">Performance Analytics</span>
           </div>
           <h1 className="text-3xl font-black text-foreground tracking-tight leading-tight">
             Performance Insights
           </h1>
           <p className="text-muted-foreground text-sm font-medium max-w-md leading-relaxed">
-            Real-time analytics of team productivity, task saturation, and operational velocity.
+            Real-time analytics of team productivity, workload distribution, and activity levels.
           </p>
         </div>
 
@@ -97,7 +97,7 @@ export default function PerformancePage() {
             <div className="flex items-end justify-between relative z-10 mt-6">
               <div className="flex gap-8">
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black opacity-60 uppercase tracking-widest leading-none">Efficiency Rank</p>
+                  <p className="text-[10px] font-black opacity-60 uppercase tracking-widest leading-none">Productivity Rate</p>
                   <p className="text-4xl font-black leading-none tabular-nums">{Math.round(performance[0]?.efficiency || 0)}%</p>
                 </div>
                 <div className="space-y-1 border-l border-white/10 pl-8">
@@ -123,7 +123,7 @@ export default function PerformancePage() {
                 <ArrowUpRight size={18} className="text-emerald-500 opacity-40 group-hover:opacity-100 transition-opacity" />
               </div>
               <div>
-                <p className="font-black text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60 mb-2 leading-none">Team Efficiency</p>
+                <p className="font-black text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60 mb-2 leading-none">Total Productivity</p>
                 <div className="flex items-end gap-2">
                   <p className="text-4xl font-black text-foreground leading-none tabular-nums">{teamEfficiency}%</p>
                   <span className="text-[10px] font-black text-emerald-500 uppercase pb-1 tracking-widest">+4.2%</span>
@@ -139,7 +139,7 @@ export default function PerformancePage() {
                 <Activity size={18} className="text-blue-500 opacity-40 group-hover:opacity-100 transition-opacity" />
               </div>
               <div>
-                <p className="font-black text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60 mb-2 leading-none">Net Punctuality</p>
+                <p className="font-black text-[11px] uppercase tracking-[0.2em] text-muted-foreground/60 mb-2 leading-none">Net Attendance</p>
                 <div className="flex items-end gap-2">
                   <p className="text-4xl font-black text-foreground leading-none tabular-nums">{teamPunctuality}%</p>
                   <span className="text-[10px] font-black text-blue-500 uppercase pb-1 tracking-widest">STABLE</span>
@@ -150,12 +150,12 @@ export default function PerformancePage() {
         </div>
       </div>
 
-      {/* Detailed Workforce Matrix */}
+      {/* Performance Overview */}
       <div className="bg-card border border-divider rounded-[32px] overflow-hidden shadow-2xl shadow-black/5 relative">
         <div className="px-8 py-6 border-b border-divider flex items-center justify-between bg-muted/20">
           <div className="space-y-1">
-            <h3 className="font-black text-[12px] uppercase tracking-[0.3em] text-foreground">Workforce Matrix</h3>
-            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Employee Saturation & Velocity Index</p>
+            <h3 className="font-black text-[12px] uppercase tracking-[0.3em] text-foreground">Performance Leaderboard</h3>
+            <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest opacity-60">Employee Workload & Productivity Index</p>
           </div>
           <TrendingUp size={18} className="text-primary/40" />
         </div>
@@ -163,11 +163,11 @@ export default function PerformancePage() {
           <table className="w-full text-left">
             <thead className="bg-muted/30 border-b border-divider">
               <tr className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/80">
-                <th className="px-8 py-4">Ranking Order</th>
-                <th className="px-8 py-4 text-center">Completed Scope</th>
-                <th className="px-8 py-4 text-center">Efficiency Score</th>
-                <th className="px-8 py-4 text-center">Punctuality Score</th>
-                <th className="px-8 py-4 text-right">Momentum</th>
+                <th className="px-8 py-4">Rankings</th>
+                <th className="px-8 py-4 text-center">Tasks Completed</th>
+                <th className="px-8 py-4 text-center">Productivity</th>
+                <th className="px-8 py-4 text-center">Punctuality</th>
+                <th className="px-8 py-4 text-right">Trend</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-divider font-medium">
@@ -235,7 +235,7 @@ export default function PerformancePage() {
                   <td colSpan={5} className="px-8 py-24 text-center">
                     <div className="flex flex-col items-center gap-4 opacity-30">
                       <Activity size={48} />
-                      <p className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground">Calibration Required: No workforce data</p>
+                      <p className="text-sm font-black uppercase tracking-[0.2em] text-muted-foreground">Notice: No performance data available</p>
                     </div>
                   </td>
                 </tr>

@@ -104,7 +104,7 @@ export default function DashboardPage() {
             Hello, <span className="text-primary">{user?.email.split('@')[0]}</span>
           </h1>
           <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-2 max-w-xl opacity-60">
-            System efficiency is at <span className="text-foreground font-bold">94%</span>. Action items pending review.
+            Current system activity is at <span className="text-foreground font-bold">94%</span>. Monitoring all project pipelines.
           </p>
         </div>
       </div>
@@ -144,8 +144,8 @@ export default function DashboardPage() {
         <div className="lg:col-span-2 bg-card border border-divider rounded-2xl p-6 flex flex-col relative overflow-hidden group shadow-sm">
           <div className="flex items-center justify-between mb-8 relative z-10">
             <div>
-              <h3 className="text-sm font-black text-foreground uppercase tracking-widest">System Dynamics</h3>
-              <p className="text-[9px] font-black text-muted-foreground mt-1 uppercase tracking-widest opacity-40">Velocity Stream</p>
+              <h3 className="text-sm font-black text-foreground uppercase tracking-widest">Activity Overview</h3>
+              <p className="text-[9px] font-black text-muted-foreground mt-1 uppercase tracking-widest opacity-40">Monthly Progress</p>
             </div>
             <div className="flex gap-2">
                <div className="px-2 py-1 bg-muted/50 rounded-md text-[9px] font-black text-muted-foreground uppercase tracking-widest border border-divider opacity-60">MTD</div>

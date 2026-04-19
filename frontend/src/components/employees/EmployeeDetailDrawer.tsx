@@ -96,34 +96,38 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
 
     setIsLoading(true);
     try {
-      // Strip all system/read-only fields that the backend rejects
+      // Strip system-only properties that backend might reject
       const { 
-        password, confirmPassword, role, isActive, employeeId: ignored,
-        _id, email, organizationId, createdAt, updatedAt, __v,
+        password, confirmPassword, _id, organizationId, createdAt, updatedAt, __v,
+        employeeId: ignored, email: ignoredEmail,
         ...payload 
       } = formData;
       
-      // Sanitization for non-admins
+      // Sanitization: ONLY admins can edit joiningDate, employmentType, and workLocation
       if (!isAdmin) {
           delete payload.joiningDate;
           delete payload.employmentType;
+          delete payload.workLocation;
+          delete payload.designation;
+          delete payload.department;
+          delete payload.role;
       }
 
       // The API populates reportingManager as a full object; the DTO expects a plain string ID
       if (payload.reportingManager && typeof payload.reportingManager === 'object') {
         payload.reportingManager = payload.reportingManager._id;
       }
-      // Remove it entirely if empty/null so the backend doesn't receive null
+      
+      // Ensure reportingManager is null/empty string safe
       if (!payload.reportingManager) {
-        delete payload.reportingManager;
+        payload.reportingManager = null;
       }
 
       await api.patch(`/users/${employeeId}`, payload);
 
-
       if (formData.password) {
         await api.patch('/users/me/password', {
-          oldPassword: 'Welcome@123', // Still awaiting full old-password-verification flow
+          oldPassword: 'Welcome@123', // Default verification flow
           newPassword: formData.password
         });
       }
@@ -133,7 +137,7 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
       fetchEmployee();
       onUpdate();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Failed to update profile');
+      toast.error(error.response?.data?.message?.[0] || error.response?.data?.message || 'Failed to update profile');
     } finally {
       setIsLoading(false);
     }
@@ -163,76 +167,89 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
       />
       
       <div className={cn(
-        "fixed right-0 top-0 bottom-0 w-full max-w-2xl bg-[#030712]/95 z-[70] shadow-2xl transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1) border-l border-white/5",
+        "fixed right-0 top-0 bottom-0 w-full max-w-xl bg-background/95 z-[70] shadow-2xl transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1) border-l border-divider",
         isOpen ? "translate-x-0" : "translate-x-full"
       )}>
-        <div className="flex flex-col h-full relative overflow-hidden">
-          {/* Header BG Glow */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
+        <div className="flex flex-col h-full relative overflow-hidden backdrop-blur-3xl">
+          {/* Performance Mesh BG */}
+          <div className="absolute top-0 right-0 w-80 h-80 bg-primary/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none" />
 
-          <div className="p-8 border-b border-white/10 relative z-10 bg-white/5 backdrop-blur-md">
-            <div className="flex items-center justify-between mb-8">
-              <div className="space-y-1">
-                <h2 className="text-2xl font-black text-white tracking-tighter">Employee Profile</h2>
-                <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/60">
-                   <Shield size={12} />
-                   <span>Employee ID / {employee?.employeeId || 'Loading...'}</span>
+          {/* Compact Header */}
+          <div className="px-6 py-5 border-b border-divider relative z-10 flex items-center justify-between bg-muted/20">
+            <div className="flex items-center gap-4">
+               <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                 <UserIcon size={20} strokeWidth={2.5} />
+               </div>
+               <div className="space-y-0.5">
+                <h2 className="text-lg font-black text-foreground tracking-tighter leading-none">Employee Profile</h2>
+                <div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">
+                   <Shield size={10} className="text-primary/60" />
+                   <span className="tabular-nums">Employee ID: {employee?.employeeId || 'EP-SYNC'}</span>
                 </div>
               </div>
-              <button 
-                onClick={onClose}
-                className="p-3 hover:bg-white/10 rounded-2xl transition-colors text-muted-foreground hover:text-white"
-              >
-                <X size={24} />
-              </button>
             </div>
+            <button 
+              onClick={onClose}
+              className="p-2 hover:bg-muted rounded-xl transition-all text-muted-foreground hover:text-foreground border border-divider shadow-sm"
+            >
+              <X size={20} />
+            </button>
+          </div>
 
-            {/* Tab Navigation */}
-            <div className="flex gap-1 bg-black/40 p-1 rounded-2xl border border-white/5">
+          {/* Sleek Tab Navigation */}
+          <div className="px-6 pt-4 pb-2 relative z-10">
+            <div className="flex gap-1 bg-muted/40 p-1 rounded-2xl border border-divider shadow-inner group">
               {visibleTabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
                   className={cn(
-                    "flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all",
+                    "flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all",
                     activeTab === tab.id 
-                      ? "bg-primary text-white shadow-lg shadow-primary/20" 
-                      : "text-muted-foreground hover:text-white hover:bg-white/5"
+                      ? "aura-bg-primary text-white shadow-lg shadow-primary/20 scale-[0.98]" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
                   )}
                 >
-                  <tab.icon size={14} />
-                  <span className="hidden sm:inline">{tab.label}</span>
+                  <tab.icon size={12} strokeWidth={activeTab === tab.id ? 3 : 2} />
+                  <span className="hidden sm:inline">{tab.label.split(' ')[0]}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-10 space-y-12 pb-32">
+          <div className="flex-1 overflow-y-auto p-6 space-y-6 pb-32 scrollbar-none">
             {isLoading && !employee ? (
               <div className="h-full flex flex-col items-center justify-center space-y-4">
-                <Loader2 className="w-12 h-12 animate-spin text-primary/40" />
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60 animate-pulse">Loading employee profile...</span>
+                <div className="p-4 bg-primary/5 rounded-3xl border border-primary/10">
+                   <Loader2 className="w-8 h-8 animate-spin text-primary/40" />
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60 animate-pulse">Synchronizing Profile...</span>
               </div>
             ) : (
-              <div className="animate-in fade-in duration-500">
+              <div className="animate-in fade-in slide-in-from-bottom-2 duration-500">
                 {activeTab === 'job' && (
-                  <div className="space-y-10">
-                    <div className="flex items-center gap-8 bg-white/5 p-8 rounded-[40px] border border-white/5">
-                      <div className="w-24 h-24 rounded-3xl bg-primary/10 border border-primary/20 flex items-center justify-center text-3xl font-black text-primary">
-                        {formData.firstName?.[0] || employee?.email?.[0].toUpperCase()}
+                  <div className="space-y-6">
+                    {/* Hero Profile Minimal */}
+                    <div className="flex items-center gap-6 bg-muted/30 p-6 rounded-[28px] border border-divider shadow-sm group relative overflow-hidden">
+                      <div className="absolute top-0 right-0 p-4 opacity-[0.03] group-hover:scale-110 transition-transform">
+                         <Briefcase size={80} />
                       </div>
-                      <div className="space-y-2">
-                        <div className="text-2xl font-black text-white tracking-tighter">
+                      <div className="relative z-10 w-20 h-20 rounded-[22px] aura-bg-primary border-4 border-background flex items-center justify-center text-3xl font-black text-white shadow-2xl">
+                        {formData.firstName?.[0] || employee?.email?.[0]?.toUpperCase()}
+                      </div>
+                      <div className="space-y-1 relative z-10">
+                        <div className="text-2xl font-black text-foreground tracking-tighter leading-none">
                           {isEditing ? (
                             <div className="flex gap-2">
                               <input 
-                                className="bg-transparent border-b border-white/10 outline-none w-32 focus:border-primary transition-colors"
+                                className="bg-transparent border-b border-divider outline-none w-28 focus:border-primary transition-all text-lg font-bold"
                                 value={formData.firstName || ''}
                                 onChange={(e) => setFormData({...formData, firstName: e.target.value})}
                                 placeholder="First"
                               />
                               <input 
-                                className="bg-transparent border-b border-white/10 outline-none w-32 focus:border-primary transition-colors"
+                                className="bg-transparent border-b border-divider outline-none w-28 focus:border-primary transition-all text-lg font-bold"
                                 value={formData.lastName || ''}
                                 onChange={(e) => setFormData({...formData, lastName: e.target.value})}
                                 placeholder="Last"
@@ -242,375 +259,391 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
                             `${employee?.firstName || 'New'} ${employee?.lastName || 'Associate'}`
                           )}
                         </div>
-                        <div className="text-xs font-bold text-primary uppercase tracking-[0.2em]">{employee?.designation || 'No Designation'}</div>
+                        <div className="flex items-center gap-2">
+                           {isEditing && isAdmin ? (
+                             <input 
+                               className="bg-transparent border-b border-divider outline-none w-24 text-[10px] font-black text-primary uppercase tracking-widest focus:border-primary transition-all"
+                               value={formData.designation || ''}
+                               onChange={(e) => setFormData({...formData, designation: e.target.value})}
+                               placeholder="Designation"
+                             />
+                           ) : (
+                             <span className="text-[10px] font-black text-primary uppercase tracking-widest">{employee?.designation || 'Specialist'}</span>
+                           )}
+                           <div className="w-1 h-1 rounded-full bg-muted-foreground/30" />
+                           {isEditing && isAdmin ? (
+                             <input 
+                               className="bg-transparent border-b border-divider outline-none w-24 text-[10px] font-black text-muted-foreground/60 uppercase tracking-widest focus:border-primary transition-all"
+                               value={formData.department || ''}
+                               onChange={(e) => setFormData({...formData, department: e.target.value})}
+                               placeholder="Department"
+                             />
+                           ) : (
+                             <span className="text-[10px] font-black text-muted-foreground/60 uppercase tracking-widest">{employee?.department || 'Operations'}</span>
+                           )}
+                        </div>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                       <div className="space-y-6 astra-glass p-8 rounded-3xl border border-white/5">
-                         <h3 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-4">Employment Details</h3>
-                         {isEditing && isAdmin ? (
-                           <div className="space-y-6">
-                             <Input label="Designation" value={formData.designation} onChange={(e) => setFormData({...formData, designation: e.target.value})} />
-                             <Input label="Department" value={formData.department} onChange={(e) => setFormData({...formData, department: e.target.value})} />
-                             <ManagerSelect value={formData.reportingManager} onChange={(id) => setFormData({...formData, reportingManager: id})} />
-                           </div>
-                         ) : (
-                           <div className="space-y-6">
-                              <div className="flex items-center gap-4 text-white/80">
-                                <ShieldCheck className="text-primary" size={18} />
-                                <div className="text-xs font-bold uppercase tracking-wider">{employee?.department || 'Operations'}</div>
-                              </div>
-                              <div className="flex items-center gap-4 text-white/80">
-                                <Calendar className="text-primary" size={18} />
-                                 <div className="text-xs font-bold uppercase tracking-wider">Joined {employee?.joiningDate ? new Date(employee.joiningDate).toLocaleDateString() : 'Not Set'}</div>
-                              </div>
-                              <div className="flex items-center gap-4 text-white/80">
-                                <UserIcon className="text-primary" size={18} />
-                                 <div className="text-xs font-bold uppercase tracking-wider">Reports to: {employee?.reportingManager ? `${employee.reportingManager.firstName} ${employee.reportingManager.lastName}` : 'Not Assigned'}</div>
-                              </div>
-                           </div>
-                         )}
-                       </div>
-
-                       <div className="space-y-6 astra-glass p-8 rounded-3xl border border-white/5">
-                         <h3 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-4">Work Status & Location</h3>
-                         {isEditing && (isAdmin || isSelf) ? (
-                            <div className="space-y-6">
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Work Location</label>
-                                <CustomSelect 
-                                  value={formData.workLocation || 'REMOTE'}
-                                  onChange={(v) => setFormData({...formData, workLocation: v})}
-                                  options={[
-                                    { value: 'REMOTE', label: 'REMOTE' },
-                                    { value: 'HYBRID', label: 'HYBRID' },
-                                    { value: 'ONSITE', label: 'ONSITE' }
-                                  ]}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl h-12 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
-                                />
-                              </div>
-                              <div className="space-y-2">
-                                 <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Employment Type</label>
-                                <CustomSelect 
-                                  value={formData.employmentType || 'FULL_TIME'}
-                                  disabled={!isAdmin}
-                                  onChange={(v) => setFormData({...formData, employmentType: v})}
+                    {/* High Density Info Grid */}
+                    <div className="grid grid-cols-2 gap-4">
+                       <div className="col-span-2 sm:col-span-1 space-y-4 astra-glass p-5 rounded-2xl border border-divider hover:border-primary/20 transition-all group">
+                         <div className="flex items-center justify-between mb-2">
+                            <h3 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">Employment</h3>
+                            <ShieldCheck size={14} className="text-primary/40 group-hover:text-primary transition-colors" />
+                         </div>
+                         <div className="space-y-4">
+                            <div className="flex flex-col">
+                              <label className="text-[8px] font-black text-muted-foreground/40 uppercase tracking-widest leading-none mb-1">Employment Type</label>
+                              {isEditing && isAdmin ? (
+                                <CustomSelect
+                                  value={formData.employmentType}
+                                  onChange={(val) => setFormData({...formData, employmentType: val})}
                                   options={[
                                     { value: 'FULL_TIME', label: 'FULL TIME' },
-                                    { value: 'CONTRACT', label: 'CONTRACTOR' },
-                                    { value: 'PART_TIME', label: 'PART TIME' },
-                                    { value: 'INTERN', label: 'INTERNSHIP' }
+                                    { value: 'CONTRACT', label: 'CONTRACT' },
+                                    { value: 'INTERN', label: 'INTERN' },
+                                    { value: 'FREELANCE', label: 'FREELANCE' }
                                   ]}
-                                  className="w-full bg-white/5 border border-white/10 rounded-xl h-12 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
+                                  className="h-8 text-[10px] font-black uppercase"
                                 />
-                              </div>
+                              ) : (
+                                <div className="text-xs font-bold text-foreground truncate">{employee?.employmentType?.replace('_', ' ') || 'Associate'}</div>
+                              )}
                             </div>
-                         ) : (
-                           <div className="space-y-6">
-                              <div className="flex items-center gap-4 text-white/80">
-                                <MapPin className="text-primary" size={18} />
-                                 <div className="text-xs font-bold uppercase tracking-wider">{employee?.workLocation || 'REMOTE'}</div>
-                              </div>
-                              <div className="flex items-center gap-4 text-white/80">
-                                <Globe className="text-primary" size={18} />
-                                 <div className="text-xs font-bold uppercase tracking-wider">{employee?.employmentType?.replace('_', ' ') || 'FULL TIME'}</div>
-                              </div>
-                           </div>
-                         )}
+                            <div className="flex flex-col">
+                              <label className="text-[8px] font-black text-muted-foreground/40 uppercase tracking-widest leading-none mb-1">Joining Date</label>
+                              {isEditing && isAdmin ? (
+                                <Input 
+                                  type="date" 
+                                  value={formData.joiningDate ? new Date(formData.joiningDate).toISOString().split('T')[0] : ''} 
+                                  onChange={(e) => setFormData({...formData, joiningDate: e.target.value})} 
+                                  className="h-8"
+                                />
+                              ) : (
+                                <div className="text-xs font-bold text-foreground tabular-nums">{employee?.joiningDate ? new Date(employee.joiningDate).toLocaleDateString(undefined, { month: 'short', year: 'numeric', day: 'numeric' }) : 'Pending Sync'}</div>
+                              )}
+                            </div>
+                         </div>
+                       </div>
+
+                       <div className="col-span-2 sm:col-span-1 space-y-4 astra-glass p-5 rounded-2xl border border-divider hover:border-primary/20 transition-all group">
+                         <div className="flex items-center justify-between mb-2">
+                            <h3 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">Hierarchy</h3>
+                            <UserIcon size={14} className="text-primary/40 group-hover:text-primary transition-colors" />
+                         </div>
+                         <div className="space-y-4">
+                            <div className="flex flex-col">
+                              <label className="text-[8px] font-black text-muted-foreground/40 uppercase tracking-widest leading-none mb-1">Reporting Manager</label>
+                              {isEditing && isAdmin ? (
+                                 <ManagerSelect value={formData.reportingManager} onChange={(id) => setFormData({...formData, reportingManager: id})} />
+                              ) : (
+                                <div className="text-xs font-bold text-emerald-500 truncate">
+                                  {employee?.reportingManager 
+                                    ? `${employee.reportingManager.firstName || 'User'} ${employee.reportingManager.lastName || ''}`.trim()
+                                    : 'Corporate HQ'}
+                                </div>
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <label className="text-[8px] font-black text-muted-foreground/40 uppercase tracking-widest leading-none mb-1">Work Email</label>
+                              <div className="text-xs font-bold text-foreground/70 truncate lowercase">{employee?.email}</div>
+                            </div>
+                         </div>
+                       </div>
+
+                       <div className="col-span-2 space-y-4 astra-glass p-5 rounded-3xl border border-divider hover:border-primary/20 transition-all flex items-center justify-between group">
+                          <div className="flex gap-8">
+                             <div className="space-y-1">
+                                <span className="text-[8px] font-black text-muted-foreground/40 uppercase tracking-[0.2em] leading-none mb-1">Work Location</span>
+                                <div className="flex items-center gap-2">
+                                   <MapPin size={12} className="text-primary" />
+                                   {isEditing && isAdmin ? (
+                                      <CustomSelect
+                                        value={formData.workLocation}
+                                        onChange={(val) => setFormData({...formData, workLocation: val})}
+                                        options={[
+                                          { value: 'REMOTE', label: 'REMOTE' },
+                                          { value: 'HYBRID', label: 'HYBRID' },
+                                          { value: 'ONSITE', label: 'ONSITE' }
+                                        ]}
+                                        className="h-7 w-28 text-[9px] font-black"
+                                      />
+                                   ) : (
+                                      <span className="text-xs font-black text-foreground uppercase tracking-widest">{employee?.workLocation || 'REMOTE'}</span>
+                                   )}
+                                </div>
+                             </div>
+                             <div className="space-y-1 border-l border-divider pl-8">
+                                <span className="text-[8px] font-black text-muted-foreground/40 uppercase tracking-[0.2em] leading-none mb-1">Role & Permissions</span>
+                                <div className="flex items-center gap-2">
+                                   <Shield size={12} className="text-primary" />
+                                   {isEditing && isAdmin ? (
+                                      <CustomSelect
+                                        value={formData.role}
+                                        onChange={(val) => setFormData({...formData, role: val})}
+                                        options={[
+                                          { value: 'ADMIN', label: 'ADMIN' },
+                                          { value: 'MANAGER', label: 'MANAGER' },
+                                          { value: 'TEAM_LEADER', label: 'TEAM LEADER' },
+                                          { value: 'EMPLOYEE', label: 'EMPLOYEE' }
+                                        ]}
+                                        className="h-7 w-28 text-[9px] font-black"
+                                      />
+                                   ) : (
+                                      <span className="text-xs font-black text-foreground uppercase tracking-widest">{employee?.role?.replace('_', ' ') || 'EMPLOYEE'}</span>
+                                   )}
+                                </div>
+                             </div>
+                          </div>
+                          {!isEditing && (isAdmin || isSelf) && (
+                             <div className="flex gap-2">
+                                <Button size="sm" className="rounded-lg h-8 text-[9px] uppercase font-black" onClick={() => setIsEditing(true)}>Edit</Button>
+                             </div>
+                          )}
                        </div>
                     </div>
                   </div>
                 )}
 
                 {activeTab === 'expertise' && (
-                  <div className="space-y-10">
-                    <div className="astra-glass p-8 rounded-[40px] border border-white/5">
-                      <h3 className="text-[10px] font-black uppercase tracking-widest text-white/40 mb-8 flex items-center gap-2">
-                         <Terminal className="text-primary" size={16} /> Technical Skills
+                  <div className="space-y-6">
+                    <div className="astra-glass p-6 rounded-3xl border border-divider">
+                      <h3 className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 mb-6 flex items-center gap-2">
+                         <Terminal className="text-primary" size={14} /> Skills & Expertise
                       </h3>
-                      {isEditing ? (
-                        <div className="space-y-8">
-                          <Input label="Primary Tech Stack" value={formData.techStack} onChange={(e) => setFormData({...formData, techStack: e.target.value})} placeholder="e.g., MERN Stack" />
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Skills & Technologies</label>
-                            <SkillTagInput skills={formData.skills || []} onChange={(s) => setFormData({...formData, skills: s})} />
-                          </div>
+                      <div className="space-y-6">
+                        <div className="grid grid-cols-2 gap-4">
+                           <div className="col-span-2">
+                              {isEditing ? (
+                                <Input label="Primary Tech Stack" value={formData.techStack} onChange={(e) => setFormData({...formData, techStack: e.target.value})} placeholder="e.g., MERN Stack" />
+                              ) : (
+                                <div className="flex items-center justify-between p-3.5 bg-primary/5 rounded-xl border border-primary/10">
+                                   <div className="text-[10px] font-black text-primary/60 uppercase tracking-widest">Main Ecosystem</div>
+                                   <div className="text-xs font-black text-foreground">{employee?.techStack || 'Universal'}</div>
+                                </div>
+                              )}
+                           </div>
                         </div>
-                      ) : (
-                        <div className="space-y-8">
-                          <div className="flex items-center justify-between p-4 bg-primary/10 rounded-2xl border border-primary/20">
-                             <div className="text-xs font-black text-primary uppercase tracking-widest">Primary Tech Stack</div>
-                             <div className="text-sm font-bold text-white">{employee?.techStack || 'Not Specified'}</div>
-                          </div>
-                          <div className="flex flex-wrap gap-2">
-                            {employee?.skills?.map((s: string) => (
-                              <span key={s} className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-xl text-[10px] font-black text-white uppercase tracking-[0.2em]">{s}</span>
-                            ))}
-                          </div>
+                        <div className="space-y-2">
+                          <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Core Skills</label>
+                          {isEditing ? (
+                             <SkillTagInput skills={formData.skills || []} onChange={(s) => setFormData({...formData, skills: s})} />
+                          ) : (
+                            <div className="flex flex-wrap gap-2">
+                              {employee?.skills?.map((s: string) => (
+                                <span key={s} className="px-2.5 py-1.5 bg-muted border border-divider rounded-lg text-[9px] font-black text-foreground/70 uppercase tracking-widest hover:border-primary/30 transition-colors cursor-default">{s}</span>
+                              ))}
+                            </div>
+                          )}
                         </div>
-                      )}
+                      </div>
                     </div>
 
-                    {/* Profile Links */}
-                    <div className="space-y-4">
-                      <h3 className="text-[10px] font-black uppercase tracking-widest text-white/40">Profile Links</h3>
-                      {isEditing ? (
-                        <div className="space-y-4">
-                          <Input
-                            label="GitHub URL"
-                            value={formData.githubUrl || ''}
-                            onChange={(e) => setFormData({...formData, githubUrl: e.target.value})}
-                            placeholder="https://github.com/username"
-                          />
-                          <Input
-                            label="LinkedIn URL"
-                            value={formData.linkedinUrl || ''}
-                            onChange={(e) => setFormData({...formData, linkedinUrl: e.target.value})}
-                            placeholder="https://linkedin.com/in/username"
-                          />
-                          <Input
-                            label="Portfolio URL"
-                            value={formData.portfolioUrl || ''}
-                            onChange={(e) => setFormData({...formData, portfolioUrl: e.target.value})}
-                            placeholder="https://yourportfolio.com"
-                          />
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <button
-                            onClick={() => employee?.githubUrl && window.open(employee.githubUrl, '_blank')}
-                            className="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-4 hover:bg-white/10 transition-all group overflow-hidden relative"
-                          >
-                            <div className="absolute top-0 left-0 w-1 h-full bg-white/40 group-hover:bg-primary transition-colors" />
-                            <Code2 size={24} className="text-white group-hover:scale-110 transition-transform" />
-                            <div className="text-left">
-                              <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Code Repository</div>
-                              <div className="text-xs font-bold text-white truncate max-w-[150px]">{employee?.githubUrl?.split('/').pop() || 'Not linked'}</div>
+                    {/* Editable Profile Links */}
+                    <div className="grid grid-cols-2 gap-4">
+                       {[
+                         { id: 'githubUrl', label: 'GitHub Explorer', icon: Code2, value: isEditing ? formData.githubUrl : employee?.githubUrl, color: 'text-foreground' },
+                         { id: 'linkedinUrl', label: 'LinkedIn Connect', icon: ExternalLink, value: isEditing ? formData.linkedinUrl : employee?.linkedinUrl, color: 'text-blue-500' },
+                         { id: 'portfolioUrl', label: 'Portfolio Link', icon: Globe, value: isEditing ? formData.portfolioUrl : employee?.portfolioUrl, color: 'text-emerald-500' },
+                       ].map(link => (
+                         <div key={link.id} className={cn("p-4 bg-muted/30 rounded-2xl border border-divider flex flex-col gap-3 group relative overflow-hidden transition-all", link.id === 'portfolioUrl' && 'col-span-2')}>
+                            <div className="flex items-center gap-3">
+                               <div className={cn("p-2 rounded-xl bg-muted/80 shadow-inner", link.color)}>
+                                  <link.icon size={16} />
+                               </div>
+                               <span className="text-[8px] font-black text-muted-foreground/40 uppercase block">{link.label}</span>
                             </div>
-                          </button>
-                          <button
-                            onClick={() => employee?.linkedinUrl && window.open(employee.linkedinUrl, '_blank')}
-                            className="p-6 bg-white/5 rounded-3xl border border-white/5 flex items-center gap-4 hover:bg-white/10 transition-all group overflow-hidden relative"
-                          >
-                            <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/40 group-hover:bg-blue-500 transition-colors" />
-                            <ExternalLink size={24} className="text-blue-400 group-hover:scale-110 transition-transform" />
-                            <div className="text-left">
-                              <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">LinkedIn Profile</div>
-                              <div className="text-xs font-bold text-white truncate max-w-[150px]">{employee?.linkedinUrl?.split('/').pop() || 'Not linked'}</div>
-                            </div>
-                          </button>
-                        </div>
-                      )}
+                            {isEditing ? (
+                              <input 
+                                className="bg-transparent border-b border-divider text-[10px] font-bold outline-none focus:border-primary transition-all w-full py-1"
+                                value={link.value || ''}
+                                onChange={(e) => setFormData({...formData, [link.id]: e.target.value})}
+                                placeholder="https://..."
+                              />
+                            ) : (
+                              <button 
+                                onClick={() => link.value && window.open(link.value, '_blank')}
+                                className="text-[10px] font-bold text-foreground truncate block hover:text-primary transition-colors text-left"
+                              >
+                                {link.value || 'Unlinked'}
+                              </button>
+                            )}
+                         </div>
+                       ))}
                     </div>
                   </div>
                 )}
 
                 {activeTab === 'personal' && canSeeSensitive && (
-                  <div className="space-y-10">
-                    {/* Personal Info */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                      <div className="bg-white/5 p-8 rounded-3xl border border-white/5 space-y-6">
-                        <h3 className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2"><UserIcon size={14} /> Personal Info</h3>
-                        {isEditing ? (
-                          <div className="space-y-4">
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Date of Birth</label>
-                              <input
-                                type="date"
-                                value={formData.dob ? new Date(formData.dob).toISOString().split('T')[0] : ''}
-                                onChange={(e) => setFormData({...formData, dob: e.target.value})}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white outline-none focus:ring-1 focus:ring-primary"
-                              />
+                  <div className="space-y-6">
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-muted/20 p-5 rounded-2xl border border-divider space-y-4">
+                        <div className="flex items-center justify-between mb-2">
+                           <h3 className="text-[9px] font-black uppercase tracking-widest text-primary flex items-center gap-2"><UserIcon size={12} /> Personal</h3>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-muted-foreground/40 uppercase leading-none mb-1">Date of Birth</span>
+                              {isEditing ? (
+                                <Input type="date" value={formData.dob ? new Date(formData.dob).toISOString().split('T')[0] : ''} onChange={(e) => setFormData({...formData, dob: e.target.value})} className="h-8" />
+                              ) : (
+                                <span className="text-xs font-bold text-foreground tabular-nums">{employee?.dob ? new Date(employee.dob).toLocaleDateString() : '—'}</span>
+                              )}
                             </div>
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Gender</label>
-                              <CustomSelect
-                                value={formData.gender || ''}
-                                onChange={(v) => setFormData({...formData, gender: v})}
-                                options={[
-                                  { value: '', label: 'SELECT GENDER', color: 'text-muted-foreground' },
-                                  { value: 'MALE', label: 'MALE' },
-                                  { value: 'FEMALE', label: 'FEMALE' },
-                                  { value: 'OTHER', label: 'OTHER' },
-                                  { value: 'PREFER_NOT_TO_SAY', label: 'PREFER NOT TO SAY' }
-                                ]}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
-                              />
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-muted-foreground/40 uppercase leading-none mb-1">Gender</span>
+                              {isEditing ? (
+                                 <CustomSelect
+                                  value={formData.gender}
+                                  onChange={(val) => setFormData({...formData, gender: val})}
+                                  options={[
+                                    { value: 'MALE', label: 'MALE' },
+                                    { value: 'FEMALE', label: 'FEMALE' },
+                                    { value: 'OTHER', label: 'OTHER' },
+                                    { value: 'PREFER_NOT_TO_SAY', label: 'SECURE' }
+                                  ]}
+                                  className="h-8 text-[10px] font-black"
+                                 />
+                              ) : (
+                                <span className="text-xs font-extrabold text-foreground/80 uppercase tracking-widest">{employee?.gender?.replace('_', ' ') || 'Not Shared'}</span>
+                              )}
                             </div>
-                            <div className="space-y-2">
-                              <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Blood Group</label>
-                              <CustomSelect
-                                value={formData.bloodGroup || ''}
-                                onChange={(v) => setFormData({...formData, bloodGroup: v})}
-                                options={[
-                                  { value: '', label: 'SELECT GROUP', color: 'text-muted-foreground' },
-                                  ...['A+','A-','B+','B-','AB+','AB-','O+','O-'].map(g => ({ value: g, label: g }))
-                                ]}
-                                className="w-full bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest hover:bg-white/10"
-                              />
-                            </div>
-                          </div>
-                        ) : (
-                          <div className="space-y-4">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-[9px] font-black text-muted-foreground/60 uppercase">D.O.B</span>
-                              <span className="text-xs font-bold text-white/80">{employee?.dob ? new Date(employee.dob).toLocaleDateString() : 'N/A'}</span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-[9px] font-black text-muted-foreground/60 uppercase">Gender</span>
-                              <span className="text-xs font-bold text-white/80 uppercase tracking-widest">{employee?.gender?.replace('_', ' ') || 'N/A'}</span>
-                            </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-[9px] font-black text-muted-foreground/60 uppercase">Blood Group</span>
-                              <span className="text-xs font-bold text-emerald-500 uppercase">{employee?.bloodGroup || 'N/A'}</span>
-                            </div>
-                          </div>
-                        )}
+                        </div>
                       </div>
 
-                      <div className="bg-white/5 p-8 rounded-3xl border border-white/5 space-y-6">
-                        <h3 className="text-[10px] font-black uppercase tracking-widest text-primary flex items-center gap-2"><Phone size={14} /> Contact Info</h3>
-                        {isEditing ? (
-                          <div className="space-y-4">
-                            <Input
-                              label="Phone Number"
-                              value={formData.phoneNumber || ''}
-                              onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})}
-                              placeholder="+91 98765 43210"
-                            />
-                            <Input
-                              label="Personal Email"
-                              type="email"
-                              value={formData.personalEmail || ''}
-                              onChange={(e) => setFormData({...formData, personalEmail: e.target.value})}
-                              placeholder="personal@email.com"
-                            />
-                          </div>
-                        ) : (
-                          <div className="space-y-4">
-                            <div className="flex flex-col gap-1">
-                              <span className="text-[9px] font-black text-muted-foreground/60 uppercase">Phone Number</span>
-                              <span className="text-xs font-bold text-white/80">{employee?.phoneNumber || '—'}</span>
+                      <div className="bg-muted/20 p-5 rounded-2xl border border-divider space-y-4">
+                        <div className="flex items-center justify-between mb-2">
+                           <h3 className="text-[9px] font-black uppercase tracking-widest text-primary flex items-center gap-2"><Phone size={12} /> Connectivity</h3>
+                        </div>
+                        <div className="space-y-3">
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-muted-foreground/40 uppercase leading-none mb-1">Phone Number</span>
+                              {isEditing ? (
+                                <input className="bg-transparent border-b border-divider text-xs font-bold outline-none focus:border-primary py-1" value={formData.phoneNumber || ''} onChange={(e) => setFormData({...formData, phoneNumber: e.target.value})} />
+                              ) : (
+                                <span className="text-xs font-bold text-foreground tabular-nums">{employee?.phoneNumber || '—'}</span>
+                              )}
                             </div>
-                            <div className="flex flex-col gap-1">
-                              <span className="text-[9px] font-black text-muted-foreground/60 uppercase">Personal Email</span>
-                              <span className="text-xs font-bold text-white/80">{employee?.personalEmail || '—'}</span>
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-muted-foreground/40 uppercase leading-none mb-1">Personal Email</span>
+                              {isEditing ? (
+                                <input className="bg-transparent border-b border-divider text-xs font-bold outline-none focus:border-primary py-1" value={formData.personalEmail || ''} onChange={(e) => setFormData({...formData, personalEmail: e.target.value})} />
+                              ) : (
+                                <span className="text-xs font-bold text-foreground/60 truncate max-w-[150px]">{employee?.personalEmail || '—'}</span>
+                              )}
                             </div>
-                          </div>
-                        )}
+                        </div>
+                      </div>
+
+                      <div className="col-span-2 astra-glass p-5 rounded-3xl border border-divider space-y-4">
+                         <h3 className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">Bio & Status</h3>
+                         <div className="grid grid-cols-2 gap-4">
+                            <div className="flex flex-col">
+                               <span className="text-[8px] font-black text-muted-foreground/40 uppercase mb-1">Marital Status</span>
+                               {isEditing ? (
+                                 <CustomSelect
+                                  value={formData.maritalStatus}
+                                  onChange={(val) => setFormData({...formData, maritalStatus: val})}
+                                  options={[
+                                    { value: 'SINGLE', label: 'SINGLE' },
+                                    { value: 'MARRIED', label: 'MARRIED' },
+                                    { value: 'DIVORCED', label: 'DIVORCED' }
+                                  ]}
+                                  className="h-8 text-[10px] font-black"
+                                 />
+                               ) : (
+                                 <span className="text-xs font-bold text-foreground">{employee?.maritalStatus || '—'}</span>
+                               )}
+                            </div>
+                            <div className="flex flex-col">
+                               <span className="text-[8px] font-black text-muted-foreground/40 uppercase mb-1">Blood Group</span>
+                               {isEditing ? (
+                                 <input className="bg-transparent border-b border-divider text-xs font-bold outline-none focus:border-primary py-1" value={formData.bloodGroup || ''} onChange={(e) => setFormData({...formData, bloodGroup: e.target.value})} />
+                               ) : (
+                                 <span className="text-xs font-black text-red-500">{employee?.bloodGroup || '—'}</span>
+                               )}
+                            </div>
+                         </div>
+                      </div>
+
+                      <div className="col-span-2 space-y-4">
+                         <div className="astra-glass p-5 rounded-3xl border border-divider space-y-3">
+                            <span className="text-[8px] font-black text-muted-foreground/40 uppercase">Current Address</span>
+                            {isEditing ? (
+                               <textarea className="w-full h-16 bg-muted/10 rounded-xl border border-divider p-3 text-xs font-medium outline-none focus:border-primary" value={formData.currentAddress || ''} onChange={(e) => setFormData({...formData, currentAddress: e.target.value})} />
+                            ) : (
+                               <p className="text-xs font-medium text-foreground/80 leading-relaxed italic">{employee?.currentAddress || 'No primary address recorded'}</p>
+                            )}
+                         </div>
+                         <div className="astra-glass p-5 rounded-3xl border border-divider space-y-3">
+                            <span className="text-[8px] font-black text-muted-foreground/40 uppercase">Permanent Address</span>
+                            {isEditing ? (
+                               <textarea className="w-full h-16 bg-muted/10 rounded-xl border border-divider p-3 text-xs font-medium outline-none focus:border-primary" value={formData.permanentAddress || ''} onChange={(e) => setFormData({...formData, permanentAddress: e.target.value})} />
+                            ) : (
+                               <p className="text-xs font-medium text-foreground/80 leading-relaxed italic">{employee?.permanentAddress || 'No permanent base recorded'}</p>
+                            )}
+                         </div>
                       </div>
                     </div>
 
-                    {/* Emergency Contact */}
-                    <div className="p-8 bg-red-500/5 rounded-[40px] border border-red-500/10 space-y-6">
-                      <h3 className="text-[10px] font-black uppercase tracking-widest text-red-500 flex items-center gap-2">
-                        <ShieldAlert size={16} /> Emergency Contact
-                      </h3>
-                      {isEditing ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                          <Input
-                            label="Contact Name"
-                            value={formData.emergencyContactName || ''}
-                            onChange={(e) => setFormData({...formData, emergencyContactName: e.target.value})}
-                            placeholder="Full name"
-                          />
-                          <Input
-                            label="Relation"
-                            value={formData.emergencyContactRelation || ''}
-                            onChange={(e) => setFormData({...formData, emergencyContactRelation: e.target.value})}
-                            placeholder="e.g. Spouse, Parent"
-                          />
-                          <Input
-                            label="Phone"
-                            value={formData.emergencyContactPhone || ''}
-                            onChange={(e) => setFormData({...formData, emergencyContactPhone: e.target.value})}
-                            placeholder="+91 98765 43210"
-                          />
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-3 gap-6">
-                          <div>
-                            <div className="text-[9px] font-black text-muted-foreground/60 uppercase mb-1">Contact Name</div>
-                            <div className="text-xs font-bold text-white">{employee?.emergencyContactName || '—'}</div>
-                          </div>
-                          <div>
-                            <div className="text-[9px] font-black text-muted-foreground/60 uppercase mb-1">Relation</div>
-                            <div className="text-xs font-bold text-white uppercase tracking-widest">{employee?.emergencyContactRelation || '—'}</div>
-                          </div>
-                          <div>
-                            <div className="text-[9px] font-black text-muted-foreground/60 uppercase mb-1">Emergency Phone</div>
-                            <div className="text-xs font-bold text-red-500">{employee?.emergencyContactPhone || '—'}</div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Address Information */}
-                    <div className="space-y-4">
-                      <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Address Information</div>
-                      {isEditing ? (
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Current Address</label>
-                            <textarea
-                              value={formData.currentAddress || ''}
-                              onChange={(e) => setFormData({...formData, currentAddress: e.target.value})}
-                              rows={3}
-                              placeholder="Enter current address"
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-medium text-white outline-none focus:ring-1 focus:ring-primary resize-none"
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">Permanent Address</label>
-                            <textarea
-                              value={formData.permanentAddress || ''}
-                              onChange={(e) => setFormData({...formData, permanentAddress: e.target.value})}
-                              rows={3}
-                              placeholder="Enter permanent address"
-                              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs font-medium text-white outline-none focus:ring-1 focus:ring-primary resize-none"
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="grid grid-cols-1 gap-4">
-                          <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
-                            <div className="text-[9px] font-black text-primary uppercase mb-2">Current Address</div>
-                            <div className="text-xs font-medium text-white/60 leading-relaxed">{employee?.currentAddress || 'Not provided'}</div>
-                          </div>
-                          <div className="p-6 bg-white/5 rounded-2xl border border-white/5">
-                            <div className="text-[9px] font-black text-primary uppercase mb-2">Permanent Address</div>
-                            <div className="text-xs font-medium text-white/60 leading-relaxed">{employee?.permanentAddress || 'Not provided'}</div>
-                          </div>
-                        </div>
-                      )}
+                    <div className="p-6 bg-red-500/5 rounded-3xl border border-red-500/10 space-y-4">
+                       <h3 className="text-[10px] font-black uppercase tracking-widest text-red-500 flex items-center gap-2 mb-2">
+                         <ShieldAlert size={14} /> Emergency Contact
+                       </h3>
+                       <div className="grid grid-cols-2 gap-x-6 gap-y-4">
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-red-500/40 uppercase mb-1">Contact Name</span>
+                              {isEditing ? (
+                                <input className="bg-transparent border-b border-divider text-xs font-bold outline-none focus:border-red-500 py-1" value={formData.emergencyContactName || ''} onChange={(e) => setFormData({...formData, emergencyContactName: e.target.value})} />
+                              ) : (
+                                <div className="text-xs font-black text-foreground leading-none">{employee?.emergencyContactName || '—'}</div>
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[8px] font-black text-red-500/40 uppercase mb-1">Relationship</span>
+                              {isEditing ? (
+                                <input className="bg-transparent border-b border-divider text-xs font-bold outline-none focus:border-red-500 py-1" value={formData.emergencyContactRelation || ''} onChange={(e) => setFormData({...formData, emergencyContactRelation: e.target.value})} />
+                              ) : (
+                                <div className="text-xs font-black text-foreground leading-none">{employee?.emergencyContactRelation || '—'}</div>
+                              )}
+                            </div>
+                            <div className="col-span-2 flex flex-col pt-2 border-t border-red-500/5">
+                              <span className="text-[8px] font-black text-red-500/40 uppercase mb-1">Emergency Phone</span>
+                              {isEditing ? (
+                                <input className="bg-transparent border-b border-divider text-xs font-bold outline-none focus:border-red-500 py-1" value={formData.emergencyContactPhone || ''} onChange={(e) => setFormData({...formData, emergencyContactPhone: e.target.value})} />
+                              ) : (
+                                <div className="text-xs font-black text-red-500 tabular-nums leading-none tracking-widest">{employee?.emergencyContactPhone || '—'}</div>
+                              )}
+                            </div>
+                       </div>
                     </div>
                   </div>
                 )}
 
                 {activeTab === 'security' && canSeeSensitive && (
-                  <div className="space-y-10 animate-in zoom-in-95 duration-500">
-                    <div className="p-10 astra-glass rounded-[40px] border border-white/10 shadow-2xl space-y-8 text-center bg-primary/5">
-                      <div className="w-20 h-20 bg-primary/20 rounded-3xl flex items-center justify-center mx-auto mb-6 border border-primary/30 shadow-xl shadow-primary/10">
-                         <Lock size={40} className="text-primary" />
+                  <div className="space-y-6">
+                    <div className="p-8 astra-glass rounded-3xl border border-divider text-center bg-primary/5">
+                      <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-primary/20 shadow-lg shadow-primary/5">
+                         <Lock size={28} className="text-primary" />
                       </div>
-                      <div className="space-y-2">
-                        <h3 className="text-xl font-black text-white tracking-tight">Change Password</h3>
-                        <p className="text-xs text-muted-foreground font-medium max-w-sm mx-auto leading-relaxed">
-                          Update your account password. Make sure to use a strong password to keep your account secure.
+                      <div className="space-y-2 mb-8">
+                        <h3 className="text-lg font-black text-foreground tracking-tighter">Security Settings</h3>
+                        <p className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mx-auto leading-relaxed opacity-60">
+                          Update your security credentials
                         </p>
                       </div>
 
-                      <div className="space-y-4 max-w-sm mx-auto pt-6 text-left">
+                      <div className="space-y-4 max-w-xs mx-auto text-left">
                          <Input 
-                           label="New Password" 
+                           label="New Credentials" 
                            type="password" 
                            value={formData.password} 
                            onChange={(e) => setFormData({...formData, password: e.target.value})} 
                            placeholder="••••••••••••"
                          />
                          <Input 
-                           label="Confirm Password" 
+                           label="Verification" 
                            type="password" 
                            value={formData.confirmPassword} 
                            onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})} 
@@ -625,10 +658,10 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
           </div>
 
           {(isEditing || activeTab === 'security') && (
-            <div className="p-8 border-t border-white/10 bg-black/80 backdrop-blur-2xl absolute bottom-0 left-0 right-0 z-50 flex gap-4 shadow-top">
+            <div className="p-4 border-t border-divider bg-background/80 backdrop-blur-2xl absolute bottom-0 left-0 right-0 z-50 flex gap-3">
               <Button 
                 variant="outline" 
-                className="flex-1 rounded-2xl h-14 border-white/10 text-white font-black uppercase tracking-widest text-[10px]" 
+                className="flex-1 rounded-xl h-12 border-divider text-foreground font-black uppercase tracking-widest text-[9px]" 
                 onClick={() => {
                    setIsEditing(false);
                    if (activeTab === 'security') setActiveTab('job');
@@ -637,22 +670,22 @@ export function EmployeeDetailDrawer({ employeeId, isOpen, onClose, onUpdate }: 
                 Cancel
               </Button>
               <Button 
-                className="flex-[2] rounded-2xl h-14 bg-primary text-white shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-[10px] group" 
+                className="flex-[2] rounded-xl h-12 bg-primary text-white shadow-xl shadow-primary/20 font-black uppercase tracking-widest text-[9px] group" 
                 onClick={handleUpdate}
                 isLoading={isLoading}
               >
-                <Save size={18} className="mr-2 group-hover:scale-110 transition-transform" /> Save Changes
+                <Save size={16} className="mr-2 group-hover:scale-110 transition-transform" /> Save Changes
               </Button>
             </div>
           )}
           
           {!isEditing && activeTab !== 'security' && canSeeSensitive && (
-             <div className="p-8 absolute bottom-0 left-0 right-0 flex gap-4">
+             <div className="p-4 absolute bottom-0 left-0 right-0">
                <Button 
-                className="w-full rounded-2xl h-14 bg-white/5 border border-white/10 text-white/60 hover:text-white font-black uppercase tracking-widest text-[10px] hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+                className="w-full rounded-xl h-12 bg-muted/40 border border-divider text-muted-foreground hover:text-foreground font-black uppercase tracking-widest text-[9px] hover:bg-muted transition-all flex items-center justify-center gap-2 shadow-sm"
                 onClick={() => setIsEditing(true)}
                >
-                 <Pencil size={14} /> Edit Profile
+                 <Pencil size={12} /> Edit Profile
                </Button>
              </div>
           )}

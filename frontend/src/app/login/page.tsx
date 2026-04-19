@@ -61,7 +61,7 @@ export default function LoginPage() {
                <Lock size={20} className="text-primary" strokeWidth={2.5} />
             </div>
             <h1 className="text-xl font-black text-foreground uppercase tracking-widest">Login</h1>
-            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-40">Enterprise Access Portal</p>
+            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-40">Secure User Access</p>
           </div>
 
           <form onSubmit={handleSubmit} className="p-8 space-y-5">
@@ -111,7 +111,7 @@ export default function LoginPage() {
         <div className="mt-8 text-center opacity-20 hover:opacity-100 transition-opacity duration-500">
            <p className="text-[9px] font-black text-foreground uppercase tracking-[0.5em] leading-relaxed">
              EPMS Enterprise Management System &copy; {new Date().getFullYear()}. <br />
-             All Systems Operational.
+             System Status: Online.
            </p>
         </div>
       </div>

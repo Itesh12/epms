@@ -24,6 +24,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           )}
           ref={ref}
           {...props}
+          value={props.value ?? ''}
         />
         {error && (
           <p className="text-[10px] font-bold text-red-500 px-1 animate-in fade-in slide-in-from-top-1">

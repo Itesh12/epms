@@ -89,7 +89,8 @@ body {
 
 /* Custom Astra Utilities */
 .aura-bg-primary {
-  background: var(--aura-primary) !important;
+  background-image: var(--aura-primary) !important;
+  background-color: var(--primary) !important; /* Robust fallback */
 }
 
 .astra-glass {

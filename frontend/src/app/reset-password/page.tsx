@@ -51,13 +51,13 @@ function ResetPasswordForm() {
              <Key size={20} className="text-emerald-500" strokeWidth={2.5} />
           </div>
           <h1 className="text-xl font-black text-white uppercase tracking-widest">Update Password</h1>
-          <p className="text-[9px] font-black text-emerald-500/40 uppercase tracking-[0.2em]">Security Protocol</p>
+          <p className="text-[9px] font-black text-emerald-500/40 uppercase tracking-[0.2em]">Security Update</p>
         </div>
 
         <form onSubmit={handleSubmit} className="p-8 space-y-5">
           <div className="space-y-4">
             <Input
-              label="Corporate Token"
+              label="Reset Token"
               placeholder="Paste token here"
               value={token}
               onChange={(e) => setToken(e.target.value)}

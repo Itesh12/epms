@@ -57,7 +57,7 @@ export default function LandingPage() {
         <div className="max-w-5xl mx-auto px-6 text-center space-y-6 relative z-10 animate-in fade-in slide-in-from-bottom-10 duration-1000">
           <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-[9px] font-black uppercase tracking-widest text-primary shadow-2xl">
             <ShieldCheck size={12} />
-            Enterprise Management Protocol
+            Enterprise Project Management
           </div>
           
           <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest leading-[1.1]">
@@ -100,7 +100,7 @@ export default function LandingPage() {
                   </div>
                 ))}
              </div>
-             <p className="text-[8px] font-black text-white/10 uppercase tracking-widest">Protocol Active...</p>
+             <p className="text-[8px] font-black text-white/10 uppercase tracking-widest">System Online...</p>
           </div>
         </div>
       </section>
@@ -110,7 +110,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-12">
             <div className="space-y-2">
-              <p className="text-[9px] font-black text-primary uppercase tracking-[0.4em]">Core Capabilities</p>
+              <p className="text-[9px] font-black text-primary uppercase tracking-[0.4em]">Key Features</p>
               <h2 className="text-3xl font-black text-white uppercase tracking-widest">Enterprise Solutions.</h2>
             </div>
             <p className="max-w-md text-white/20 font-black uppercase tracking-widest text-[10px] leading-relaxed">
@@ -131,8 +131,8 @@ export default function LandingPage() {
             />
             <LandingFeatureCard 
               icon={<BarChart3 className="text-primary" size={20} />}
-              title="System Insights"
-              description="Automated performance reporting and data-driven audits."
+              title="Performance Analytics"
+              description="Automated reporting and data-driven insights."
             />
           </div>
         </div>
@@ -145,11 +145,11 @@ export default function LandingPage() {
            <div className="flex-1 space-y-8">
               <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-[9px] font-black uppercase tracking-widest text-white/20">
                 <Lock size={12} className="text-primary/60" />
-                Enterprise Security Matrix
+                Enterprise Security
               </div>
               <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest leading-none">Global <br /> Protection.</h2>
               <p className="text-[10px] text-white/20 font-black uppercase tracking-widest leading-relaxed max-w-xl">
-                Industry-standard encryption for all data transmissions. Your intelligence is protected by sophisticated security layers.
+                Industry-standard encryption for all data transmissions. Your information is protected by sophisticated security layers.
               </p>
               <div className="grid grid-cols-2 gap-10 pt-4">
                  <div className="space-y-1">
@@ -176,7 +176,7 @@ export default function LandingPage() {
       {/* CTA Section */}
       <section className="py-24 relative">
         <div className="max-w-3xl mx-auto px-6 text-center space-y-8">
-           <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest leading-none">READY TO <br /> OPERATE?</h2>
+           <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest leading-none">READY TO <br /> START?</h2>
            <p className="text-[10px] text-white/20 font-black uppercase tracking-widest">Connect your organization today.</p>
            <Link href="/signup">
              <Button className="h-12 px-12 text-[10px] font-black uppercase tracking-widest rounded-xl shadow-2xl shadow-primary/40 group">
