@@ -261,7 +261,7 @@ export default function ProjectsPage() {
                     >
                       {/* Status Badge */}
                       <span className={cn(
-                        'absolute top-4 left-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border',
+                        'absolute top-4 right-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border',
                         status.bg, status.color
                       )}>
                         <span className={cn('w-1.5 h-1.5 rounded-full', status.dot)} />

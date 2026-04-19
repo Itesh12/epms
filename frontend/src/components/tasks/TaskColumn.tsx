@@ -4,7 +4,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableTaskCard } from './SortableTaskCard';
 import { Task, TaskStatus } from '@/types/task';
-import { ListTodo, Clock, CheckCircle2 } from 'lucide-react';
+import { ListTodo, Clock, CheckCircle2, Inbox, Eye, Beaker } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface TaskColumnProps {
@@ -16,8 +16,11 @@ interface TaskColumnProps {
 }
 
 const columnConfig = {
+  [TaskStatus.BACKLOG]:     { icon: Inbox,        color: 'text-zinc-400',    bg: 'bg-zinc-500/10',    border: 'border-zinc-500/20',    dot: 'bg-zinc-400' },
   [TaskStatus.TODO]:        { icon: ListTodo,     color: 'text-slate-400',   bg: 'bg-slate-500/10',   border: 'border-slate-500/20',   dot: 'bg-slate-400' },
   [TaskStatus.IN_PROGRESS]: { icon: Clock,        color: 'text-blue-400',    bg: 'bg-blue-500/10',    border: 'border-blue-500/20',    dot: 'bg-blue-400 animate-pulse' },
+  [TaskStatus.IN_REVIEW]:   { icon: Eye,          color: 'text-purple-400',  bg: 'bg-purple-500/10',  border: 'border-purple-500/20',  dot: 'bg-purple-400' },
+  [TaskStatus.TESTING]:     { icon: Beaker,       color: 'text-amber-400',   bg: 'bg-amber-500/10',   border: 'border-amber-500/20',   dot: 'bg-amber-400' },
   [TaskStatus.DONE]:        { icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-400' },
 };
 

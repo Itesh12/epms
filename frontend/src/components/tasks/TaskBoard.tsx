@@ -91,19 +91,19 @@ export function TaskBoard({ initialTasks, allTasks, projectMembers, onTaskUpdate
 
   const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
+    const taskBeforeDrag = activeTask;
     setActiveTask(null);
 
-    if (!over) return;
+    if (!over || !taskBeforeDrag) return;
 
     const activeId = active.id as string;
     const overId = over.id as string;
-
-    const activeIndex = tasks.findIndex((t) => t._id === activeId);
     
     // Determine target status
     const targetStatus = findColumn(overId);
     
-    if (targetStatus && tasks[activeIndex].status !== targetStatus) {
+    // Check if it actually moved to a different column from where it started
+    if (targetStatus && taskBeforeDrag.status !== targetStatus) {
       try {
         await api.patch(`/tasks/${activeId}`, { status: targetStatus });
         toast.success(`Task moved to ${targetStatus.replace('_', ' ')}`);
@@ -125,7 +125,14 @@ export function TaskBoard({ initialTasks, allTasks, projectMembers, onTaskUpdate
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
-      <div className="flex gap-6 h-full pb-10 min-h-[700px]">
+      <div className="flex gap-6 h-full pb-10 min-h-[700px] overflow-x-auto w-full scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent pr-8">
+        <TaskColumn 
+          id={TaskStatus.BACKLOG} 
+          title="Backlog" 
+          tasks={tasksByStatus(TaskStatus.BACKLOG)}
+          allTasks={allTasks || tasks}
+          onTaskClick={(task) => { setSelectedTask(task); setIsDrawerOpen(true); }}
+        />
         <TaskColumn 
           id={TaskStatus.TODO} 
           title="To Do" 
@@ -137,6 +144,20 @@ export function TaskBoard({ initialTasks, allTasks, projectMembers, onTaskUpdate
           id={TaskStatus.IN_PROGRESS} 
           title="In Progress" 
           tasks={tasksByStatus(TaskStatus.IN_PROGRESS)}
+          allTasks={allTasks || tasks}
+          onTaskClick={(task) => { setSelectedTask(task); setIsDrawerOpen(true); }}
+        />
+        <TaskColumn 
+          id={TaskStatus.IN_REVIEW} 
+          title="In Review" 
+          tasks={tasksByStatus(TaskStatus.IN_REVIEW)}
+          allTasks={allTasks || tasks}
+          onTaskClick={(task) => { setSelectedTask(task); setIsDrawerOpen(true); }}
+        />
+        <TaskColumn 
+          id={TaskStatus.TESTING} 
+          title="Testing" 
+          tasks={tasksByStatus(TaskStatus.TESTING)}
           allTasks={allTasks || tasks}
           onTaskClick={(task) => { setSelectedTask(task); setIsDrawerOpen(true); }}
         />

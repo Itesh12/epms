@@ -9,14 +9,17 @@ import {
 import { Button } from '@/components/ui/Button';
 import { TaskBoard } from '@/components/tasks/TaskBoard';
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
+import { EditProjectModal } from '@/components/projects/EditProjectModal';
+import { useAuthStore } from '@/store/useAuthStore';
 import api from '@/services/api';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
+  ACTIVE:      { label: 'Active',      color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+  COMPLETED:   { label: 'Completed',   color: 'text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20' },
+  ON_HOLD:     { label: 'On Hold',      color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' },
   TODO:        { label: 'Not Started', color: 'text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20' },
-  IN_PROGRESS: { label: 'In Progress', color: 'text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20' },
-  DONE:        { label: 'Completed',   color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
 };
 
 export default function ProjectWorkspacePage({ params }: { params: Promise<{ id: string }> }) {
@@ -26,6 +29,9 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
   const [isLoading, setIsLoading] = useState(true);
   const [activeView, setActiveView] = useState<'board' | 'list' | 'analytics'>('board');
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isEditProjectModalOpen, setIsEditProjectModalOpen] = useState(false);
+  const { user } = useAuthStore();
+  const isAdmin = user?.role === 'ADMIN';
 
   const fetchTasks = async () => {
     try {
@@ -36,12 +42,20 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
     }
   };
 
+  const fetchProject = async () => {
+    try {
+      const res = await api.get(`/projects/${id}`);
+      setProject(res.data);
+    } catch (error) {
+      console.error('Failed to fetch project', error);
+    }
+  };
+
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
       try {
-        const res = await api.get(`/projects/${id}`);
-        setProject(res.data);
+        await fetchProject();
         await fetchTasks();
       } catch (error) {
         console.error('Failed to fetch project data', error);
@@ -162,6 +176,15 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
             </div>
 
             <div className="flex items-center gap-3">
+              {isAdmin && (
+                <Button
+                  variant="outline"
+                  onClick={() => setIsEditProjectModalOpen(true)}
+                  className="rounded-xl h-10 px-4 text-sm font-bold border-white/10 hover:bg-white/5 bg-transparent"
+                >
+                  Edit Project
+                </Button>
+              )}
               <Button
                 onClick={() => setIsTaskModalOpen(true)}
                 className="rounded-xl h-10 px-5 text-sm font-bold"
@@ -439,6 +462,17 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
         onSuccess={fetchTasks}
         projectId={id}
       />
+      {project && isAdmin && (
+        <EditProjectModal
+          isOpen={isEditProjectModalOpen}
+          onClose={() => setIsEditProjectModalOpen(false)}
+          project={project}
+          onSuccess={() => {
+            fetchProject();
+            setIsEditProjectModalOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

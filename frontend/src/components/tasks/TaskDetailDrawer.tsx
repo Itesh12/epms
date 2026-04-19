@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { 
   X, Loader2, AlignLeft,
   CheckCircle2, Clock, Plus, CircleDot, Activity, ArrowLeft, ChevronRight,
-  Calendar, User
+  Calendar, User, Inbox, Eye, Beaker
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import api from '@/services/api';
@@ -377,10 +377,16 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                            >
                              {isUpdatingSub ? (
                                <Loader2 size={12} className="animate-spin text-primary" />
+                             ) : sub.status === 'BACKLOG' ? (
+                               <Inbox size={12} className="text-zinc-400" />
                              ) : sub.status === 'DONE' ? (
                                <CheckCircle2 size={14} className="text-emerald-500" />
                              ) : sub.status === 'IN_PROGRESS' ? (
-                               <Clock size={12} className="text-amber-400" />
+                               <Clock size={12} className="text-blue-400" />
+                             ) : sub.status === 'IN_REVIEW' ? (
+                               <Eye size={12} className="text-purple-400" />
+                             ) : sub.status === 'TESTING' ? (
+                               <Beaker size={12} className="text-amber-400" />
                              ) : (
                                <CircleDot size={12} className="text-slate-400/50 group-hover:text-primary/50" />
                              )}
@@ -405,14 +411,20 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                              value={sub.status}
                              onChange={(v) => handleSubtaskStatusChange(sub._id, v as TaskStatus)}
                              options={[
+                               { value: 'BACKLOG', label: 'Backlog', color: 'text-zinc-400' },
                                { value: 'TODO', label: 'To Do', color: 'text-slate-400' },
-                               { value: 'IN_PROGRESS', label: 'In Progress', color: 'text-amber-400' },
+                               { value: 'IN_PROGRESS', label: 'In Progress', color: 'text-blue-400' },
+                               { value: 'IN_REVIEW', label: 'In Review', color: 'text-purple-400' },
+                               { value: 'TESTING', label: 'Testing', color: 'text-amber-400' },
                                { value: 'DONE', label: 'Done', color: 'text-emerald-400' },
                              ]}
                              className={cn(
                                "px-3 py-1.5 rounded-lg border outline-none text-[10px] uppercase tracking-widest flex-shrink-0 w-32",
                                sub.status === 'DONE' ? 'text-emerald-400 border-emerald-500/20 bg-emerald-500/10' :
-                               sub.status === 'IN_PROGRESS' ? 'text-amber-400 border-amber-500/20 bg-amber-500/10' :
+                               sub.status === 'IN_PROGRESS' ? 'text-blue-400 border-blue-500/20 bg-blue-500/10' :
+                               sub.status === 'TESTING' ? 'text-amber-400 border-amber-500/20 bg-amber-500/10' :
+                               sub.status === 'IN_REVIEW' ? 'text-purple-400 border-purple-500/20 bg-purple-500/10' :
+                               sub.status === 'BACKLOG' ? 'text-zinc-400 border-zinc-500/20 bg-zinc-500/10' :
                                'text-slate-400 border-white/10 bg-background/50'
                              )}
                            />

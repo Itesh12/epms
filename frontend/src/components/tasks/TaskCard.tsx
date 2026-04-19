@@ -41,91 +41,50 @@ export function TaskCard({ task, onClick, allTasks = [] }: TaskCardProps) {
     <div 
       onClick={onClick}
       className={cn(
-        "astra-card astra-glass p-6 rounded-3xl transition-all duration-300 cursor-grab active:cursor-grabbing group border border-white/5 hover:border-primary/40 relative overflow-hidden",
+        "bg-white/[0.02] p-3 sm:p-4 rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing group border border-white/5 hover:border-primary/40 relative",
         isOverdue && "border-red-500/30 bg-red-500/[0.02]"
       )}
     >
-      <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-      
-      <div className="flex justify-between items-start mb-5 relative z-10">
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <h4 className="font-bold text-sm text-foreground leading-tight group-hover:text-primary transition-colors">
+          {task.title}
+        </h4>
         <div className={cn(
-          "text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em] border",
-          priorityColors[task.priority as keyof typeof priorityColors] || 'bg-muted/30 text-muted-foreground/60 border-border/50'
-        )}>
-          {task.priority}
-        </div>
-        <button className="text-muted-foreground/30 hover:text-foreground transition-all p-1.5 hover:bg-white/5 rounded-xl border border-transparent hover:border-white/10 opacity-0 group-hover:opacity-100">
-          <MoreVertical size={14} strokeWidth={2.5} />
-        </button>
+          "flex-shrink-0 w-2 h-2 rounded-full mt-1",
+          task.priority === 'URGENT' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]' :
+          task.priority === 'HIGH' ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]' :
+          task.priority === 'MEDIUM' ? 'bg-amber-500' : 'bg-blue-500'
+        )} title={`${task.priority} Priority`} />
       </div>
 
-      <div className="space-y-2 mb-4 relative z-10">
-        <div className="flex items-start gap-2">
-          {hasSubtasks && (
-            <span className="mt-0.5 flex-shrink-0 w-4 h-4 text-primary/60">
-              <GitBranch size={14} />
-            </span>
-          )}
-          <h4 className="font-black text-foreground tracking-tight group-hover:text-primary transition-colors leading-snug">
-            {task.title}
-          </h4>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-3 pt-3 border-t border-white/5">
+        <div className="w-5 h-5 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-[9px] font-black text-white/70" title={task.assigneeId?.email || 'Unassigned'}>
+          {task.assigneeId?.email?.[0].toUpperCase() || <UserIcon size={10} />}
         </div>
-        {task.description && (
-          <p className="text-muted-foreground/60 text-[11px] font-bold tracking-wide line-clamp-2 pl-6">
-            {task.description}
-          </p>
+
+        {hasSubtasks && (
+          <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/60 bg-white/5 px-1.5 py-0.5 rounded-md">
+            <GitBranch size={10} />
+            {doneSubtasks}/{subtaskCount}
+          </div>
         )}
-      </div>
 
-      {/* Subtask progress bar */}
-      {hasSubtasks && (
-        <div className="mb-4 relative z-10">
-          <div className="flex items-center justify-between mb-1">
-            <div className="flex items-center gap-1.5 text-[10px] font-black text-muted-foreground/50 uppercase tracking-widest">
-              <GitBranch size={10} />
-              <span>{doneSubtasks}/{subtaskCount} subtasks</span>
-            </div>
-            <span className="text-[10px] font-bold text-muted-foreground/40">{subtaskCount > 0 ? Math.round((doneSubtasks/subtaskCount)*100) : 0}%</span>
+        {task.dueDate && (
+          <div className={cn(
+            "flex items-center gap-1 text-[10px] font-bold",
+            isOverdue ? "text-red-400" : "text-muted-foreground/40"
+          )}>
+            <Calendar size={10} />
+            {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </div>
-          <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-primary rounded-full transition-all"
-              style={{ width: `${subtaskCount > 0 ? (doneSubtasks/subtaskCount)*100 : 0}%` }}
-            />
+        )}
+
+        {(totalEst > 0 || totalAct > 0) && (
+          <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/40 ml-auto">
+             <Clock size={10} />
+             {totalAct}h / {totalEst}h
           </div>
-        </div>
-      )}
-
-      <div className="flex items-center justify-between pt-5 border-t border-white/5 relative z-10">
-        <div className="flex items-center gap-4">
-          {task.dueDate && (
-            <div className={cn(
-              "flex items-center gap-2 text-[10px] font-black uppercase tracking-widest",
-              isOverdue ? "text-red-500" : "text-muted-foreground/40"
-            )}>
-              <Calendar size={12} strokeWidth={2.5} />
-              {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </div>
-          )}
-          {totalEst > 0 && (
-            <div className="flex items-center gap-1.5 text-[10px] font-black text-white/50 uppercase tracking-widest">
-              <Clock size={12} strokeWidth={2.5} />
-              {totalEst}H Est
-            </div>
-          )}
-          {totalAct > 0 && (
-            <div className="flex items-center gap-1.5 text-[10px] font-black text-blue-400/50 uppercase tracking-widest">
-              <CheckCircle2 size={12} strokeWidth={2.5} />
-              {totalAct}H Act
-            </div>
-          )}
-        </div>
-
-        <div className="flex items-center">
-           <div className="w-8 h-8 rounded-xl bg-muted/40 border border-white/5 flex items-center justify-center text-[10px] font-black text-foreground shadow-lg shadow-black/10 group-hover:scale-110 transition-transform" title={task.assigneeId?.email}>
-             {task.assigneeId?.email?.[0].toUpperCase() || <UserIcon size={12} />}
-           </div>
-        </div>
+        )}
       </div>
     </div>
   );

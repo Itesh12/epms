@@ -4,6 +4,7 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 export enum ProjectStatus {
   ACTIVE = 'ACTIVE',
   COMPLETED = 'COMPLETED',
+  ON_HOLD = 'ON_HOLD',
 }
 
 @Schema({ timestamps: true })
