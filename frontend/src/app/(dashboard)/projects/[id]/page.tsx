@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils';
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
   ACTIVE:      { label: 'Active',      color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
   COMPLETED:   { label: 'Completed',   color: 'text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20' },
-  ON_HOLD:     { label: 'On Hold',      color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' },
+  ON_HOLD:     { label: 'On Hold',     color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' },
   TODO:        { label: 'Not Started', color: 'text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20' },
 };
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { 
   Plus, Loader2, Briefcase, RefreshCw, ListTodo, Users, 
   CheckCircle2, Clock, CircleDot, MoreVertical, Pencil, Trash2,
-  TrendingUp, Search
+  TrendingUp, Search, Activity, Calendar
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { CustomSelect } from '@/components/ui/CustomSelect';
@@ -17,9 +17,17 @@ import { cn } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 
 const STATUS_CONFIG: Record<string, { label: string; icon: any; color: string; bg: string; dot: string }> = {
-  TODO:        { label: 'Not Started', icon: CircleDot,    color: 'text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20',   dot: 'bg-slate-400' },
-  IN_PROGRESS: { label: 'In Progress', icon: Clock,        color: 'text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20',     dot: 'bg-blue-400 animate-pulse' },
-  DONE:        { label: 'Completed',   icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', dot: 'bg-emerald-400' },
+  ACTIVE:      { label: 'Active',      icon: Activity,     color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20', dot: 'bg-emerald-400' },
+  COMPLETED:   { label: 'Completed',   icon: CheckCircle2, color: 'text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20',     dot: 'bg-blue-400' },
+  ON_HOLD:     { label: 'On Hold',     icon: Clock,        color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20',   dot: 'bg-amber-400' },
+  TODO:        { label: 'Pending',     icon: CircleDot,    color: 'text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20',   dot: 'bg-slate-400' },
+};
+
+const PRIORITY_CONFIG: Record<string, { label: string; color: string; shadow: string }> = {
+  URGENT: { label: 'URGENT',   color: 'bg-red-500',    shadow: 'shadow-[0_0_12px_rgba(239,68,68,0.4)]' },
+  HIGH:   { label: 'HIGH',     color: 'bg-orange-500', shadow: 'shadow-[0_0_12px_rgba(249,115,22,0.4)]' },
+  MEDIUM: { label: 'NORMAL',   color: 'bg-amber-500',  shadow: 'shadow-[0_0_12px_rgba(245,158,11,0.4)]' },
+  LOW:    { label: 'LOW',      color: 'bg-blue-500',   shadow: 'shadow-[0_0_12px_rgba(59,130,246,0.4)]' },
 };
 
 const PROJECT_GRADIENTS = [
@@ -99,7 +107,11 @@ export default function ProjectsPage() {
 
   // Close menu on outside click
   useEffect(() => {
-    const handler = () => setOpenMenu(null);
+    const handler = (e: MouseEvent) => {
+      // Don't close if we clicked the menu button itself (handled by the toggle)
+      if ((e.target as HTMLElement).closest('.menu-trigger')) return;
+      setOpenMenu(null);
+    };
     document.addEventListener('click', handler);
     return () => document.removeEventListener('click', handler);
   }, []);
@@ -134,7 +146,7 @@ export default function ProjectsPage() {
             <span className="text-[11px] font-black text-primary uppercase tracking-widest">Projects</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-black text-white tracking-tight leading-tight">
-            Project Portfolio
+            Project Dashboard
           </h1>
           <p className="text-muted-foreground text-sm font-medium max-w-md leading-relaxed">
             Track, manage, and deliver projects across all teams and departments.
@@ -234,11 +246,10 @@ export default function ProjectsPage() {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
               {filtered.map((p) => {
-                const styleIdx = getProjectStyle(p._id);
                 const status = STATUS_CONFIG[p.status] || STATUS_CONFIG.TODO;
-                const StatusIcon = status.icon;
+                const priority = PRIORITY_CONFIG[p.priority] || PRIORITY_CONFIG.MEDIUM;
                 const progress = Math.round(p.progress || 0);
                 const memberCount = p.members?.length || 0;
                 const isMenuOpen = openMenu === p._id;
@@ -247,124 +258,132 @@ export default function ProjectsPage() {
                   <div
                     key={p._id}
                     onClick={() => router.push(`/projects/${p._id}`)}
-                    className={cn(
-                      'group relative bg-white/5 border rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:bg-white/[0.08] hover:scale-[1.01] hover:shadow-xl hover:shadow-black/20 flex flex-col',
-                      PROJECT_ACCENT[styleIdx]
-                    )}
+                    className="group relative bg-white/[0.03] border border-white/5 rounded-3xl p-6 transition-all duration-500 hover:bg-white/[0.06] hover:border-primary/30 hover:shadow-[0_20px_50px_-15px_rgba(0,0,0,0.5)] cursor-pointer overflow-hidden"
                   >
-                    {/* Gradient Header */}
-                    <div className={cn(
-                      'h-24 bg-gradient-to-br relative flex items-end p-5',
-                      PROJECT_GRADIENTS[styleIdx]
-                    )}
-                      style={p.color ? { background: `linear-gradient(135deg, ${p.color}30, ${p.color}10)` } : {}}
-                    >
-                      {/* Status Badge */}
-                      <span className={cn(
-                        'absolute top-4 right-10 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-widest border',
-                        status.bg, status.color
-                      )}>
-                        <span className={cn('w-1.5 h-1.5 rounded-full', status.dot)} />
-                        {status.label}
-                      </span>
+                    {/* Background accent */}
+                    <div 
+                       className="absolute top-0 right-0 w-32 h-32 blur-[60px] opacity-10 group-hover:opacity-20 transition-opacity pointer-events-none"
+                       style={{ background: p.color || 'var(--primary)' }}
+                    />
 
-                      {/* Actions menu */}
+                    {/* Header */}
+                    <div className="flex items-start justify-between mb-8 relative z-10">
+                      <div className="flex items-center gap-4">
+                        <div
+                          className="w-12 h-12 rounded-2xl border flex items-center justify-center shadow-inner"
+                          style={p.color ? { borderColor: `${p.color}40`, background: `${p.color}15` } : { borderColor: 'rgba(255,255,255,0.1)' }}
+                        >
+                          <Briefcase size={22} style={p.color ? { color: p.color } : { color: 'var(--primary)' }} />
+                        </div>
+                        <div>
+                           <div className="flex items-center gap-2 mb-1">
+                              <h3 className="font-extrabold text-lg text-white tracking-tight line-clamp-1">{p.title}</h3>
+                              <div 
+                                className={cn("w-1.5 h-1.5 rounded-full", priority.color, priority.shadow)} 
+                                title={`Priority: ${priority.label}`}
+                              />
+                           </div>
+                           <div className={cn("text-[9px] font-black uppercase tracking-[0.2em]", status.color)}>
+                              {status.label}
+                           </div>
+                        </div>
+                      </div>
+
                       {isAdmin && (
-                        <div className="absolute top-3 right-3" onClick={e => e.stopPropagation()}>
+                        <div className="relative menu-trigger">
                           <button
-                            onClick={e => { e.stopPropagation(); setOpenMenu(isMenuOpen ? null : p._id); }}
-                            className="p-1.5 rounded-lg bg-black/20 hover:bg-black/40 text-white/60 hover:text-white transition-all opacity-0 group-hover:opacity-100"
+                            onClick={e => { 
+                              e.stopPropagation(); 
+                              setOpenMenu(isMenuOpen ? null : p._id); 
+                            }}
+                            className={cn(
+                              "p-2 rounded-xl border transition-all duration-300",
+                              isMenuOpen 
+                                ? "bg-primary border-primary text-white shadow-lg shadow-primary/20" 
+                                : "bg-white/5 border-white/5 text-muted-foreground/40 hover:text-white hover:border-white/10"
+                            )}
                           >
-                            <MoreVertical size={14} />
+                            <MoreVertical size={16} strokeWidth={2.5} />
                           </button>
+
                           {isMenuOpen && (
-                            <div className="absolute right-0 top-8 bg-[#1a1a2e] border border-white/10 rounded-xl shadow-xl z-50 overflow-hidden min-w-[140px]">
+                            <div className="absolute right-0 top-12 bg-[#0a0a0f] border border-white/10 rounded-2xl shadow-2xl z-50 overflow-hidden min-w-[180px] animate-in slide-in-from-top-2 duration-200">
                               <button
                                 onClick={e => handleEditClick(p, e)}
-                                className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-white/70 hover:text-white hover:bg-white/5 transition-all"
+                                className="w-full flex items-center gap-3 px-5 py-4 text-[11px] font-black uppercase tracking-widest text-white/50 hover:text-white hover:bg-white/5 transition-all text-left"
                               >
-                                <Pencil size={13} /> Edit Project
+                                <Pencil size={14} /> Edit Project
                               </button>
                               <button
                                 onClick={e => handleDelete(p._id, e)}
-                                className="w-full flex items-center gap-3 px-4 py-3 text-xs font-bold text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-all"
+                                className="w-full flex items-center gap-3 px-5 py-4 text-[11px] font-black uppercase tracking-widest text-red-400 hover:bg-red-500/10 transition-all text-left border-t border-white/5"
                               >
-                                <Trash2 size={13} /> Delete
+                                <Trash2 size={14} /> Delete
                               </button>
                             </div>
                           )}
                         </div>
                       )}
-
-                      {/* Project icon */}
-                      <div
-                        className="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center"
-                        style={p.color ? { borderColor: `${p.color}50`, background: `${p.color}20` } : {}}
-                      >
-                        <Briefcase size={18} className="text-white/80" style={p.color ? { color: p.color } : {}} />
-                      </div>
                     </div>
 
-                    {/* Content */}
-                    <div className="p-5 flex-1 flex flex-col gap-4">
-                      <div>
-                        <h3 className="font-black text-base text-white tracking-tight line-clamp-1">{p.title}</h3>
-                        <p className="text-xs text-muted-foreground/60 mt-1 line-clamp-2 leading-relaxed font-medium">
-                          {p.description || 'No description provided.'}
-                        </p>
-                      </div>
-
-                      {/* Progress */}
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="text-[10px] font-black text-muted-foreground/50 uppercase tracking-widest">Progress</span>
-                          <span className="text-[11px] font-black text-white/80" style={p.color ? { color: p.color } : {}}>{progress}%</span>
-                        </div>
-                        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    {/* Progress */}
+                    <div className="space-y-3 mb-8 relative z-10">
+                       <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-black text-muted-foreground/30 uppercase tracking-[0.2em]">Project Progress</span>
+                          <span className="text-[11px] font-black text-white/80">{progress}%</span>
+                       </div>
+                       <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
                           <div
-                            className="h-full rounded-full transition-all duration-700"
+                            className="h-full rounded-full transition-all duration-1000 ease-out"
                             style={{
                               width: `${progress}%`,
                               background: p.color || 'var(--primary)',
+                              boxShadow: `0 0 10px ${p.color}40`
                             }}
                           />
-                        </div>
-                      </div>
+                       </div>
+                    </div>
 
-                      {/* Footer */}
-                      <div className="flex items-center justify-between pt-2 border-t border-white/5 mt-auto">
-                        <div className="flex items-center gap-1.5 text-muted-foreground/50">
-                          <ListTodo size={13} />
+                    {/* Footer */}
+                    <div className="flex items-center justify-between pt-6 border-t border-white/5 mt-auto relative z-10">
+                      <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-2 text-muted-foreground/40">
+                          <ListTodo size={14} />
                           <span className="text-[11px] font-bold">
-                            {p.totalTasks > 0 ? `${p.completedTasks}/${p.totalTasks} tasks` : 'No tasks yet'}
+                            {p.totalTasks > 0 ? `${p.completedTasks}/${p.totalTasks}` : '0/0'}
                           </span>
                         </div>
+                        {p.updatedAt && (
+                          <div className="flex items-center gap-2 text-muted-foreground/30 border-l border-white/5 pl-4 ml-1">
+                            <Calendar size={13} />
+                            <span className="text-[10px] font-bold">
+                               {new Date(p.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            </span>
+                          </div>
+                        )}
+                      </div>
 
-                        <div className="flex items-center gap-1">
-                          {memberCount > 0 ? (
-                            <>
-                              <div className="flex -space-x-2">
-                                {(p.members || []).slice(0, 3).map((m: any, i: number) => (
-                                  <div
-                                    key={i}
-                                    className="w-6 h-6 rounded-lg border-2 border-background bg-primary/20 flex items-center justify-center text-[9px] font-black text-white overflow-hidden"
-                                    title={m.email}
-                                  >
-                                    {m.email?.[0]?.toUpperCase()}
-                                  </div>
-                                ))}
+                      <div className="flex items-center">
+                        {memberCount > 0 ? (
+                          <div className="flex -space-x-3 hover:space-x-1 transition-all">
+                            {(p.members || []).slice(0, 3).map((m: any, i: number) => (
+                              <div
+                                key={m._id || i}
+                                className="w-8 h-8 rounded-xl border-2 border-[#0a0a0f] bg-muted/20 flex items-center justify-center text-[10px] font-black text-white overflow-hidden shadow-xl"
+                                title={m.email}
+                              >
+                                {m.email?.[0]?.toUpperCase()}
                               </div>
-                              {memberCount > 3 && (
-                                <span className="text-[10px] font-black text-muted-foreground/40 ml-1">+{memberCount - 3}</span>
-                              )}
-                            </>
-                          ) : (
-                            <div className="flex items-center gap-1 text-muted-foreground/30">
-                              <Users size={12} />
-                              <span className="text-[10px] font-bold">Unassigned</span>
-                            </div>
-                          )}
-                        </div>
+                            ))}
+                            {memberCount > 3 && (
+                              <div className="w-8 h-8 rounded-xl border-2 border-[#0a0a0f] bg-white/5 flex items-center justify-center text-[10px] font-black text-muted-foreground/40 shadow-xl">
+                                +{memberCount - 3}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <span className="text-[10px] font-black text-muted-foreground/20 uppercase tracking-widest">Unassigned</span>
+                        )}
                       </div>
                     </div>
                   </div>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { X, Loader2, Palette, ImageIcon, Users } from 'lucide-react';
+import { X, Loader2, Palette, ImageIcon, Users, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { CustomSelect } from '@/components/ui/CustomSelect';
 import api from '@/services/api';
 import toast from 'react-hot-toast';
 import { cn } from '@/lib/utils';
@@ -17,6 +18,7 @@ export function CreateProjectModal({ isOpen, onClose, onSuccess }: CreateProject
   const [description, setDescription] = useState('');
   const [imageUrl, setImageUrl] = useState('');
   const [color, setColor] = useState('#5850ec');
+  const [priority, setPriority] = useState('MEDIUM');
   const [memberIds, setMemberIds] = useState<string[]>([]);
   const [employees, setEmployees] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,6 +51,7 @@ export function CreateProjectModal({ isOpen, onClose, onSuccess }: CreateProject
       await api.post('/projects', {
         title,
         description,
+        priority,
         imageUrl: imageUrl || undefined,
         color,
         members: memberIds
@@ -58,6 +61,7 @@ export function CreateProjectModal({ isOpen, onClose, onSuccess }: CreateProject
       setDescription('');
       setImageUrl('');
       setColor('#5850ec');
+      setPriority('MEDIUM');
       setMemberIds([]);
       onSuccess();
       onClose();
@@ -140,13 +144,31 @@ export function CreateProjectModal({ isOpen, onClose, onSuccess }: CreateProject
             </div>
           </div>
 
+          <div className="space-y-4">
+            <label className="text-[11px] font-black uppercase tracking-[0.1em] text-muted-foreground/80 px-1 flex items-center gap-2">
+              <BarChart size={14} className="text-primary" /> Priority
+            </label>
+            <CustomSelect
+              value={priority}
+              onChange={setPriority}
+              options={[
+                { value: 'LOW', label: 'LOW', color: 'text-blue-400' },
+                { value: 'MEDIUM', label: 'NORMAL', color: 'text-slate-400' },
+                { value: 'HIGH', label: 'HIGH', color: 'text-orange-400' },
+                { value: 'URGENT', label: 'URGENT', color: 'text-red-400' }
+              ]}
+              className="flex h-12 w-full rounded-2xl border border-border bg-background/40 px-4 text-xs font-black uppercase tracking-widest hover:bg-background/80"
+              dropdownClassName="text-xs uppercase tracking-widest font-black"
+            />
+          </div>
+
           {imageUrl && (
             <div className="rounded-3xl overflow-hidden border border-white/5 aspect-video relative group bg-black/20 shadow-2xl">
               <img src={imageUrl} alt="Preview" className="w-full h-full object-cover transition-transform group-hover:scale-110 duration-1000" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                 <div className="p-1 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50" />
-                 <span className="text-[10px] font-black text-white uppercase tracking-[0.2em] drop-shadow-md">Project Preview</span>
+                <div className="p-1 bg-emerald-500 rounded-full animate-pulse shadow-lg shadow-emerald-500/50" />
+                <span className="text-[10px] font-black text-white uppercase tracking-[0.2em] drop-shadow-md">Project Preview</span>
               </div>
             </div>
           )}
@@ -170,14 +192,14 @@ export function CreateProjectModal({ isOpen, onClose, onSuccess }: CreateProject
                   className={cn(
                     "text-[10px] px-4 py-2 rounded-xl transition-all font-black uppercase tracking-wider border",
                     memberIds.includes(emp._id)
-                    ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20'
-                    : 'bg-muted/30 text-muted-foreground border-white/5 hover:border-primary/40'
+                      ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20'
+                      : 'bg-muted/30 text-muted-foreground border-white/5 hover:border-primary/40'
                   )}
                 >
                   {emp.email.split('@')[0]}
                 </button>
               )) : (
-                 <p className="text-[10px] font-bold text-muted-foreground/40 italic p-2 text-center w-full">Loading employees...</p>
+                <p className="text-[10px] font-bold text-muted-foreground/40 italic p-2 text-center w-full">Loading employees...</p>
               )}
             </div>
           </div>
@@ -191,7 +213,7 @@ export function CreateProjectModal({ isOpen, onClose, onSuccess }: CreateProject
             </Button>
           </div>
         </form>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }

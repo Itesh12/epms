@@ -7,6 +7,13 @@ export enum ProjectStatus {
   ON_HOLD = 'ON_HOLD',
 }
 
+export enum ProjectPriority {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH',
+  URGENT = 'URGENT',
+}
+
 @Schema({ timestamps: true })
 export class Project extends Document {
   @Prop({ required: true })
@@ -14,6 +21,13 @@ export class Project extends Document {
 
   @Prop()
   description: string;
+
+  @Prop({
+    type: String,
+    enum: ProjectPriority,
+    default: ProjectPriority.MEDIUM,
+  })
+  priority: ProjectPriority;
 
   @Prop({
     type: String,

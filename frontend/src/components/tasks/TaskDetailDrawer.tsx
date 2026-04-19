@@ -196,10 +196,10 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                      value={task.priority}
                      onChange={(v) => handleUpdate('priority', v)}
                      options={[
-                       { value: TaskPriority.LOW, label: 'LOW PRIORITY', color: 'text-slate-400' },
-                       { value: TaskPriority.MEDIUM, label: 'MEDIUM PRIORITY', color: 'text-blue-400' },
-                       { value: TaskPriority.HIGH, label: 'HIGH PRIORITY', color: 'text-orange-400' },
-                       { value: TaskPriority.URGENT, label: 'URGENT PRIORITY', color: 'text-red-400' },
+                       { value: TaskPriority.LOW, label: 'LOW', color: 'text-slate-400' },
+                       { value: TaskPriority.MEDIUM, label: 'NORMAL', color: 'text-blue-400' },
+                       { value: TaskPriority.HIGH, label: 'HIGH', color: 'text-orange-400' },
+                       { value: TaskPriority.URGENT, label: 'URGENT', color: 'text-red-400' },
                      ]}
                      className={cn(
                        "rounded-full py-1.5 px-4 bg-white/5 border border-white/10 text-[10px] uppercase tracking-widest",
