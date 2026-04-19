@@ -11,7 +11,8 @@ import {
   LogOut,
   Trophy,
   X,
-  Clock
+  Clock,
+  Calendar
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -23,6 +24,7 @@ const navItems = [
   { label: 'Projects', icon: Briefcase, href: '/projects' },
   { label: 'Employees', icon: Users, href: '/employees' },
   { label: 'Attendance', icon: Clock, href: '/attendance' },
+  { label: 'Connect Hub', icon: Calendar, href: '/calendar' },
   { label: 'Performance', icon: Trophy, href: '/performance' },
   { label: 'Analytics', icon: BarChart3, href: '/analytics' },
   { label: 'Settings', icon: Settings, href: '/settings' },
