@@ -31,17 +31,17 @@ export function TaskColumn({ id, title, tasks, allTasks = [], onTaskClick }: Tas
   const Icon = config.icon;
 
   return (
-    <div className="flex flex-col gap-4 w-full h-full min-w-[300px]">
+    <div className="flex flex-col gap-3 w-full h-full min-w-[260px]">
       {/* Column Header */}
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-2.5">
           <div className={cn('p-1.5 rounded-lg border', config.bg, config.border)}>
             <Icon size={14} className={config.color} strokeWidth={2.5} />
           </div>
-          <h3 className="font-black text-xs uppercase tracking-widest text-white/70">{title}</h3>
+          <h3 className="font-black text-[10px] uppercase tracking-widest text-white/60">{title}</h3>
         </div>
         <div className={cn(
-          'flex items-center gap-1.5 text-[10px] font-black px-2.5 py-1 rounded-lg border uppercase tracking-widest',
+          'flex items-center gap-1.5 text-[9px] font-black px-2 py-0.5 rounded-lg border uppercase tracking-widest',
           config.bg, config.border, config.color
         )}>
           <span className={cn('w-1.5 h-1.5 rounded-full', config.dot)} />
@@ -52,7 +52,7 @@ export function TaskColumn({ id, title, tasks, allTasks = [], onTaskClick }: Tas
       {/* Drop Zone */}
       <div
         ref={setNodeRef}
-        className="bg-white/[0.03] border border-white/5 rounded-2xl p-3 min-h-[560px] flex flex-col gap-3 relative transition-colors"
+        className="bg-white/[0.03] border border-white/5 rounded-2xl p-2 min-h-[560px] flex flex-col gap-2 relative transition-colors"
       >
         <SortableContext
           id={id}

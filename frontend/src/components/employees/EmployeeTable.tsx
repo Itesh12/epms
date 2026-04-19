@@ -144,13 +144,13 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
           { label: 'Administrators', value: stats.admins, icon: Shield, color: 'text-purple-400', bg: 'bg-purple-500/10' },
           { label: 'Departments', value: stats.departments, icon: Building2, color: 'text-blue-400', bg: 'bg-blue-500/10' },
         ].map(stat => (
-          <div key={stat.label} className="bg-white/5 border border-white/5 rounded-2xl p-5 flex items-center gap-4">
-            <div className={cn('p-2.5 rounded-xl', stat.bg)}>
-              <stat.icon size={18} className={stat.color} />
+          <div key={stat.label} className="bg-muted/50 border border-divider rounded-2xl p-4 flex items-center gap-3 shadow-sm">
+            <div className={cn('p-1.5 rounded-xl', stat.bg)}>
+              <stat.icon size={16} className={stat.color} />
             </div>
             <div>
-              <div className="text-2xl font-black text-white">{stat.value}</div>
-              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</div>
+              <div className="text-xl font-black text-foreground tabular-nums leading-none">{stat.value}</div>
+              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-1 opacity-60">{stat.label}</div>
             </div>
           </div>
         ))}
@@ -159,13 +159,13 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground/40" />
           <input
-            type="text"
+            type="text" 
             placeholder="Search by name, email, role, department..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full bg-white/5 border border-white/10 rounded-xl h-11 pl-10 pr-4 text-sm text-white placeholder:text-muted-foreground/50 outline-none focus:ring-1 focus:ring-primary/50 transition-all"
+            className="w-full bg-muted/50 border border-divider rounded-xl h-9 pl-10 pr-4 text-xs text-foreground placeholder:text-muted-foreground/30 outline-none focus:ring-1 focus:ring-primary/50 transition-all font-medium"
           />
         </div>
         <CustomSelect
@@ -178,50 +178,50 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
             { value: 'TEAM_LEADER', label: 'Team Lead', color: 'text-purple-400' },
             { value: 'EMPLOYEE', label: 'Employee', color: 'text-slate-400' }
           ]}
-          className="bg-white/5 border border-white/10 rounded-xl h-11 px-4 text-xs font-bold text-white uppercase tracking-widest min-w-[160px] hover:bg-white/10"
+          className="bg-muted/50 border border-divider rounded-xl h-9 px-4 text-[10px] font-black text-foreground/70 uppercase tracking-widest min-w-[140px] hover:bg-muted"
         />
       </div>
 
       {/* Desktop Table */}
-      <div className="hidden md:block bg-white/5 border border-white/5 rounded-2xl overflow-hidden">
+      <div className="hidden md:block bg-card border border-divider rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5 bg-white/[0.02]">
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
-                  Employee ID
+              <tr className="border-b border-divider bg-muted/20">
+                <th className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50">
+                  ID
                 </th>
                 <th
-                  className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 cursor-pointer hover:text-white transition-colors"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors"
                   onClick={() => toggleSort('name')}
                 >
                   Employee <SortIcon field="name" />
                 </th>
                 <th
-                  className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 cursor-pointer hover:text-white transition-colors"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors"
                   onClick={() => toggleSort('department')}
                 >
                   Department <SortIcon field="department" />
                 </th>
-                <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">
+                <th className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50">
                   Status
                 </th>
                 <th
-                  className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 cursor-pointer hover:text-white transition-colors"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors"
                   onClick={() => toggleSort('role')}
                 >
                   Role <SortIcon field="role" />
                 </th>
                 <th
-                  className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/60 cursor-pointer hover:text-white transition-colors text-right w-36"
+                  className="px-5 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50 cursor-pointer hover:text-white transition-colors text-right w-32"
                   onClick={() => toggleSort('joined')}
                 >
                   Joined <SortIcon field="joined" />
                 </th>
-                {isAdmin && <th className="px-6 py-4 w-12" />}
+                {isAdmin && <th className="px-5 py-3 w-10" />}
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-divider">
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={isAdmin ? 7 : 6} className="px-6 py-20 text-center">
@@ -237,65 +237,65 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
                 const initial = (emp.firstName || emp.email)[0].toUpperCase();
                 const avatarGrad = getAvatarColor(emp._id);
                 return (
-                  <tr
-                    key={emp._id}
-                    className={cn(
-                      'group transition-all duration-200 hover:bg-white/[0.03] cursor-pointer',
-                      isUpdating === emp._id && 'opacity-40 pointer-events-none'
-                    )}
-                    onClick={() => onRowClick(emp._id)}
-                  >
-                    <td className="px-6 py-5 whitespace-nowrap" onClick={e => e.stopPropagation()}>
-                      <span className="text-[11px] font-mono font-bold text-primary/60 bg-primary/10 px-2.5 py-1 rounded-lg">
-                        {emp.employeeId || '—'}
-                      </span>
-                    </td>
-                    <td className="px-6 py-5 whitespace-nowrap">
-                      <div className="flex items-center gap-3">
-                        <div className={cn('w-10 h-10 rounded-xl bg-gradient-to-br flex items-center justify-center text-sm font-black text-white shadow-lg flex-shrink-0', avatarGrad)}>
-                          {initial}
-                        </div>
+                    <tr
+                      key={emp._id}
+                      className={cn(
+                        'group transition-all duration-200 hover:bg-muted/30 cursor-pointer',
+                        isUpdating === emp._id && 'opacity-40 pointer-events-none'
+                      )}
+                      onClick={() => onRowClick(emp._id)}
+                    >
+                      <td className="px-5 py-3 whitespace-nowrap" onClick={e => e.stopPropagation()}>
+                        <span className="text-[10px] font-mono font-bold text-primary/60 bg-primary/10 px-2 py-0.5 rounded-lg border border-primary/10">
+                          {emp.employeeId || '—'}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3 whitespace-nowrap">
+                        <div className="flex items-center gap-3">
+                          <div className={cn('w-8 h-8 rounded-lg bg-gradient-to-br flex items-center justify-center text-xs font-black text-white shadow-lg flex-shrink-0', avatarGrad)}>
+                            {initial}
+                          </div>
                         <div>
-                          <div className="font-bold text-sm text-white leading-tight flex items-center gap-2">
+                          <div className="font-bold text-[13px] text-foreground leading-tight flex items-center gap-1.5">
                             {name}
                             {emp._id === user?.id && (
-                              <span className="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded font-black uppercase tracking-wider">You</span>
+                              <span className="text-[8px] bg-primary/20 text-primary px-1.5 py-0.5 rounded font-black uppercase tracking-wider">You</span>
                             )}
                           </div>
-                          <div className="text-[11px] text-muted-foreground/60 flex items-center gap-1 mt-0.5">
+                          <div className="text-[10px] text-muted-foreground/40 flex items-center gap-1 mt-0.5">
                             {emp.designation ? (
-                              <><Briefcase size={10} />{emp.designation}</>
+                              <><Briefcase size={9} />{emp.designation}</>
                             ) : (
-                              <><Mail size={10} />{emp.email}</>
+                              <><Mail size={9} />{emp.email}</>
                             )}
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-5 whitespace-nowrap">
+                    <td className="px-5 py-3 whitespace-nowrap">
                       {emp.department ? (
                         <div className="flex items-center gap-2">
-                          <Building2 size={13} className="text-muted-foreground/40" />
-                          <span className="text-xs font-semibold text-white/70">{emp.department}</span>
+                           <Building2 size={12} className="text-muted-foreground/40" />
+                           <span className="text-[11px] font-bold text-foreground/60">{emp.department}</span>
                         </div>
                       ) : (
-                        <span className="text-xs text-muted-foreground/30">—</span>
+                        <span className="text-[11px] text-muted-foreground/30">—</span>
                       )}
                     </td>
-                    <td className="px-6 py-5 whitespace-nowrap" onClick={e => e.stopPropagation()}>
+                    <td className="px-5 py-3 whitespace-nowrap" onClick={e => e.stopPropagation()}>
                       {emp.isActive ? (
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                          <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Active</span>
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-emerald-500/10 border border-emerald-500/10">
+                          <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+                          <span className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Active</span>
                         </div>
                       ) : (
-                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20">
-                          <span className="w-1.5 h-1.5 rounded-full bg-red-500" />
-                          <span className="text-[10px] font-black text-red-500 uppercase tracking-widest">Inactive</span>
+                        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-red-500/10 border border-red-500/10">
+                          <span className="w-1 h-1 rounded-full bg-red-500" />
+                          <span className="text-[9px] font-black text-red-500 uppercase tracking-widest">Inactive</span>
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-5 whitespace-nowrap" onClick={e => e.stopPropagation()}>
+                    <td className="px-5 py-3 whitespace-nowrap" onClick={e => e.stopPropagation()}>
                       {isAdmin ? (
                         <CustomSelect
                           value={emp.role}
@@ -306,19 +306,19 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
                             { value: 'MANAGER', label: 'MANAGER' },
                             { value: 'ADMIN', label: 'ADMIN' }
                           ]}
-                          className={cn('text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border outline-none cursor-pointer transition-all min-w-[110px]', role.bg, role.color)}
-                          dropdownClassName="text-[10px] w-32 tracking-widest font-black uppercase"
+                          className={cn('text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border outline-none cursor-pointer transition-all min-w-[100px]', role.bg, role.color)}
+                          dropdownClassName="text-[9px] w-32 tracking-widest font-black uppercase"
                         />
                       ) : (
-                        <span className={cn('inline-flex items-center text-[10px] font-black uppercase tracking-widest px-3 py-1.5 rounded-lg border', role.bg, role.color)}>
+                        <span className={cn('inline-flex items-center text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-md border', role.bg, role.color)}>
                           {role.label}
                         </span>
                       )}
                     </td>
-                    <td className="px-6 py-5 whitespace-nowrap text-right w-36" onClick={e => e.stopPropagation()}>
+                    <td className="px-5 py-3 whitespace-nowrap text-right w-32" onClick={e => e.stopPropagation()}>
                       <div className="flex flex-col items-end gap-1">
-                        <span className="text-xs font-semibold text-muted-foreground/60 tabular-nums">
-                          {new Date(emp.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                        <span className="text-[11px] font-bold text-foreground/40 tabular-nums">
+                          {new Date(emp.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
                         </span>
                         {isAdmin && emp._id !== user?.id && (
                           <button
@@ -326,7 +326,7 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
                             className="p-1 text-muted-foreground/30 hover:bg-red-500/10 hover:text-red-500 rounded-lg transition-all opacity-0 group-hover:opacity-100"
                             title="Remove employee"
                           >
-                            <Trash2 size={13} />
+                            <Trash2 size={12} />
                           </button>
                         )}
                       </div>
@@ -337,8 +337,8 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
             </tbody>
           </table>
         </div>
-        <div className="px-6 py-3 border-t border-white/5 flex items-center justify-between">
-          <span className="text-[11px] text-muted-foreground/50 font-medium">
+        <div className="px-6 py-3 border-t border-divider flex items-center justify-between bg-muted/5">
+          <span className="text-[11px] text-muted-foreground/50 font-black uppercase tracking-widest">
             Showing {filtered.length} of {employees.length} employees
           </span>
         </div>
@@ -360,7 +360,7 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
               <div
               key={emp._id}
               className={cn(
-                'bg-white/5 border border-white/5 rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:bg-white/10 transition-all active:scale-[0.99]',
+                'bg-card border border-divider rounded-2xl p-4 flex items-center gap-4 cursor-pointer hover:bg-muted transition-all active:scale-[0.99] shadow-sm',
                 isUpdating === emp._id && 'opacity-40 pointer-events-none'
               )}
             >
@@ -371,11 +371,11 @@ export function EmployeeTable({ employees, onUpdate, onRowClick }: EmployeeTable
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-bold text-sm text-white truncate">{name}</span>
+                    <span className="font-bold text-sm text-foreground truncate">{name}</span>
                     {emp._id === user?.id && (
                       <span className="text-[9px] bg-primary/20 text-primary px-1.5 py-0.5 rounded font-black uppercase tracking-wider">You</span>
                     )}
-                    <span className={cn('text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border', role.bg, role.color)}>
+                    <span className={cn('text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border shadow-sm', role.bg, role.color)}>
                       {role.label}
                     </span>
                   </div>

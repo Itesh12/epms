@@ -18,18 +18,18 @@ export function Navbar({ onMenuClick }: NavbarProps) {
   return (
     <header className="h-16 border-b bg-background/80 backdrop-blur-md flex items-center justify-between px-4 lg:px-8 sticky top-0 z-40">
       <div className="flex items-center gap-4 flex-1">
-        <button 
+        <button
           onClick={onMenuClick}
           className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors text-foreground/70"
         >
           <Menu size={24} />
         </button>
-        
+
         <div className="relative max-w-md w-full hidden md:block">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-          <input 
-            type="text" 
-            placeholder="Search anything..." 
+          <input
+            type="text"
+            placeholder="Search anything..."
             className="w-full bg-muted/50 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary transition-all placeholder:text-muted-foreground/50 font-medium"
           />
         </div>
@@ -52,17 +52,17 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             </p>
           </div>
           <div className="relative">
-            <button 
+            <button
               onClick={() => setIsProfileOpen(!isProfileOpen)}
               className="w-9 h-9 lg:w-10 lg:h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold border-2 border-primary/20 hover:bg-primary/20 transition-colors"
             >
               {user?.email?.[0].toUpperCase() || <User size={20} />}
             </button>
-            
+
             {isProfileOpen && (
               <div className="absolute right-0 top-full mt-2 w-48 bg-background border rounded-xl shadow-xl overflow-hidden z-50">
                 <div className="py-2 border-b border-white/5">
-                  <button 
+                  <button
                     onClick={() => {
                       setIsProfileOpen(false);
                       if (user?.id) openProfile(user.id);

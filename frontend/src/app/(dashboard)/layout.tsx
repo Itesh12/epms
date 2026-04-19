@@ -22,9 +22,9 @@ export default function DashboardLayout({
         onClose={() => setIsSidebarOpen(false)} 
       />
       
-      <div className="lg:pl-[18rem] flex flex-col min-h-screen transition-all duration-500">
+      <div className="lg:pl-[240px] flex flex-col min-h-screen transition-all duration-500">
         <Navbar onMenuClick={() => setIsSidebarOpen(true)} />
-        <main className="p-4 lg:p-10 flex-1 lg:max-w-[1600px] lg:mx-auto w-full">
+        <main className="p-4 lg:p-6 flex-1 lg:max-w-[1600px] lg:mx-auto w-full">
           {children}
         </main>
       </div>

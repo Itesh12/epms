@@ -41,47 +41,47 @@ export function TaskCard({ task, onClick, allTasks = [] }: TaskCardProps) {
     <div 
       onClick={onClick}
       className={cn(
-        "bg-white/[0.02] p-3 sm:p-4 rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing group border border-white/5 hover:border-primary/40 relative",
+        "bg-white/[0.02] p-2.5 rounded-xl transition-all duration-200 cursor-grab active:cursor-grabbing group border border-white/5 hover:border-primary/40 relative flex flex-col gap-2",
         isOverdue && "border-red-500/30 bg-red-500/[0.02]"
       )}
     >
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <h4 className="font-bold text-sm text-foreground leading-tight group-hover:text-primary transition-colors">
+      <div className="flex items-start justify-between gap-2">
+        <h4 className="font-bold text-xs text-foreground leading-snug group-hover:text-primary transition-colors line-clamp-2">
           {task.title}
         </h4>
         <div className={cn(
-          "flex-shrink-0 w-2 h-2 rounded-full mt-1",
+          "flex-shrink-0 w-1.5 h-1.5 rounded-full mt-1",
           task.priority === 'URGENT' ? 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.6)]' :
           task.priority === 'HIGH' ? 'bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.6)]' :
           task.priority === 'MEDIUM' ? 'bg-amber-500' : 'bg-blue-500'
         )} title={`${task.priority} Priority`} />
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-2 mt-3 pt-3 border-t border-white/5">
-        <div className="w-5 h-5 rounded-md bg-white/5 border border-white/10 flex items-center justify-center text-[9px] font-black text-white/70" title={task.assigneeId?.email || 'Unassigned'}>
-          {task.assigneeId?.email?.[0].toUpperCase() || <UserIcon size={10} />}
+      <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 pt-2 border-t border-white/5">
+        <div className="w-4.5 h-4.5 rounded-lg bg-primary/20 flex items-center justify-center text-[8px] font-black text-white" title={task.assigneeId?.email || 'Unassigned'}>
+          {task.assigneeId?.email?.[0].toUpperCase() || <UserIcon size={9} />}
         </div>
 
         {hasSubtasks && (
-          <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/60 bg-white/5 px-1.5 py-0.5 rounded-md">
-            <GitBranch size={10} />
+          <div className="flex items-center gap-1 text-[9px] font-black text-muted-foreground/40 bg-white/5 px-1.5 py-0.5 rounded-md">
+            <GitBranch size={9} />
             {doneSubtasks}/{subtaskCount}
           </div>
         )}
 
         {task.dueDate && (
           <div className={cn(
-            "flex items-center gap-1 text-[10px] font-bold",
-            isOverdue ? "text-red-400" : "text-muted-foreground/40"
+            "flex items-center gap-1 text-[9px] font-black",
+            isOverdue ? "text-red-400" : "text-muted-foreground/30"
           )}>
-            <Calendar size={10} />
+            <Calendar size={9} />
             {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
           </div>
         )}
 
         {(totalEst > 0 || totalAct > 0) && (
-          <div className="flex items-center gap-1 text-[10px] font-bold text-muted-foreground/40 ml-auto">
-             <Clock size={10} />
+          <div className="flex items-center gap-1 text-[9px] font-black text-muted-foreground/30 ml-auto">
+             <Clock size={9} />
              {totalAct}h / {totalEst}h
           </div>
         )}

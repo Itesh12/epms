@@ -16,6 +16,7 @@
   
   --border: #e2e8f0;
   --input: #e2e8f0;
+  --divider: rgba(0, 0, 0, 0.05);
   
   --card: #ffffff;
   --card-foreground: #020617;
@@ -42,6 +43,7 @@
   
   --border: #1f2937;
   --input: #1f2937;
+  --divider: rgba(255, 255, 255, 0.05);
   
   --card: #0b0f1a; /* Astra Navy */
   --card-foreground: #f8fafc;
@@ -62,6 +64,7 @@
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
+  --color-divider: var(--divider);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   

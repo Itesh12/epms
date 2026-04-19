@@ -48,22 +48,22 @@ export default function AnalyticsPage() {
   const hasVelocityData = data?.monthlyVelocity?.some((v: any) => v.projects > 0);
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-500 pb-8">
+    <div className="space-y-6 animate-in fade-in duration-500 pb-6">
       <div>
-        <h1 className="text-3xl font-extrabold text-foreground tracking-tight flex items-center gap-3">
-          <PieChartIcon className="text-primary" size={32} />
+        <h1 className="text-xl font-black text-white uppercase tracking-widest flex items-center gap-2.5">
+          <PieChartIcon className="text-primary" size={20} />
           Analytics Deep Dive
         </h1>
-        <p className="text-muted-foreground font-medium mt-1">
-          Detailed metrics across your 30-day velocity, completion ratios, and team stratification.
+        <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-1 opacity-60">
+          Metrics across 30-day velocity and team stratification.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Project Completion Ratio */}
-        <div className="bg-card border rounded-2xl p-6 shadow-sm flex flex-col items-center">
-          <h3 className="font-bold text-foreground w-full mb-4">Project Completion Ratio</h3>
-          <div className="w-full h-[300px]">
+        <div className="bg-card border border-white/5 rounded-2xl p-4 shadow-sm flex flex-col items-center">
+          <h3 className="font-black text-[10px] uppercase tracking-widest text-white/40 w-full mb-4">Project Completion Ratio</h3>
+          <div className="w-full h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
               {data?.statusRatio?.length > 0 ? (
                 <PieChart>
@@ -82,9 +82,9 @@ export default function AnalyticsPage() {
                     ))}
                   </Pie>
                   <RechartsTooltip 
-                    contentStyle={{ borderRadius: '12px', borderColor: 'var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-foreground)' }}
+                    contentStyle={{ borderRadius: '12px', borderColor: 'rgba(255,255,255,0.1)', backgroundColor: 'rgba(0,0,0,0.8)', color: '#fff', fontSize: '10px' }}
                   />
-                  <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '12px', fontWeight: 'bold' }}/>
+                  <Legend verticalAlign="bottom" height={36} wrapperStyle={{ fontSize: '10px', fontWeight: 'black', textTransform: 'uppercase', letterSpacing: '0.05em' }}/>
                 </PieChart>
               ) : (
                 <EmptyState message="No projects recorded yet." />
@@ -94,18 +94,18 @@ export default function AnalyticsPage() {
         </div>
 
         {/* Role Distribution */}
-        <div className="bg-card border rounded-2xl p-6 shadow-sm flex flex-col items-center">
-          <h3 className="font-bold text-foreground w-full mb-4">Role Distribution</h3>
-          <div className="w-full h-[300px]">
+        <div className="bg-card border border-white/5 rounded-2xl p-4 shadow-sm flex flex-col items-center">
+          <h3 className="font-black text-[10px] uppercase tracking-widest text-white/40 w-full mb-4">Role Distribution</h3>
+          <div className="w-full h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
                {data?.roleDistribution?.length > 0 ? (
                   <BarChart data={data.roleDistribution} margin={{ top: 20, right: 30, left: -20, bottom: 5 }} layout="vertical">
                     <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} stroke="var(--color-border)" />
-                    <XAxis type="number" tick={{ fontSize: 12, fill: 'var(--color-muted-foreground)' }} axisLine={false} tickLine={false} />
-                    <YAxis dataKey="name" type="category" tick={{ fontSize: 11, fill: 'var(--color-foreground)', fontWeight: 'bold' }} axisLine={false} tickLine={false} width={80} />
+                    <XAxis type="number" tick={{ fontSize: 9, fill: 'var(--color-muted-foreground)' }} axisLine={false} tickLine={false} />
+                    <YAxis dataKey="name" type="category" tick={{ fontSize: 9, fill: '#fff', fontWeight: 'black' }} axisLine={false} tickLine={false} width={80} />
                     <RechartsTooltip 
-                      cursor={{ fill: 'var(--color-muted)', opacity: 0.4 }}
-                      contentStyle={{ borderRadius: '12px', borderColor: 'var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-foreground)' }}
+                      cursor={{ fill: 'var(--color-muted)', opacity: 0.2 }}
+                      contentStyle={{ borderRadius: '12px', borderColor: 'rgba(255,255,255,0.1)', backgroundColor: 'rgba(0,0,0,0.8)', color: '#fff', fontSize: '10px' }}
                     />
                     <Bar dataKey="value" fill="var(--color-primary)" radius={[0, 4, 4, 0]} maxBarSize={40}>
                        {data.roleDistribution.map((entry: any, index: number) => (
@@ -122,9 +122,9 @@ export default function AnalyticsPage() {
       </div>
 
       {/* 30-Day Velocity Chart */}
-      <div className="bg-card border rounded-2xl p-6 shadow-sm">
-        <h3 className="font-bold text-foreground mb-6 text-lg">30-Day Velocity Streaming</h3>
-        <div className="w-full h-[350px]">
+      <div className="bg-card border border-white/5 rounded-2xl p-4 shadow-sm">
+        <h3 className="font-black text-[10px] uppercase tracking-widest text-white/40 mb-6">30-Day Velocity Streaming</h3>
+        <div className="w-full h-[280px]">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={data?.monthlyVelocity || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
               <defs>
@@ -138,19 +138,19 @@ export default function AnalyticsPage() {
                 dataKey="date" 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 11 }} 
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 9, fontWeight: 'black' }} 
                 dy={10}
                 minTickGap={20}
               />
               <YAxis 
                 axisLine={false} 
                 tickLine={false} 
-                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 12 }}
+                tick={{ fill: 'var(--color-muted-foreground)', fontSize: 9, fontWeight: 'black' }}
               />
               <RechartsTooltip 
-                contentStyle={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)', borderRadius: '12px' }}
-                itemStyle={{ color: 'var(--color-foreground)', fontWeight: 600 }}
-                labelStyle={{ color: 'var(--color-muted-foreground)' }}
+                contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', borderColor: 'rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '10px' }}
+                itemStyle={{ color: '#fff', fontWeight: 900 }}
+                labelStyle={{ color: 'rgba(255,255,255,0.5)' }}
               />
               <Area 
                 type="monotone" 
@@ -170,8 +170,8 @@ export default function AnalyticsPage() {
 
 function EmptyState({ message }: { message: string }) {
   return (
-    <div className="w-full h-full flex items-center justify-center border-2 border-dashed border-border rounded-xl">
-      <p className="text-muted-foreground font-medium text-sm">{message}</p>
+    <div className="w-full h-full flex items-center justify-center border border-dashed border-white/5 rounded-xl">
+      <p className="text-muted-foreground/30 font-black text-[9px] uppercase tracking-widest leading-none">{message}</p>
     </div>
   );
 }

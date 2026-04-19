@@ -14,44 +14,49 @@ export function AppearanceTab() {
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-2 duration-300">
-      <div className="mb-6">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <Palette className="text-primary" size={20} /> Appearance
-        </h2>
-        <p className="text-muted-foreground text-sm mt-1">
-          Customize the dashboard interface. These changes are saved to your local browser.
+      <div className="mb-8">
+        <div className="flex items-center gap-2.5 mb-2">
+           <div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20">
+              <Palette className="text-primary" size={16} strokeWidth={2.5} />
+           </div>
+           <h2 className="text-sm font-black text-white uppercase tracking-widest">
+             Appearance
+           </h2>
+        </div>
+        <p className="text-muted-foreground/60 text-[10px] font-black uppercase tracking-widest max-w-md">
+           Customize the visual frequency of your environment.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-lg">
         <button
           onClick={() => setTheme('light')}
-          className={`flex flex-col items-center justify-center p-6 border-2 rounded-2xl transition-all ${
-            theme === 'light' ? 'border-primary bg-primary/5 text-primary' : 'border-border bg-card text-muted-foreground hover:border-primary/50'
+          className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl transition-all ${
+            theme === 'light' ? 'border-primary bg-primary/10 text-primary shadow-lg shadow-primary/10' : 'border-white/5 bg-white/[0.02] text-white/20 hover:border-white/10 hover:text-white'
           }`}
         >
-          <Sun size={32} className="mb-3" />
-          <span className="font-semibold">Light</span>
+          <Sun size={20} className="mb-2" />
+          <span className="font-black text-[10px] uppercase tracking-widest">Light</span>
         </button>
 
         <button
           onClick={() => setTheme('dark')}
-          className={`flex flex-col items-center justify-center p-6 border-2 rounded-2xl transition-all ${
-            theme === 'dark' ? 'border-primary bg-primary/5 text-primary' : 'border-border bg-card text-muted-foreground hover:border-primary/50'
+          className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl transition-all ${
+            theme === 'dark' ? 'border-primary bg-primary/10 text-primary shadow-lg shadow-primary/10' : 'border-white/5 bg-white/[0.02] text-white/20 hover:border-white/10 hover:text-white'
           }`}
         >
-          <Moon size={32} className="mb-3" />
-          <span className="font-semibold">Dark</span>
+          <Moon size={20} className="mb-2" />
+          <span className="font-black text-[10px] uppercase tracking-widest">Dark</span>
         </button>
 
         <button
           onClick={() => setTheme('system')}
-          className={`flex flex-col items-center justify-center p-6 border-2 rounded-2xl transition-all ${
-            theme === 'system' ? 'border-primary bg-primary/5 text-primary' : 'border-border bg-card text-muted-foreground hover:border-primary/50'
+          className={`flex flex-col items-center justify-center p-4 border-2 rounded-xl transition-all ${
+            theme === 'system' ? 'border-primary bg-primary/10 text-primary shadow-lg shadow-primary/10' : 'border-white/5 bg-white/[0.02] text-white/20 hover:border-white/10 hover:text-white'
           }`}
         >
-          <Monitor size={32} className="mb-3" />
-          <span className="font-semibold">System</span>
+          <Monitor size={20} className="mb-2" />
+          <span className="font-black text-[10px] uppercase tracking-widest">System</span>
         </button>
       </div>
     </div>

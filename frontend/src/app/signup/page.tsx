@@ -43,69 +43,69 @@ export default function SignupPage() {
       </div>
 
       {/* Decorative Brand Header */}
-      <div className="absolute top-10 left-10 flex items-center gap-3">
-        <div className="bg-[var(--aura-primary)] p-2 rounded-xl text-white shadow-xl shadow-primary/20">
-          <Zap size={22} fill="currentColor" strokeWidth={3} />
+      <div className="absolute top-8 left-8 flex items-center gap-2">
+        <div className="bg-primary p-1.5 rounded-lg text-white shadow-xl shadow-primary/20">
+          <Zap size={16} fill="currentColor" strokeWidth={3} />
         </div>
-        <span className="text-2xl font-black tracking-tighter text-white uppercase italic">EPMS</span>
+        <span className="text-xl font-black tracking-widest text-white uppercase opacity-40">EPMS</span>
       </div>
 
       <div className="w-full max-w-xl relative z-10 animate-in fade-in zoom-in-95 duration-1000">
-        <div className="astra-glass rounded-[40px] border border-white/10 shadow-3xl overflow-hidden shadow-black/50">
-          <div className="p-12 pb-8 text-center space-y-4 bg-white/5 border-b border-white/5">
-            <div className="w-20 h-20 rounded-3xl bg-primary/20 flex items-center justify-center mx-auto mb-6 border-2 border-primary/30 shadow-3xl shadow-primary/20">
-               <Building size={40} className="text-primary" strokeWidth={2.5} />
+        <div className="astra-glass rounded-2xl border border-white/5 shadow-3xl overflow-hidden bg-white/[0.02]">
+          <div className="p-8 pb-5 text-center space-y-2 border-b border-white/5 bg-white/[0.01]">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 border border-primary/20 shadow-xl shadow-primary/10">
+               <Building size={20} className="text-primary" strokeWidth={2.5} />
             </div>
-            <h1 className="text-5xl font-black text-white tracking-tighter leading-none">Get Started</h1>
-            <p className="text-[10px] font-black text-primary/60 uppercase tracking-[0.4em]">Register Your Organization</p>
+            <h1 className="text-xl font-black text-white uppercase tracking-widest">Register</h1>
+            <p className="text-[9px] font-black text-white/30 uppercase tracking-[0.2em]">Join Workspace</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-12 space-y-8 bg-black/20">
-            <div className="grid md:grid-cols-1 gap-8">
+          <form onSubmit={handleSubmit} className="p-8 space-y-5 bg-white/[0.01]">
+            <div className="grid md:grid-cols-1 gap-4">
               <Input
                 label="Organization Name"
                 placeholder="e.g. Acme Corporation"
                 value={formData.organizationName}
                 onChange={(e) => setFormData({ ...formData, organizationName: e.target.value })}
                 required
-                className="bg-white/5"
+                className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
               />
               
-              <div className="h-px bg-white/5 w-full" />
+              <div className="h-px bg-white/5 w-full my-1" />
 
               <Input
-                label="Admin Email Address"
+                label="Corporate Email"
                 type="email"
                 placeholder="admin@company.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                className="bg-white/5"
+                className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
               />
               <Input
-                label="Password"
+                label="Create Password"
                 type="password"
                 placeholder="••••••••"
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
-                className="bg-white/5"
+                className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
               />
             </div>
 
-            <Button type="submit" className="w-full h-16 rounded-2xl text-sm font-black uppercase tracking-widest shadow-2xl shadow-primary/30 group py-4" isLoading={isLoading} size="lg">
-              Create Account <ArrowRight size={20} className="ml-3 group-hover:translate-x-1.5 transition-transform" />
+            <Button type="submit" className="w-full h-10 rounded-xl text-[10px] font-black uppercase tracking-widest group" isLoading={isLoading}>
+              Create Account <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </form>
 
-          <div className="p-10 pt-6 text-center border-t border-white/5 bg-white/5 flex items-center justify-between">
+          <div className="p-8 pt-5 text-center border-t border-white/5 bg-white/[0.01] flex items-center justify-between">
             <div className="flex items-center gap-2">
-               <ShieldCheck size={14} className="text-emerald-500" />
-               <span className="text-[9px] font-black text-emerald-500/60 uppercase tracking-widest">Enterprise Ready</span>
+               <ShieldCheck size={12} className="text-primary/40" />
+               <span className="text-[9px] font-black text-white/20 uppercase tracking-widest">Enterprise Encrypted</span>
             </div>
-            <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest">
-               <span className="text-white/20">Have an account?</span>
-               <Link href="/login" className="text-primary hover:text-white transition-colors border-b-2 border-primary/20 hover:border-white">
+            <div className="flex items-center gap-3 text-[9px] font-black uppercase tracking-widest">
+               <span className="text-white/20">Already in?</span>
+               <Link href="/login" className="text-primary hover:text-white transition-colors">
                  Sign In
                </Link>
             </div>

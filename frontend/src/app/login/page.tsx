@@ -39,7 +39,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#030712] p-6 relative overflow-hidden selection:bg-primary/30">
+    <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
       {/* Background Aura blurs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[140px] rounded-full animate-pulse" />
@@ -47,35 +47,35 @@ export default function LoginPage() {
       </div>
 
       {/* Decorative Brand Header */}
-      <div className="absolute top-10 left-10 flex items-center gap-3">
-        <div className="bg-[var(--aura-primary)] p-2 rounded-xl text-white shadow-xl shadow-primary/20">
-          <Zap size={22} fill="currentColor" strokeWidth={3} />
+      <div className="absolute top-8 left-8 flex items-center gap-2">
+        <div className="bg-primary p-1.5 rounded-lg text-primary-foreground shadow-xl shadow-primary/20">
+          <Zap size={16} fill="currentColor" strokeWidth={3} />
         </div>
-        <span className="text-2xl font-black tracking-tighter text-white uppercase italic">EPMS</span>
+        <span className="text-xl font-black tracking-widest text-foreground uppercase opacity-40">EPMS</span>
       </div>
 
       <div className="w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-700">
-        <div className="astra-glass rounded-[40px] border border-white/10 shadow-3xl overflow-hidden shadow-black/50">
-          <div className="p-10 pb-6 text-center space-y-3 bg-white/5 border-b border-white/5">
-            <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto mb-6 border border-primary/30 shadow-2xl shadow-primary/20 animate-pulse">
-               <Lock size={32} className="text-primary" strokeWidth={2.5} />
+        <div className="astra-glass rounded-3xl border border-divider shadow-3xl overflow-hidden bg-card/10">
+          <div className="p-8 pb-5 text-center space-y-2 border-b border-divider bg-muted/5">
+            <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 border border-primary/20 shadow-xl shadow-primary/10">
+               <Lock size={20} className="text-primary" strokeWidth={2.5} />
             </div>
-            <h1 className="text-4xl font-black text-white tracking-tighter leading-none">Account Access</h1>
-            <p className="text-[10px] font-black text-primary/60 uppercase tracking-[0.3em]">Corporate Portal Login</p>
+            <h1 className="text-xl font-black text-foreground uppercase tracking-widest">Login</h1>
+            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-40">Enterprise Access Portal</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="p-10 space-y-8 bg-black/20">
-            <div className="space-y-6">
+          <form onSubmit={handleSubmit} className="p-8 space-y-5">
+            <div className="space-y-4">
               <Input
-                label="Email Address"
+                label="Corporate Email"
                 type="email"
                 placeholder="name@company.com"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 required
-                className="bg-white/5"
+                className="h-10 text-xs font-bold bg-muted/5 border-divider rounded-xl"
               />
-              <div className="space-y-2">
+              <div className="space-y-1.5">
                 <Input
                   label="Password"
                   type="password"
@@ -83,33 +83,33 @@ export default function LoginPage() {
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                   required
-                  className="bg-white/5"
+                  className="h-10 text-xs font-bold bg-muted/5 border-divider rounded-xl"
                 />
                 <div className="flex justify-end px-1">
-                  <Link href="/forgot-password" className="text-[10px] font-black uppercase tracking-[0.1em] text-primary/60 hover:text-primary transition-colors">
+                  <Link href="/forgot-password" px-1 className="text-[9px] font-black uppercase tracking-widest text-primary/40 hover:text-primary transition-colors">
                     Forgot Password?
                   </Link>
                 </div>
               </div>
             </div>
 
-            <Button type="submit" className="w-full h-14 rounded-2xl text-xs font-black uppercase tracking-widest shadow-2xl shadow-primary/20 group" isLoading={isLoading} size="lg">
-              Sign In <ArrowRight size={18} className="ml-3 group-hover:translate-x-1.5 transition-transform" />
+            <Button type="submit" className="w-full h-10 rounded-xl text-[10px] font-black uppercase tracking-widest group" isLoading={isLoading}>
+              Sign In <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
           </form>
 
-          <div className="p-10 pt-6 text-center border-t border-white/5 bg-white/5">
-            <p className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] mb-4">New to EPMS?</p>
+          <div className="p-8 pt-5 text-center border-t border-divider bg-muted/5">
+            <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-3 opacity-20">New to the system?</p>
             <Link href="/signup">
-               <Button variant="ghost" className="w-full h-12 rounded-xl text-[11px] font-black uppercase tracking-widest text-primary hover:bg-primary/10 border border-primary/20 hover:border-primary shadow-none">
-                 Create Organization Account
+               <Button variant="ghost" className="w-full h-9 rounded-xl text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5 border border-primary/10 hover:border-primary shadow-none">
+                 Create Workspace Account
                </Button>
             </Link>
           </div>
         </div>
         
         <div className="mt-8 text-center opacity-20 hover:opacity-100 transition-opacity duration-500">
-           <p className="text-[9px] font-black text-white uppercase tracking-[0.5em] leading-relaxed">
+           <p className="text-[9px] font-black text-foreground uppercase tracking-[0.5em] leading-relaxed">
              EPMS Enterprise Management System &copy; {new Date().getFullYear()}. <br />
              All Systems Operational.
            </p>

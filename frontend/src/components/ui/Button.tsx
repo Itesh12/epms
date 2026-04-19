@@ -18,9 +18,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     };
 
     const sizes = {
-      sm: 'px-4 py-2 text-xs',
-      md: 'px-6 py-3 text-sm',
-      lg: 'px-10 py-4 text-base font-bold',
+      sm: 'px-3 py-1.5 text-[11px]',
+      md: 'px-4 py-2 text-xs',
+      lg: 'px-6 py-2.5 text-sm font-bold',
     };
 
     return (
@@ -28,7 +28,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         disabled={isLoading || disabled}
         className={cn(
-          'inline-flex items-center justify-center rounded-2xl transition-all active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none font-bold tracking-tight select-none',
+          'inline-flex items-center justify-center rounded-xl transition-all active:scale-[0.96] disabled:opacity-50 disabled:pointer-events-none font-bold tracking-tight select-none',
           variants[variant],
           sizes[size],
           className

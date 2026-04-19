@@ -38,63 +38,63 @@ export default function ForgotPasswordPage() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-500/5 blur-[120px] rounded-full animate-pulse" />
       </div>
 
-      <div className="absolute top-10 left-10 flex items-center gap-3">
-        <div className="bg-[var(--aura-primary)] p-2 rounded-xl text-white shadow-xl shadow-primary/20">
-          <Zap size={22} fill="currentColor" strokeWidth={3} />
+      <div className="absolute top-8 left-8 flex items-center gap-2">
+        <div className="bg-primary p-1.5 rounded-lg text-white shadow-xl shadow-primary/20">
+          <Zap size={16} fill="currentColor" strokeWidth={3} />
         </div>
-        <span className="text-2xl font-black tracking-tighter text-white uppercase italic">EPMS</span>
+        <span className="text-xl font-black tracking-widest text-white uppercase opacity-40">EPMS</span>
       </div>
 
       <div className="w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-700">
-        <div className="astra-glass rounded-[40px] border border-white/10 shadow-3xl overflow-hidden">
-          <div className="p-10 pb-6 text-center space-y-3 bg-white/5 border-b border-white/5">
-            <div className="w-16 h-16 rounded-2xl bg-red-500/20 flex items-center justify-center mx-auto mb-6 border border-red-500/30 shadow-2xl shadow-red-500/20">
-               <ShieldAlert size={32} className="text-red-500" strokeWidth={2.5} />
+        <div className="astra-glass rounded-2xl border border-white/5 shadow-3xl overflow-hidden bg-white/[0.02]">
+          <div className="p-8 pb-5 text-center space-y-2 border-b border-white/5 bg-white/[0.01]">
+            <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center mx-auto mb-4 border border-red-500/20 shadow-xl shadow-red-500/10">
+               <ShieldAlert size={20} className="text-red-500" strokeWidth={2.5} />
             </div>
-            <h1 className="text-4xl font-black text-white tracking-tighter leading-none">Password Recovery</h1>
-            <p className="text-[10px] font-black text-red-500/60 uppercase tracking-[0.3em]">Identity Verification Portal</p>
+            <h1 className="text-xl font-black text-white uppercase tracking-widest">Reset Password</h1>
+            <p className="text-[9px] font-black text-red-500/40 uppercase tracking-[0.2em]">Account Recovery</p>
           </div>
 
-          <div className="p-10 space-y-8 bg-black/20">
+          <div className="p-8 space-y-5">
             {!tokenReceived ? (
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <p className="text-xs text-white/40 font-bold italic text-center px-4 leading-relaxed">
-                  Enter your registered email address. If the account exists, we will provide a secure recovery link.
+              <form onSubmit={handleSubmit} className="space-y-5">
+                <p className="text-[10px] text-white/40 font-black uppercase tracking-widest text-center px-4 leading-relaxed">
+                  Enter your corporate email to receive a secure recovery link.
                 </p>
                 <Input
-                  label="Email Address"
+                  label="Corporate Email"
                   type="email"
                   placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-white/5"
+                  className="h-10 text-xs font-bold bg-white/5 border-white/5 rounded-xl"
                 />
-                <Button type="submit" className="w-full h-14 rounded-2xl text-xs font-black uppercase tracking-widest shadow-2xl shadow-primary/20 group" isLoading={isLoading} size="lg">
-                  Send Recovery Link <RefreshCcw size={18} className="ml-3 group-hover:rotate-180 transition-transform duration-700" />
+                <Button type="submit" className="w-full h-10 rounded-xl text-[10px] font-black uppercase tracking-widest group" isLoading={isLoading}>
+                  Send Recovery Link <RefreshCcw size={14} className="ml-2 group-hover:rotate-180 transition-transform duration-700" />
                 </Button>
               </form>
             ) : (
-              <div className="space-y-8 text-center animate-in fade-in slide-in-from-bottom-4">
-                <div className="p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 space-y-4">
-                   <p className="text-[10px] font-black text-emerald-500 uppercase tracking-widest">Recovery Token Generated</p>
-                   <p className="text-[9px] font-mono text-white/60 break-all select-all p-3 bg-black/40 rounded-xl border border-white/5">
+              <div className="space-y-5 text-center animate-in fade-in slide-in-from-bottom-4">
+                <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/20 space-y-3">
+                   <p className="text-[9px] font-black text-emerald-500 uppercase tracking-widest">Recovery Token Generated</p>
+                   <p className="text-[9px] font-mono text-white/40 break-all select-all p-2.5 bg-black/40 rounded-lg border border-white/5">
                      {tokenReceived}
                    </p>
-                   <p className="text-[9px] font-bold text-white/40 italic">
-                     Normally this would be sent via email. <br /> Use the token below to reset your password.
+                   <p className="text-[9px] font-black text-white/20 uppercase tracking-widest">
+                     Use the token below to reset your password.
                    </p>
                 </div>
                 <Link href={`/reset-password?token=${tokenReceived}`}>
-                   <Button className="w-full h-14 rounded-2xl text-xs font-black uppercase tracking-widest shadow-2xl shadow-primary/20 group">
-                     Update Password <Key size={18} className="ml-3" />
+                   <Button className="w-full h-10 rounded-xl text-[10px] font-black uppercase tracking-widest">
+                     Update Password <Key size={14} className="ml-2" />
                    </Button>
                 </Link>
               </div>
             )}
             
-            <Link href="/login" className="flex items-center justify-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors">
-              <ArrowLeft size={14} /> Back to Sign In
+            <Link href="/login" className="flex items-center justify-center gap-2 text-[9px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors">
+              <ArrowLeft size={12} /> Back to Sign In
             </Link>
           </div>
         </div>

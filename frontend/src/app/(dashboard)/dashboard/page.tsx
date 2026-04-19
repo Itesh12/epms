@@ -30,21 +30,22 @@ function StatCard({ title, value, icon, trend, color }: { title: string, value: 
   };
 
   return (
-    <div className="astra-card astra-glass p-8 rounded-3xl group">
-      <div className="flex items-center justify-between mb-6">
-        <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 ${colorMap[color]}`}>
-          {icon}
+    <div className="astra-card bg-white/[0.01] border border-white/5 p-4 rounded-2xl group">
+      <div className="flex items-center justify-between mb-4">
+        <div className={`w-9 h-9 rounded-xl flex items-center justify-center border transition-all duration-500 ${colorMap[color]}`}>
+          {typeof icon === 'object' && (icon as any).type ? (icon as any) : icon} 
+          {/* Note: In React we just render icon, but I'll ensure size passed is small */}
         </div>
-        <span className="text-[10px] font-black text-muted-foreground uppercase tracking-[0.2em]">{title}</span>
+        <span className="text-[9px] font-black text-white/30 uppercase tracking-widest">{title}</span>
       </div>
       <div className="flex items-baseline gap-2">
-        <h2 className="text-4xl font-black text-foreground tracking-tighter">{value}</h2>
+        <h2 className="text-2xl font-black text-white tracking-tight">{value}</h2>
       </div>
       <div className="mt-4 flex items-center gap-2">
-        <div className="h-1 flex-1 bg-muted rounded-full overflow-hidden">
+        <div className="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
           <div className="h-full bg-primary/40 rounded-full w-2/3" />
         </div>
-        <span className="text-[10px] font-bold text-muted-foreground italic whitespace-nowrap">{trend}</span>
+        <span className="text-[9px] font-black text-muted-foreground/30 uppercase tracking-widest whitespace-nowrap">{trend}</span>
       </div>
     </div>
   );
@@ -52,14 +53,14 @@ function StatCard({ title, value, icon, trend, color }: { title: string, value: 
 
 function ActivityItem({ text, time }: { text: string, time: string }) {
   return (
-    <div className="flex gap-4 pb-6 border-b border-border/50 last:border-none last:pb-0 group relative">
+    <div className="flex gap-3 pb-4 border-b border-white/5 last:border-none last:pb-0 group relative">
       <div className="relative">
-        <div className="w-3 h-3 rounded-full bg-primary/20 mt-1.5 shrink-0 group-hover:bg-primary transition-all duration-300 z-10 relative" />
-        <div className="absolute top-4 bottom-0 left-[5.5px] w-[1px] bg-border group-last:hidden" />
+        <div className="w-2 h-2 rounded-full bg-primary/20 mt-1.5 shrink-0 group-hover:bg-primary transition-all duration-300 z-10 relative" stroke-width="2" />
+        <div className="absolute top-4 bottom-0 left-[3.5px] w-[1px] bg-white/5 group-last:hidden" />
       </div>
       <div className="flex-1">
-        <p className="text-sm font-bold text-foreground/80 group-hover:text-foreground transition-colors leading-relaxed">{text}</p>
-        <p className="text-[11px] font-bold text-muted-foreground/60 mt-1 uppercase tracking-wider">{time}</p>
+        <p className="text-xs font-bold text-white/80 group-hover:text-white transition-colors leading-relaxed">{text}</p>
+        <p className="text-[9px] font-black text-muted-foreground/30 mt-0.5 uppercase tracking-widest">{time}</p>
       </div>
     </div>
   );
@@ -93,63 +94,61 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-12 animate-in fade-in duration-700 max-w-[1400px]">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
-        <div className="space-y-2">
-          <div className="flex items-center gap-2 mb-2">
-             <span className="px-3 py-1 bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest rounded-full">Astra Intelligence</span>
+    <div className="space-y-6 animate-in fade-in duration-700 max-w-[1400px]">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3">
+        <div className="space-y-1">
+          <div className="flex items-center gap-2 mb-1">
+             <span className="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest rounded-md border border-primary/20">System Status</span>
           </div>
-          <h1 className="text-5xl font-black text-foreground tracking-tighter leading-none">
-            Welcome, <span className="text-primary">{user?.email.split('@')[0]}</span>
+          <h1 className="text-2xl font-black text-white uppercase tracking-widest leading-none">
+            Hello, <span className="text-primary">{user?.email.split('@')[0]}</span>
           </h1>
-          <p className="text-muted-foreground font-bold text-lg max-w-xl leading-relaxed">
-            Your organization is operating at <span className="text-foreground">94% efficiency</span> today. Here are the key pulses.
+          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-2 max-w-xl opacity-50">
+            System efficiency is at <span className="text-white">94%</span>. Action items pending review.
           </p>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard 
-          title="Talent Pool" 
+          title="talents" 
           value={stats?.totalEmployees || '0'} 
-          icon={<Users size={24} strokeWidth={2.5} />} 
-          trend="+2 this week"
+          icon={<Users size={18} strokeWidth={2.5} />} 
+          trend="+2 recent"
           color="blue"
         />
         <StatCard 
-          title="Active Portfolios" 
+          title="projects" 
           value={stats?.totalProjects || '0'} 
-          icon={<Briefcase size={24} strokeWidth={2.5} />} 
+          icon={<Briefcase size={18} strokeWidth={2.5} />} 
           trend="4 high priority"
           color="indigo"
         />
         <StatCard 
-          title="Success Deliveries" 
+          title="completed" 
           value={stats?.projectDistribution?.DONE || '0'} 
-          icon={<CheckCircle2 size={24} strokeWidth={2.5} />} 
-          trend="98% on target"
+          icon={<CheckCircle2 size={18} strokeWidth={2.5} />} 
+          trend="98% accuracy"
           color="emerald"
         />
         <StatCard 
-          title="Velocity" 
+          title="active" 
           value={stats?.projectDistribution?.IN_PROGRESS || '0'} 
-          icon={<Clock size={24} strokeWidth={2.5} />} 
-          trend="Normal load"
+          icon={<Clock size={18} strokeWidth={2.5} />} 
+          trend="Optimal load"
           color="amber"
         />
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-10">
-        <div className="lg:col-span-2 astra-card astra-glass rounded-3xl p-8 flex flex-col relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-          
-          <div className="flex items-center justify-between mb-10 relative z-10">
+      <div className="grid lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-white/[0.01] border border-white/5 rounded-2xl p-6 flex flex-col relative overflow-hidden group">
+          <div className="flex items-center justify-between mb-8 relative z-10">
             <div>
-              <h3 className="text-xl font-black text-foreground tracking-tight">System Dynamics</h3>
-              <p className="text-xs font-bold text-muted-foreground mt-1 uppercase tracking-widest">Velocity Stream Analysis</p>
+              <h3 className="text-sm font-black text-white uppercase tracking-widest">System Dynamics</h3>
+              <p className="text-[9px] font-black text-white/20 mt-1 uppercase tracking-widest">Velocity Stream</p>
             </div>
             <div className="flex gap-2">
-               <div className="px-3 py-1.5 bg-muted/50 rounded-lg text-[10px] font-black text-muted-foreground tracking-widest border border-border">MTD</div>
+               <div className="px-2 py-1 bg-white/5 rounded-md text-[9px] font-black text-muted-foreground/40 tracking-widest border border-white/5 uppercase">MTD</div>
             </div>
           </div>
 
@@ -167,24 +166,24 @@ export default function DashboardPage() {
                   dataKey="name" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11, fontWeight: 700 }} 
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 9, fontWeight: 900 }} 
                   dy={15}
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{ fill: 'var(--muted-foreground)', fontSize: 11, fontWeight: 700 }}
+                  tick={{ fill: 'var(--muted-foreground)', fontSize: 9, fontWeight: 900 }}
                 />
                 <Tooltip 
                   contentStyle={{ 
-                    backgroundColor: 'var(--card)', 
-                    borderColor: 'var(--border)', 
-                    borderRadius: '1.25rem',
-                    boxShadow: '0 20px 25px -5px rgba(0,0,0,0.1)',
-                    padding: '12px'
+                    backgroundColor: 'rgba(0,0,0,0.8)', 
+                    borderColor: 'rgba(255,255,255,0.1)', 
+                    borderRadius: '12px',
+                    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.5)',
+                    padding: '8px'
                   }}
-                  itemStyle={{ color: 'var(--foreground)', fontWeight: 800, fontSize: '14px' }}
-                  labelStyle={{ color: 'var(--muted-foreground)', fontWeight: 700, fontSize: '11px', marginBottom: '4px', textTransform: 'uppercase' }}
+                  itemStyle={{ color: '#fff', fontWeight: 900, fontSize: '11px' }}
+                  labelStyle={{ color: 'rgba(255,255,255,0.5)', fontWeight: 900, fontSize: '9px', marginBottom: '4px', textTransform: 'uppercase' }}
                 />
                 <Area 
                   type="monotone" 
@@ -200,10 +199,10 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="astra-card astra-glass rounded-3xl p-8 flex flex-col">
-          <div className="flex items-center justify-between mb-8">
-            <h3 className="text-xl font-black text-foreground tracking-tight">Organization Pulse</h3>
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-lg shadow-emerald-500/50" />
+        <div className="bg-white/[0.01] border border-white/5 rounded-2xl p-6 flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-sm font-black text-white uppercase tracking-widest">Recent Activity</h3>
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
           </div>
           
           {stats?.recentActivity?.length > 0 ? (
@@ -213,18 +212,18 @@ export default function DashboardPage() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center text-center h-full space-y-4 opacity-40">
-              <div className="w-16 h-16 rounded-3xl bg-muted/40 flex items-center justify-center">
-                <Clock size={32} className="text-muted-foreground" />
+            <div className="flex flex-col items-center justify-center text-center h-full space-y-3 opacity-20">
+              <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
+                <Clock size={20} className="text-white" />
               </div>
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-widest px-4">
-                No signal detected in the organization stream.
+              <p className="text-[9px] font-black text-white uppercase tracking-widest px-4">
+                No activity found.
               </p>
             </div>
           )}
           
-          <Button variant="outline" size="sm" className="mt-8 border-dashed">
-            View System Logs
+          <Button variant="outline" className="mt-6 border-white/5 h-8 text-[9px] font-black uppercase tracking-widest rounded-lg hover:bg-white/5">
+            System Logs
           </Button>
         </div>
       </div>
