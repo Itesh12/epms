@@ -35,6 +35,13 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
   const [localEstimate, setLocalEstimate] = useState<string>('');
   const [localActual, setLocalActual] = useState<string>('');
 
+  const getAssigneeId = (t: Task | null) => {
+    if (!t || !t.assigneeId) return '';
+    if (typeof t.assigneeId === 'string') return t.assigneeId;
+    if (typeof t.assigneeId === 'object') return (t.assigneeId as any)._id || '';
+    return '';
+  };
+
   useEffect(() => {
     setTask(initialTask);
     setTaskHistory([]);
@@ -108,7 +115,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
         title: newSubtaskTitle,
         projectId: task.projectId,
         parentId: task._id,
-        assigneeId: task.assigneeId?._id || '', 
+        assigneeId: getAssigneeId(task), 
         priority: task.priority,
       });
       setNewSubtaskTitle('');
@@ -227,7 +234,7 @@ export function TaskDetailDrawer({ task: initialTask, isOpen, onClose, onUpdate,
                 <div className="flex-1 min-w-0">
                   <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest block mb-1">Assignee</span>
                   <select 
-                    value={typeof task.assigneeId === 'object' ? task.assigneeId?._id : (task.assigneeId || '')}
+                    value={getAssigneeId(task)}
                     onChange={(e) => handleUpdate('assigneeId', e.target.value)}
                     className="w-full bg-transparent text-sm font-bold text-white outline-none cursor-pointer appearance-none truncate"
                   >

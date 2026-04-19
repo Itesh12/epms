@@ -42,14 +42,8 @@ export class UsersController {
 
   @Get(':id')
   async getEmployeeById(@Param('id') id: string, @Request() req: any) {
-    const isAdmin = req.user.role === UserRole.ADMIN;
-    const isSelf = req.user.userId === id;
-    
-    // In a production environment, you might also check if they are the direct manager.
-    if (!isAdmin && !isSelf) {
-      throw new UnauthorizedException('Unauthorized profile access attempt.');
-    }
-
+    // Anyone in the same organization can view a basic profile for collaboration.
+    // usersService.findById ensures org boundaries are strictly respected.
     return this.usersService.findById(id, req.user.orgId);
   }
 
