@@ -14,7 +14,8 @@ import {
   Clock,
   Calendar,
   Megaphone,
-  Wallet
+  Wallet,
+  Package
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -31,6 +32,7 @@ const navItems = [
   { label: 'Analytics', icon: BarChart3, href: '/analytics' },
   { label: 'Announcements', icon: Megaphone, href: '/announcements' },
   { label: 'Finance', icon: Wallet, href: '/finance' },
+  { label: 'Assets', icon: Package, href: '/assets' },
   { label: 'Settings', icon: Settings, href: '/settings' },
 ];
 

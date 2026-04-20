@@ -15,6 +15,7 @@ import { AttendanceModule } from './modules/attendance/attendance.module';
 import { CalendarModule } from './modules/calendar/calendar.module';
 import { AnnouncementsModule } from './modules/announcements/announcements.module';
 import { FinanceModule } from './modules/finance/finance.module';
+import { AssetsModule } from './modules/assets/assets.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -36,6 +37,7 @@ import configuration from './config/configuration';
     CalendarModule,
     AnnouncementsModule,
     FinanceModule,
+    AssetsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
