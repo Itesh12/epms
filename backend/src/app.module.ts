@@ -16,6 +16,7 @@ import { CalendarModule } from './modules/calendar/calendar.module';
 import { AnnouncementsModule } from './modules/announcements/announcements.module';
 import { FinanceModule } from './modules/finance/finance.module';
 import { AssetsModule } from './modules/assets/assets.module';
+import { WikiModule } from './modules/wiki/wiki.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -38,6 +39,7 @@ import configuration from './config/configuration';
     AnnouncementsModule,
     FinanceModule,
     AssetsModule,
+    WikiModule,
   ],
   controllers: [AppController],
   providers: [AppService],
