@@ -128,6 +128,18 @@ export class User extends Document {
 
   @Prop({ default: true })
   isActive: boolean;
+
+  // Finance Detail (Secured/Admin only view usually managed in controller)
+  @Prop({ default: 0 })
+  baseSalary: number;
+
+  @Prop({ type: Object, default: {} })
+  bankDetails: {
+    accountNumber?: string;
+    ifscCode?: string;
+    bankName?: string;
+    panNumber?: string;
+  };
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

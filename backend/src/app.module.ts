@@ -14,6 +14,7 @@ import { TasksModule } from './modules/tasks/tasks.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
 import { CalendarModule } from './modules/calendar/calendar.module';
 import { AnnouncementsModule } from './modules/announcements/announcements.module';
+import { FinanceModule } from './modules/finance/finance.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -34,6 +35,7 @@ import configuration from './config/configuration';
     AttendanceModule,
     CalendarModule,
     AnnouncementsModule,
+    FinanceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
