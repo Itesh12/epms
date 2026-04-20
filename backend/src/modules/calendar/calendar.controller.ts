@@ -42,4 +42,10 @@ export class CalendarController {
   seedHolidays(@Request() req: any) {
     return this.calendarService.seedHolidays(req.user.orgId, req.user.userId);
   }
+
+  @Get('seeding-status')
+  @Roles(UserRole.ADMIN)
+  getSeedingStatus(@Request() req: any) {
+    return this.calendarService.getSeedingStatus(req.user.orgId);
+  }
 }

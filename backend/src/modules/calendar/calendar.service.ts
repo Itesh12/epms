@@ -71,4 +71,18 @@ export class CalendarService {
 
     return this.calendarEventModel.bulkWrite(operations);
   }
+
+  async getSeedingStatus(organizationId: string) {
+    const currentYear = 2026;
+    const count = await this.calendarEventModel.countDocuments({
+      organizationId,
+      type: EventType.HOLIDAY,
+      startDate: {
+        $gte: new Date(`${currentYear}-01-01`),
+        $lte: new Date(`${currentYear}-12-31`),
+      },
+      isActive: true,
+    });
+    return count > 0;
+  }
 }

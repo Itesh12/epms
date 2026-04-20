@@ -49,12 +49,12 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh, onSelect
   };
 
   return (
-    <div className="flex flex-col h-full rounded-[32px] overflow-hidden bg-card border border-divider shadow-2xl">
+    <div className="flex flex-col h-full rounded-[24px] overflow-hidden bg-card border border-divider shadow-xl">
       {/* Week Day Headers */}
       <div className="grid grid-cols-7 border-b border-divider bg-muted/5">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="py-6 text-center border-r border-divider/50 last:border-r-0">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 leading-none">
+          <div key={day} className="py-4 text-center border-r border-divider/40 last:border-r-0">
+            <span className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 leading-none">
               {day}
             </span>
           </div>
@@ -62,7 +62,7 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh, onSelect
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-7 flex-1 bg-divider/10 gap-px">
+      <div className="grid grid-cols-7 flex-1 bg-divider/5 gap-px">
         {days.map((day, idx) => {
           const dayEvents = getEventsForDay(day);
           const isCurrentMonth = isSameMonth(day, monthStart);
@@ -75,42 +75,43 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh, onSelect
               key={idx} 
               onClick={() => onSelectDay(day, dayEvents)}
               className={cn(
-                "min-h-[140px] lg:min-h-[160px] p-4 transition-all duration-300 bg-card flex flex-col gap-3 group/day cursor-pointer relative",
-                !isCurrentMonth && "bg-muted/[0.03] opacity-25",
-                isTodayDate && "after:absolute after:inset-0 after:bg-primary/[0.03] after:pointer-events-none"
+                "min-h-[110px] lg:min-h-[140px] p-2.5 lg:p-4 transition-all duration-300 bg-card flex flex-col gap-2 group/day cursor-pointer relative",
+                !isCurrentMonth && "bg-muted/[0.02] opacity-20",
+                isTodayDate && "after:absolute after:inset-0 after:bg-primary/[0.02] after:pointer-events-none"
               )}
             >
-              <div className="flex items-center justify-between mb-1">
+              <div className="flex items-center justify-between mb-0.5">
                 <span className={cn(
-                  "text-base font-black tabular-nums transition-colors",
-                  isTodayDate ? "text-primary px-2.5 py-1 bg-primary/10 rounded-xl" : "text-foreground group-hover/day:text-primary",
+                  "text-xs lg:text-sm font-black tabular-nums transition-colors",
+                  isTodayDate ? "text-primary px-2 py-0.5 bg-primary/10 rounded-lg" : "text-foreground group-hover/day:text-primary",
                   !isCurrentMonth && "text-muted-foreground"
                 )}>
                   {format(day, 'd')}
                 </span>
                 
                 {isAdmin && (
-                  <div className="opacity-0 group-hover/day:opacity-40 transition-opacity">
-                    <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-                       <span className="text-xs font-black">+</span>
+                  <div className="opacity-0 group-hover/day:opacity-30 transition-opacity hidden lg:block">
+                    <div className="w-5 h-5 rounded-md bg-primary/10 flex items-center justify-center text-primary">
+                       <span className="text-[10px] font-black">+</span>
                     </div>
                   </div>
                 )}
               </div>
 
-              <div className="space-y-1.5 flex-1 overflow-hidden pointer-events-none">
+              {/* Desktop Display: Labels */}
+              <div className="hidden md:flex flex-col gap-1 flex-1 overflow-hidden pointer-events-none">
                 {displayEvents.map((event, eIdx) => {
                   const cfg = typeConfig[event.type] || typeConfig.OTHER;
                   return (
                     <div 
                       key={eIdx} 
                       className={cn(
-                        "group/evt pl-2.5 pr-2 py-2 rounded-xl border-l-[3px] transition-all flex flex-col gap-0.5",
+                        "group/evt pl-2 pr-1.5 py-1.5 rounded-lg border-l-[2px] transition-all flex flex-col gap-0",
                         cfg.bg,
                         cfg.border
                       )}
                     >
-                      <span className={cn("text-[9px] font-black uppercase tracking-widest truncate leading-tight", cfg.text)}>
+                      <span className={cn("text-[8px] font-black uppercase tracking-wider truncate leading-tight", cfg.text)}>
                         {event.title}
                       </span>
                     </div>
@@ -118,12 +119,25 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh, onSelect
                 })}
 
                 {moreCount > 0 && (
-                   <div className="mt-1 flex items-center gap-1.5 px-2.5 py-1 bg-muted rounded-full w-fit">
-                      <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest whitespace-nowrap">
+                   <div className="mt-1 flex items-center gap-1.5 px-2 py-0.5 bg-muted rounded-full w-fit">
+                      <span className="text-[7px] font-black text-muted-foreground uppercase tracking-widest whitespace-nowrap">
                         +{moreCount} more
                       </span>
                    </div>
                 )}
+              </div>
+
+              {/* Mobile Display: Dot Indicators */}
+              <div className="flex md:hidden flex-wrap gap-1 mt-auto pointer-events-none">
+                {dayEvents.map((event, eIdx) => {
+                   const cfg = typeConfig[event.type] || typeConfig.OTHER;
+                   return (
+                     <div 
+                       key={eIdx} 
+                       className={cn("w-1.5 h-1.5 rounded-full", cfg.text.replace('text-', 'bg-'))} 
+                     />
+                   );
+                })}
               </div>
             </div>
           );
@@ -132,4 +146,5 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh, onSelect
     </div>
   );
 }
+
 

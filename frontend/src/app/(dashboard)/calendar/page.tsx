@@ -35,6 +35,7 @@ export default function CalendarPage() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isSeeded, setIsSeeded] = useState(false);
   
   // State for Modals/Drawers
   const [isAddModeOpen, setIsAddModeOpen] = useState(false);
@@ -48,6 +49,16 @@ export default function CalendarPage() {
   const user = useAuthStore((state) => state.user);
   const isAdmin = user?.role === 'ADMIN';
 
+  const checkSeedingStatus = useCallback(async () => {
+    if (!isAdmin) return;
+    try {
+      const res = await api.get('/calendar/seeding-status');
+      setIsSeeded(res.data);
+    } catch (err) {
+      console.error('Failed to check seeding status', err);
+    }
+  }, [isAdmin]);
+
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     try {
@@ -59,19 +70,27 @@ export default function CalendarPage() {
         const fresh = res.data.filter((e: any) => isSameDay(new Date(e.startDate), selectedDay));
         setDayEvents(fresh);
       }
+      
+      checkSeedingStatus();
     } catch (error) {
       toast.error('Failed to load events');
     } finally {
       setLoading(false);
     }
-  }, [selectedDay]);
+  }, [selectedDay, checkSeedingStatus]);
 
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
 
-  const handlePrevMonth = () => setCurrentDate(subMonths(currentDate, 1));
-  const handleNextMonth = () => setCurrentDate(addMonths(currentDate, 1));
+  const handlePrevMonth = () => {
+    const prev = subMonths(currentDate, 1);
+    if (prev.getFullYear() === 2026) setCurrentDate(prev);
+  };
+  const handleNextMonth = () => {
+    const next = addMonths(currentDate, 1);
+    if (next.getFullYear() === 2026) setCurrentDate(next);
+  };
   const handleToday = () => setCurrentDate(new Date());
 
   const handleSelectDay = (day: Date, dayEvts: any[]) => {
@@ -79,7 +98,7 @@ export default function CalendarPage() {
       setPreSelectedDate(format(day, 'yyyy-MM-dd'));
       setEditingEvent(null);
       setIsAddModeOpen(true);
-    } else {
+    } else if (dayEvts.length > 0) {
       setSelectedDay(day);
       setDayEvents(dayEvts);
       setIsDrawerOpen(true);
@@ -90,7 +109,7 @@ export default function CalendarPage() {
     if (!isAdmin) return;
     try {
       await api.post('/calendar/seed-holidays');
-      toast.success('Indian Public Holidays seeded successfully!');
+      toast.success('Holidays seeded successfully');
       fetchEvents();
     } catch {
       toast.error('Failed to seed holidays');
@@ -98,50 +117,49 @@ export default function CalendarPage() {
   };
 
   return (
-    <div className="max-w-[1700px] mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {/* Header section */}
-      <div className="relative overflow-hidden rounded-[40px] p-10 lg:p-14 border border-divider astra-glass shadow-2xl">
-        <div className="absolute top-0 right-0 p-16 opacity-5 hidden lg:block">
-          <CalendarIcon size={280} className="text-primary rotate-12" />
+    <div className="max-w-[1600px] mx-auto space-y-6 animate-in fade-in duration-700">
+      {/* Header section - Compactified */}
+      <div className="relative overflow-hidden rounded-[32px] p-6 lg:p-8 border border-divider astra-glass shadow-xl">
+        <div className="absolute top-0 right-0 p-10 opacity-[0.03] hidden lg:block">
+          <CalendarIcon size={200} className="text-primary rotate-12" />
         </div>
         
-        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
-          <div className="space-y-5">
-             <div className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-primary/10 border border-primary/20">
-               <Sparkles size={16} className="text-primary animate-pulse" />
-               <span className="text-[11px] font-black uppercase tracking-[0.3em] text-primary">Nexus Connect</span>
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="space-y-3">
+             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 border border-primary/20">
+               <Sparkles size={14} className="text-primary animate-pulse" />
+               <span className="text-[9px] font-black uppercase tracking-[0.2em] text-primary">Nexus Connect</span>
              </div>
              <div>
-               <h1 className="text-5xl lg:text-7xl font-black text-foreground tracking-tight mb-4 leading-none">
-                 Culture <span className="text-primary">Sync</span>
+               <h1 className="text-3xl lg:text-4xl font-black text-foreground tracking-tight leading-none uppercase">
+                 Timeline <span className="text-primary">Sync</span>
                </h1>
-               <p className="text-muted-foreground/60 max-w-xl text-lg font-medium leading-relaxed">
-                 The pulse of our organization. Coordinate milestones, respect holidays, and celebrate our shared journey.
-               </p>
              </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3">
              {isAdmin && (
                <>
-                 <Button 
-                   variant="outline"
-                   onClick={handleSeedHolidays}
-                   className="h-16 px-8 rounded-2xl border-divider text-[11px] font-black uppercase tracking-widest gap-2 bg-card hover:bg-muted"
-                 >
-                   <Sparkles size={18} className="text-amber-500" />
-                   Seed Holidays
-                 </Button>
+                 {!isSeeded && (
+                   <Button 
+                     variant="outline"
+                     onClick={handleSeedHolidays}
+                     className="h-10 px-5 rounded-xl border-divider text-[9px] font-black uppercase tracking-widest gap-2 bg-card hover:bg-muted"
+                   >
+                     <Sparkles size={14} className="text-amber-500" />
+                     Seed Holidays
+                   </Button>
+                 )}
                  <Button 
                    onClick={() => {
                      setEditingEvent(null);
                      setPreSelectedDate(undefined);
                      setIsAddModeOpen(true);
                    }}
-                   className="h-16 px-10 rounded-2xl text-[11px] font-black uppercase tracking-widest gap-3 shadow-xl shadow-primary/25"
+                   className="h-10 px-6 rounded-xl text-[9px] font-black uppercase tracking-widest gap-2 shadow-lg shadow-primary/20"
                  >
-                   <Plus size={22} strokeWidth={3} />
-                   Create Activity
+                   <Plus size={16} strokeWidth={3} />
+                   Add Activity
                  </Button>
                </>
              )}
@@ -150,22 +168,22 @@ export default function CalendarPage() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-col xl:flex-row gap-8">
-        <div className="flex-1 space-y-6">
-          <div className="flex items-center justify-between bg-card border border-divider px-8 py-5 rounded-[28px] shadow-sm">
-            <div className="flex items-center gap-6">
-              <h2 className="text-3xl font-black text-foreground tabular-nums tracking-tight">
+      <div className="flex flex-col xl:flex-row gap-6">
+        <div className="flex-1 space-y-5">
+          <div className="flex items-center justify-between bg-card border border-divider px-6 py-3.5 rounded-2xl shadow-sm">
+            <div className="flex items-center gap-5">
+              <h2 className="text-xl font-black text-foreground tabular-nums tracking-wider uppercase">
                 {format(currentDate, 'MMMM yyyy')}
               </h2>
-              <div className="flex items-center gap-1.5 bg-muted/30 p-1.5 rounded-2xl border border-divider/50">
-                <Button variant="ghost" size="sm" onClick={handlePrevMonth} className="h-10 w-10 rounded-xl hover:bg-card hover:shadow-sm p-0">
-                  <ChevronLeft size={20} />
+              <div className="flex items-center gap-1 bg-muted/40 p-1 rounded-xl border border-divider/50">
+                <Button variant="ghost" size="sm" onClick={handlePrevMonth} className="h-8 w-8 rounded-lg hover:bg-card">
+                  <ChevronLeft size={16} />
                 </Button>
-                <Button variant="ghost" size="sm" onClick={handleToday} className="h-10 px-4 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-card hover:shadow-sm">
+                <Button variant="ghost" size="sm" onClick={handleToday} className="h-8 px-3 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-card">
                   Today
                 </Button>
-                <Button variant="ghost" size="sm" onClick={handleNextMonth} className="h-10 w-10 rounded-xl hover:bg-card hover:shadow-sm p-0">
-                  <ChevronRight size={20} />
+                <Button variant="ghost" size="sm" onClick={handleNextMonth} className="h-8 w-8 rounded-lg hover:bg-card">
+                  <ChevronRight size={16} />
                 </Button>
               </div>
             </div>
@@ -173,8 +191,8 @@ export default function CalendarPage() {
 
           <div className="min-h-[700px]">
              {loading ? (
-               <div className="h-[700px] flex items-center justify-center bg-card border border-divider rounded-[40px]">
-                 <Loader2 className="w-12 h-12 animate-spin text-primary/40" />
+               <div className="h-[700px] flex items-center justify-center bg-card border border-divider rounded-[32px]">
+                 <Loader2 className="w-10 h-10 animate-spin text-primary/40" />
                </div>
              ) : (
                <CalendarGrid 
@@ -188,15 +206,15 @@ export default function CalendarPage() {
           </div>
         </div>
 
-        {/* Timeline Sidebar */}
-        <div className="xl:w-96 space-y-6">
-           <div className="bg-card/50 backdrop-blur-xl border border-divider rounded-[40px] p-10 space-y-8 sticky top-8 shadow-2xl">
-              <div className="space-y-2">
-                <h3 className="text-xs font-black uppercase tracking-[0.4em] text-primary/60">Upcoming</h3>
-                <h2 className="text-2xl font-black text-foreground">Timeline</h2>
+        {/* Timeline Sidebar - Compactified */}
+        <div className="xl:w-80 space-y-5">
+           <div className="bg-card/50 backdrop-blur-xl border border-divider rounded-[32px] p-6 space-y-6 sticky top-6 shadow-xl">
+              <div className="space-y-1">
+                <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60">Upcoming</h3>
+                <h2 className="text-xl font-black text-foreground uppercase tracking-tight">Timeline</h2>
               </div>
               
-              <div className="space-y-10 relative pl-4 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-px before:bg-divider before:opacity-30">
+              <div className="space-y-6 relative pl-4 before:absolute before:left-0 before:top-2 before:bottom-2 before:w-px before:bg-divider before:opacity-30">
                 {events.filter(e => {
                   const d = new Date(e.startDate);
                   const now = new Date();
@@ -205,16 +223,16 @@ export default function CalendarPage() {
                 }).sort((a,b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()).map((event, idx) => (
                   <div key={idx} className="group relative">
                     {/* Dot */}
-                    <div className="absolute left-[-21px] top-1.5 w-2.5 h-2.5 rounded-full bg-divider border-4 border-card outline outline-1 outline-divider group-hover:bg-primary group-hover:outline-primary/40 transition-all duration-500" />
+                    <div className="absolute left-[-21px] top-1 w-2 h-2 rounded-full bg-divider border-2 border-card outline outline-1 outline-divider group-hover:bg-primary group-hover:outline-primary/40 transition-all duration-500" />
                     
-                    <div className="space-y-2">
-                       <span className="inline-flex items-center px-3 py-1 bg-muted/80 rounded-xl text-[10px] font-black text-muted-foreground uppercase tracking-[0.1em]">
+                    <div className="space-y-1.5">
+                       <span className="text-[9px] font-black text-primary/60 uppercase tracking-widest">
                          {format(new Date(event.startDate), 'MMM dd')}
                        </span>
-                       <div className="p-5 rounded-2xl border border-divider hover:border-primary/20 hover:bg-primary/[0.02] hover:shadow-xl hover:shadow-primary/[0.03] transition-all duration-500 cursor-pointer" onClick={() => handleSelectDay(new Date(event.startDate), events.filter((e: any) => isSameDay(new Date(e.startDate), new Date(event.startDate))))}>
-                          <h4 className="text-base font-black text-foreground group-hover:text-primary transition-colors">{event.title}</h4>
-                          <p className="text-xs text-muted-foreground line-clamp-2 mt-1.5 leading-relaxed font-medium opacity-60 italic whitespace-pre-wrap">
-                            {event.description || 'No description provided'}
+                       <div className="p-3.5 rounded-xl border border-divider bg-muted/20 hover:border-primary/20 hover:bg-primary/[0.02] transition-all duration-300 cursor-pointer" onClick={() => handleSelectDay(new Date(event.startDate), events.filter((e: any) => isSameDay(new Date(e.startDate), new Date(event.startDate))))}>
+                          <h4 className="text-xs font-black text-foreground group-hover:text-primary transition-colors leading-tight uppercase tracking-tight">{event.title}</h4>
+                          <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 font-medium opacity-60 italic leading-none">
+                            {event.description || 'No description'}
                           </p>
                        </div>
                     </div>
@@ -227,9 +245,9 @@ export default function CalendarPage() {
                   now.setHours(0,0,0,0);
                   return d >= now && d <= addDays(now, 30);
                 }).length === 0 && (
-                  <div className="py-20 text-center space-y-4 opacity-40">
-                    <AlertCircle className="w-12 h-12 mx-auto text-muted-foreground" strokeWidth={1} />
-                    <p className="text-xs font-black uppercase tracking-widest leading-loose">No upcoming<br/>milestones found</p>
+                  <div className="py-12 text-center space-y-3 opacity-30">
+                    <AlertCircle className="w-8 h-8 mx-auto text-muted-foreground" strokeWidth={1.5} />
+                    <p className="text-[8px] font-black uppercase tracking-widest leading-loose">No upcoming<br/>milestones</p>
                   </div>
                 )}
               </div>
