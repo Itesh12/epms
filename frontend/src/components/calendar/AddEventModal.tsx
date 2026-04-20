@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Calendar, Type, AlignLeft, Info } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { CustomSelect, SelectOption } from '@/components/ui/CustomSelect';
@@ -20,9 +20,11 @@ interface AddEventModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  initialEvent?: any;
+  preSelectedDate?: string;
 }
 
-export function AddEventModal({ isOpen, onClose, onSuccess }: AddEventModalProps) {
+export function AddEventModal({ isOpen, onClose, onSuccess, initialEvent, preSelectedDate }: AddEventModalProps) {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -30,6 +32,43 @@ export function AddEventModal({ isOpen, onClose, onSuccess }: AddEventModalProps
     startDate: '',
     type: 'EVENT',
   });
+
+  // Sync state with initialEvent or preSelectedDate
+  useState(() => {
+    if (initialEvent) {
+      setFormData({
+        title: initialEvent.title || '',
+        description: initialEvent.description || '',
+        startDate: initialEvent.startDate ? new Date(initialEvent.startDate).toISOString().split('T')[0] : '',
+        type: initialEvent.type || 'EVENT',
+      });
+    } else if (preSelectedDate) {
+      setFormData(prev => ({ ...prev, startDate: preSelectedDate }));
+    }
+  });
+
+  // Also sync on prop changes when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      if (initialEvent) {
+        setFormData({
+          title: initialEvent.title || '',
+          description: initialEvent.description || '',
+          startDate: initialEvent.startDate ? new Date(initialEvent.startDate).toISOString().split('T')[0] : '',
+          type: initialEvent.type || 'EVENT',
+        });
+      } else if (preSelectedDate) {
+        setFormData({
+           title: '',
+           description: '',
+           startDate: preSelectedDate,
+           type: 'EVENT'
+        });
+      } else {
+        setFormData({ title: '', description: '', startDate: '', type: 'EVENT' });
+      }
+    }
+  }, [isOpen, initialEvent, preSelectedDate]);
 
   if (!isOpen) return null;
 
@@ -42,13 +81,17 @@ export function AddEventModal({ isOpen, onClose, onSuccess }: AddEventModalProps
 
     setLoading(true);
     try {
-      await api.post('/calendar', formData);
-      toast.success('Event added successfully');
-      setFormData({ title: '', description: '', startDate: '', type: 'EVENT' });
+      if (initialEvent?._id) {
+        await api.patch(`/calendar/${initialEvent._id}`, formData);
+        toast.success('Event updated successfully');
+      } else {
+        await api.post('/calendar', formData);
+        toast.success('Event added successfully');
+      }
       onSuccess();
       onClose();
     } catch (error) {
-      toast.error('Failed to add event');
+      toast.error('Failed to save event');
     } finally {
       setLoading(false);
     }
@@ -65,8 +108,12 @@ export function AddEventModal({ isOpen, onClose, onSuccess }: AddEventModalProps
               <Calendar size={22} />
             </div>
             <div>
-              <h2 className="text-xl font-black text-foreground uppercase tracking-tight leading-none mb-1">New Hub Entry</h2>
-              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">Schedule an organization event</p>
+              <h2 className="text-xl font-black text-foreground uppercase tracking-tight leading-none mb-1">
+                {initialEvent ? 'Edit Hub Entry' : 'New Hub Entry'}
+              </h2>
+              <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">
+                {initialEvent ? 'Update existing activity' : 'Schedule an organization event'}
+              </p>
             </div>
           </div>
           <button onClick={onClose} className="p-3 text-muted-foreground hover:text-foreground hover:bg-muted rounded-2xl transition-all">
@@ -135,7 +182,7 @@ export function AddEventModal({ isOpen, onClose, onSuccess }: AddEventModalProps
               Cancel
             </Button>
             <Button disabled={loading} type="submit" className="flex-1 h-14 rounded-2xl font-black text-[11px] uppercase tracking-widest shadow-xl shadow-primary/20">
-              {loading ? 'Creating...' : 'Confirm Entry'}
+              {loading ? 'Saving...' : initialEvent ? 'Update Entry' : 'Confirm Entry'}
             </Button>
           </div>
           

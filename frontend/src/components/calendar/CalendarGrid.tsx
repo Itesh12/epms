@@ -21,9 +21,10 @@ interface CalendarGridProps {
   events: any[];
   isAdmin: boolean;
   onRefresh: () => void;
+  onSelectDay: (day: Date, events: any[]) => void;
 }
 
-export function CalendarGrid({ currentDate, events, isAdmin, onRefresh }: CalendarGridProps) {
+export function CalendarGrid({ currentDate, events, isAdmin, onRefresh, onSelectDay }: CalendarGridProps) {
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(monthStart);
   const startDate = startOfWeek(monthStart);
@@ -38,36 +39,22 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh }: Calend
     return events.filter(event => isSameDay(new Date(event.startDate), day));
   };
 
-  const handleDelete = async (e: React.MouseEvent, id: string) => {
-    e.stopPropagation();
-    if (!isAdmin) return;
-    if (!confirm('Are you sure you want to delete this event?')) return;
-
-    try {
-      await api.delete(`/calendar/${id}`);
-      toast.success('Event removed');
-      onRefresh();
-    } catch {
-      toast.error('Failed to delete event');
-    }
-  };
-
   const typeConfig: any = {
-    HOLIDAY: { dot: 'bg-red-500', text: 'text-red-500', bg: 'bg-red-500/10 border-red-500/20' },
-    EVENT: { dot: 'bg-primary', text: 'text-primary', bg: 'bg-primary/10 border-primary/20' },
-    OFFICE_CLOSURE: { dot: 'bg-slate-500', text: 'text-slate-500', bg: 'bg-slate-500/10 border-slate-500/20' },
-    DEADLINE: { dot: 'bg-amber-500', text: 'text-amber-500', bg: 'bg-amber-500/10 border-amber-500/20' },
-    TEAM_OUTING: { dot: 'bg-emerald-500', text: 'text-emerald-500', bg: 'bg-emerald-500/10 border-emerald-500/20' },
-    OTHER: { dot: 'bg-muted-foreground', text: 'text-muted-foreground', bg: 'bg-muted/10 border-divider' },
+    HOLIDAY: { border: 'border-red-500', text: 'text-red-500', bg: 'bg-red-500/5 hover:bg-red-500/10' },
+    EVENT: { border: 'border-primary', text: 'text-primary', bg: 'bg-primary/5 hover:bg-primary/10' },
+    OFFICE_CLOSURE: { border: 'border-slate-500', text: 'text-slate-500', bg: 'bg-slate-500/5 hover:bg-slate-500/10' },
+    DEADLINE: { border: 'border-amber-500', text: 'text-amber-500', bg: 'bg-amber-500/5 hover:bg-amber-500/10' },
+    TEAM_OUTING: { border: 'border-emerald-500', text: 'text-emerald-500', bg: 'bg-emerald-500/5 hover:bg-emerald-500/10' },
+    OTHER: { border: 'border-divider', text: 'text-muted-foreground', bg: 'bg-muted/5 hover:bg-muted/10' },
   };
 
   return (
-    <div className="flex flex-col h-full rounded-2xl overflow-hidden bg-muted/5">
+    <div className="flex flex-col h-full rounded-[32px] overflow-hidden bg-card border border-divider shadow-2xl">
       {/* Week Day Headers */}
-      <div className="grid grid-cols-7 border-b border-divider bg-muted/20">
+      <div className="grid grid-cols-7 border-b border-divider bg-muted/5">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="py-4 text-center">
-            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground opacity-60">
+          <div key={day} className="py-6 text-center border-r border-divider/50 last:border-r-0">
+            <span className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground/60 leading-none">
               {day}
             </span>
           </div>
@@ -75,65 +62,68 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh }: Calend
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-7 flex-1 bg-divider gap-[1px]">
+      <div className="grid grid-cols-7 flex-1 bg-divider/10 gap-px">
         {days.map((day, idx) => {
           const dayEvents = getEventsForDay(day);
           const isCurrentMonth = isSameMonth(day, monthStart);
           const isTodayDate = isToday(day);
+          const displayEvents = dayEvents.slice(0, 2);
+          const moreCount = dayEvents.length - displayEvents.length;
 
           return (
             <div 
               key={idx} 
+              onClick={() => onSelectDay(day, dayEvents)}
               className={cn(
-                "min-h-[140px] p-3 transition-colors bg-card flex flex-col gap-2 group/day",
-                !isCurrentMonth && "bg-muted/10 opacity-30",
-                isTodayDate && "bg-primary/[0.03]"
+                "min-h-[140px] lg:min-h-[160px] p-4 transition-all duration-300 bg-card flex flex-col gap-3 group/day cursor-pointer relative",
+                !isCurrentMonth && "bg-muted/[0.03] opacity-25",
+                isTodayDate && "after:absolute after:inset-0 after:bg-primary/[0.03] after:pointer-events-none"
               )}
             >
-              <div className="flex items-center justify-between pointer-events-none">
+              <div className="flex items-center justify-between mb-1">
                 <span className={cn(
-                  "text-sm font-black tabular-nums transition-all",
-                  isTodayDate ? "text-primary scale-125" : "text-foreground group-hover/day:text-primary/60",
+                  "text-base font-black tabular-nums transition-colors",
+                  isTodayDate ? "text-primary px-2.5 py-1 bg-primary/10 rounded-xl" : "text-foreground group-hover/day:text-primary",
                   !isCurrentMonth && "text-muted-foreground"
                 )}>
                   {format(day, 'd')}
                 </span>
-                {isTodayDate && (
-                  <span className="text-[8px] font-black uppercase tracking-tighter text-primary bg-primary/10 px-1.5 py-0.5 rounded-md">Today</span>
+                
+                {isAdmin && (
+                  <div className="opacity-0 group-hover/day:opacity-40 transition-opacity">
+                    <div className="w-6 h-6 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                       <span className="text-xs font-black">+</span>
+                    </div>
+                  </div>
                 )}
               </div>
 
-              <div className="space-y-1.5 flex-1 max-h-[120px] overflow-y-auto no-scrollbar">
-                {dayEvents.map((event, eIdx) => {
+              <div className="space-y-1.5 flex-1 overflow-hidden pointer-events-none">
+                {displayEvents.map((event, eIdx) => {
                   const cfg = typeConfig[event.type] || typeConfig.OTHER;
                   return (
                     <div 
                       key={eIdx} 
                       className={cn(
-                        "group relative px-2 py-1.5 rounded-lg border flex flex-col gap-0.5 transition-all animate-in zoom-in-95 cursor-default",
-                        cfg.bg
+                        "group/evt pl-2.5 pr-2 py-2 rounded-xl border-l-[3px] transition-all flex flex-col gap-0.5",
+                        cfg.bg,
+                        cfg.border
                       )}
-                      title={event.description}
                     >
-                      <div className="flex items-center justify-between gap-1">
-                        <div className="flex items-center gap-1.5 min-w-0">
-                          <div className={cn("w-1.5 h-1.5 rounded-full shrink-0", cfg.dot)} />
-                          <span className={cn("text-[10px] font-bold leading-none truncate uppercase tracking-tight", cfg.text)}>
-                            {event.title}
-                          </span>
-                        </div>
-                        {isAdmin && (
-                          <button 
-                            onClick={(e) => handleDelete(e, event._id)}
-                            className="p-1 rounded-md text-muted-foreground hover:text-red-500 hover:bg-red-500/10 opacity-0 group-hover:opacity-100 transition-all shrink-0"
-                          >
-                            <Trash2 size={10} />
-                          </button>
-                        )}
-                      </div>
+                      <span className={cn("text-[9px] font-black uppercase tracking-widest truncate leading-tight", cfg.text)}>
+                        {event.title}
+                      </span>
                     </div>
                   );
                 })}
+
+                {moreCount > 0 && (
+                   <div className="mt-1 flex items-center gap-1.5 px-2.5 py-1 bg-muted rounded-full w-fit">
+                      <span className="text-[8px] font-black text-muted-foreground uppercase tracking-widest whitespace-nowrap">
+                        +{moreCount} more
+                      </span>
+                   </div>
+                )}
               </div>
             </div>
           );
@@ -142,3 +132,4 @@ export function CalendarGrid({ currentDate, events, isAdmin, onRefresh }: Calend
     </div>
   );
 }
+

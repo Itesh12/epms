@@ -12,7 +12,7 @@ export class CalendarController {
 
   @Get()
   findAll(@Request() req: any) {
-    return this.calendarService.findAll(req.user.organizationId);
+    return this.calendarService.findAll(req.user.orgId);
   }
 
   @Post()
@@ -20,7 +20,7 @@ export class CalendarController {
   create(@Request() req: any, @Body() body: any) {
     return this.calendarService.create({
       ...body,
-      organizationId: req.user.organizationId,
+      organizationId: req.user.orgId,
       createdBy: req.user.userId,
     });
   }
@@ -40,6 +40,6 @@ export class CalendarController {
   @Post('seed-holidays')
   @Roles(UserRole.ADMIN)
   seedHolidays(@Request() req: any) {
-    return this.calendarService.seedHolidays(req.user.organizationId, req.user.userId);
+    return this.calendarService.seedHolidays(req.user.orgId, req.user.userId);
   }
 }
