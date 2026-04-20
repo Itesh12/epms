@@ -17,6 +17,7 @@ import { AnnouncementsModule } from './modules/announcements/announcements.modul
 import { FinanceModule } from './modules/finance/finance.module';
 import { AssetsModule } from './modules/assets/assets.module';
 import { WikiModule } from './modules/wiki/wiki.module';
+import { PollsModule } from './modules/polls/polls.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -40,6 +41,7 @@ import configuration from './config/configuration';
     FinanceModule,
     AssetsModule,
     WikiModule,
+    PollsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

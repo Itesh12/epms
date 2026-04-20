@@ -35,6 +35,7 @@ const navItems = [
   { label: 'Finance', icon: Wallet, href: '/finance' },
   { label: 'Assets', icon: Package, href: '/assets' },
   { label: 'Knowledge Base', icon: BookOpen, href: '/wiki' },
+  { label: 'Polls & Feedback', icon: BarChart3, href: '/polls' },
   { label: 'Settings', icon: Settings, href: '/settings' },
 ];
 
