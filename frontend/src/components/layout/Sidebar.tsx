@@ -12,7 +12,8 @@ import {
   Trophy,
   X,
   Clock,
-  Calendar
+  Calendar,
+  Megaphone
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -27,6 +28,7 @@ const navItems = [
   { label: 'Connect Hub', icon: Calendar, href: '/calendar' },
   { label: 'Performance', icon: Trophy, href: '/performance' },
   { label: 'Analytics', icon: BarChart3, href: '/analytics' },
+  { label: 'Announcements', icon: Megaphone, href: '/announcements' },
   { label: 'Settings', icon: Settings, href: '/settings' },
 ];
 
@@ -85,6 +87,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               {navItems
                 .filter(item => {
                   if (item.href === '/analytics' && user?.role !== 'ADMIN') return false;
+                  if (item.href === '/announcements' && user?.role !== 'ADMIN') return false;
                   return true;
                 })
                 .map((item, idx) => {

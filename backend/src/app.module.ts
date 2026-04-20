@@ -13,6 +13,7 @@ import { OrganizationsModule } from './modules/organizations/organizations.modul
 import { TasksModule } from './modules/tasks/tasks.module';
 import { AttendanceModule } from './modules/attendance/attendance.module';
 import { CalendarModule } from './modules/calendar/calendar.module';
+import { AnnouncementsModule } from './modules/announcements/announcements.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -32,6 +33,7 @@ import configuration from './config/configuration';
     TasksModule,
     AttendanceModule,
     CalendarModule,
+    AnnouncementsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

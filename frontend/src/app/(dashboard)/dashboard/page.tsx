@@ -20,6 +20,7 @@ import {
 import { useAuthStore } from '@/store/useAuthStore';
 import api from '@/services/api';
 import { Button } from '@/components/ui/Button';
+import { BroadcastBanner } from '@/components/announcements/BroadcastBanner';
 
 function StatCard({ title, value, icon, trend, color }: { title: string, value: string | number, icon: React.ReactNode, trend: string, color: string }) {
   const colorMap: Record<string, string> = {
@@ -95,6 +96,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6 animate-in fade-in duration-700 max-w-[1400px]">
+      <BroadcastBanner />
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-3">
         <div className="space-y-1">
           <div className="flex items-center gap-2 mb-1">
