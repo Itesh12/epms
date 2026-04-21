@@ -19,10 +19,10 @@ export default function SettingsPage() {
            </div>
            <p className="text-[9px] font-black text-primary/60 uppercase tracking-[0.2em]">System Controls</p>
         </div>
-        <h1 className="text-2xl font-black text-white uppercase tracking-widest leading-none">
+        <h1 className="text-2xl font-black text-foreground uppercase tracking-widest leading-none">
           Settings
         </h1>
-        <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-2 max-w-2xl opacity-50">
+        <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-2 max-w-2xl">
           Configure personal profiles, organizational parameters, and interface appearance.
         </p>
       </div>
@@ -36,7 +36,7 @@ export default function SettingsPage() {
               "flex items-center justify-between px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border",
               activeTab === 'profile' 
                 ? 'bg-primary text-white border-primary shadow-lg shadow-primary/10 scale-[1.01]' 
-                : 'bg-white/[0.02] text-white/40 border-white/5 hover:border-white/10 hover:text-white'
+                : 'bg-muted/10 text-muted-foreground border-divider hover:border-primary/20 hover:text-foreground'
             )}
           >
             <div className="flex items-center gap-3">
@@ -51,7 +51,7 @@ export default function SettingsPage() {
               "flex items-center justify-between px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border",
               activeTab === 'organization' 
                 ? 'bg-primary text-white border-primary shadow-lg shadow-primary/10 scale-[1.01]' 
-                : 'bg-white/[0.02] text-white/40 border-white/5 hover:border-white/10 hover:text-white'
+                : 'bg-muted/10 text-muted-foreground border-divider hover:border-primary/20 hover:text-foreground'
             )}
           >
             <div className="flex items-center gap-3">
@@ -66,7 +66,7 @@ export default function SettingsPage() {
               "flex items-center justify-between px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border",
               activeTab === 'appearance' 
                 ? 'bg-primary text-white border-primary shadow-lg shadow-primary/10 scale-[1.01]' 
-                : 'bg-white/[0.02] text-white/40 border-white/5 hover:border-white/10 hover:text-white'
+                : 'bg-muted/10 text-muted-foreground border-divider hover:border-primary/20 hover:text-foreground'
             )}
           >
             <div className="flex items-center gap-3">
@@ -77,7 +77,7 @@ export default function SettingsPage() {
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 bg-white/[0.02] border border-white/5 rounded-2xl p-8 shadow-sm relative overflow-hidden min-h-[500px]">
+        <div className="flex-1 bg-card border border-divider rounded-2xl p-8 shadow-sm relative overflow-hidden min-h-[500px]">
           <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/20 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/2 pointer-events-none opacity-20" />
           
           <div className="relative z-10 h-full">

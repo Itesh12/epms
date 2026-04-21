@@ -35,18 +35,17 @@ function StatCard({ title, value, icon, trend, color }: { title: string, value: 
       <div className="flex items-center justify-between mb-4">
         <div className={`w-9 h-9 rounded-xl flex items-center justify-center border transition-all duration-500 ${colorMap[color]}`}>
           {typeof icon === 'object' && (icon as any).type ? (icon as any) : icon} 
-          {/* Note: In React we just render icon, but I'll ensure size passed is small */}
         </div>
-        <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest opacity-60">{title}</span>
+        <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">{title}</span>
       </div>
       <div className="flex items-baseline gap-2">
         <h2 className="text-2xl font-black text-foreground tracking-tight">{value}</h2>
       </div>
       <div className="mt-4 flex items-center gap-2">
-        <div className="h-1.5 flex-1 bg-muted rounded-full overflow-hidden">
+        <div className="h-1.5 flex-1 bg-muted rounded-full overflow-hidden border border-divider/50">
           <div className="h-full bg-primary/40 rounded-full w-2/3" />
         </div>
-        <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest whitespace-nowrap opacity-40">{trend}</span>
+        <span className="text-[9px] font-black text-muted-foreground/80 uppercase tracking-widest whitespace-nowrap">{trend}</span>
       </div>
     </div>
   );
@@ -60,8 +59,8 @@ function ActivityItem({ text, time }: { text: string, time: string }) {
         <div className="absolute top-4 bottom-0 left-[3.5px] w-[1px] bg-divider group-last:hidden" />
       </div>
       <div className="flex-1">
-        <p className="text-xs font-bold text-foreground opacity-80 group-hover:opacity-100 transition-opacity leading-relaxed">{text}</p>
-        <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mt-0.5 opacity-40">{time}</p>
+        <p className="text-xs font-bold text-foreground leading-relaxed">{text}</p>
+        <p className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-widest mt-0.5">{time}</p>
       </div>
     </div>
   );
@@ -105,8 +104,8 @@ export default function DashboardPage() {
           <h1 className="text-2xl font-black text-foreground uppercase tracking-widest leading-none">
             Hello, <span className="text-primary">{user?.email.split('@')[0]}</span>
           </h1>
-          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest mt-2 max-w-xl opacity-60">
-            Current system activity is at <span className="text-foreground font-bold">94%</span>. Monitoring all project pipelines.
+          <p className="text-[10px] text-muted-foreground/80 font-black uppercase tracking-widest mt-2 max-w-xl">
+            Current system activity is at <span className="text-foreground font-black">94%</span>. Monitoring all project pipelines.
           </p>
         </div>
       </div>
@@ -147,10 +146,10 @@ export default function DashboardPage() {
           <div className="flex items-center justify-between mb-8 relative z-10">
             <div>
               <h3 className="text-sm font-black text-foreground uppercase tracking-widest">Activity Overview</h3>
-              <p className="text-[9px] font-black text-muted-foreground mt-1 uppercase tracking-widest opacity-40">Monthly Progress</p>
+              <p className="text-[9px] font-black text-muted-foreground/80 mt-1 uppercase tracking-widest">Monthly Progress</p>
             </div>
             <div className="flex gap-2">
-               <div className="px-2 py-1 bg-muted/50 rounded-md text-[9px] font-black text-muted-foreground uppercase tracking-widest border border-divider opacity-60">MTD</div>
+               <div className="px-2 py-1 bg-muted rounded-md text-[9px] font-black text-muted-foreground uppercase tracking-widest border border-divider">MTD</div>
             </div>
           </div>
 

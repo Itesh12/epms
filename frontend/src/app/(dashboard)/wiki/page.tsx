@@ -483,15 +483,15 @@ export default function WikiPage() {
       </div>
 
       <style jsx global>{`
-        .dark-markdown h1 { font-size: 2.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; border-bottom: 2px solid var(--divider); padding-bottom: 1rem; margin-bottom: 2rem; }
+        .dark-markdown h1 { font-size: 2.25rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; border-bottom: 2px solid var(--divider); padding-bottom: 1rem; margin-bottom: 2rem; color: var(--foreground); }
         .dark-markdown h2 { font-size: 1.5rem; font-weight: 900; text-transform: uppercase; letter-spacing: -0.025em; margin-top: 2.5rem; margin-bottom: 1rem; color: var(--primary); }
-        .dark-markdown h3 { font-size: 1.125rem; font-weight: 900; text-transform: uppercase; margin-top: 2rem; margin-bottom: 0.75rem; }
-        .dark-markdown p { line-height: 1.8; margin-bottom: 1.5rem; color: rgba(255,255,255,0.8); font-weight: 500; font-size: 0.9375rem; }
+        .dark-markdown h3 { font-size: 1.125rem; font-weight: 900; text-transform: uppercase; margin-top: 2rem; margin-bottom: 0.75rem; color: var(--foreground); }
+        .dark-markdown p { line-height: 1.8; margin-bottom: 1.5rem; color: var(--muted-foreground); font-weight: 500; font-size: 0.9375rem; }
         .dark-markdown ul { list-style-type: none; margin-bottom: 1.5rem; padding-left: 1.5rem; }
-        .dark-markdown li { position: relative; margin-bottom: 0.75rem; line-height: 1.6; font-weight: 500; color: rgba(255,255,255,0.7); }
+        .dark-markdown li { position: relative; margin-bottom: 0.75rem; line-height: 1.6; font-weight: 500; color: var(--muted-foreground); }
         .dark-markdown li::before { content: ""; position: absolute; left: -1.25rem; top: 0.625rem; width: 0.5rem; height: 1px; background: var(--primary); }
-        .dark-markdown code { background: rgba(var(--primary-rgb), 0.1); color: var(--primary); padding: 0.2rem 0.4rem; rounded: 0.375rem; font-family: monospace; font-size: 0.875rem; }
-        .dark-markdown blockquote { border-left: 4px solid var(--primary); padding-left: 1.5rem; font-style: italic; opacity: 0.7; margin-bottom: 1.5rem; }
+        .dark-markdown code { background: var(--primary-muted); color: var(--primary); padding: 0.2rem 0.4rem; border-radius: 0.375rem; font-family: monospace; font-size: 0.875rem; }
+        .dark-markdown blockquote { border-left: 4px solid var(--primary); padding-left: 1.5rem; font-style: italic; color: var(--muted-foreground); opacity: 0.8; margin-bottom: 1.5rem; }
       `}</style>
     </div>
   );

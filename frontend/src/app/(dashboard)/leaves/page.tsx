@@ -161,7 +161,7 @@ export default function LeavesPage() {
           <h1 className="text-2xl font-black text-foreground uppercase tracking-tight">
             Leave <span className="text-primary">Management</span>
           </h1>
-          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">Manage entitlements, track balances, and plan your downtime.</p>
+          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest leading-none">Manage entitlements, track balances, and plan your downtime.</p>
         </div>
 
         <Button 
@@ -331,7 +331,7 @@ export default function LeavesPage() {
                                     <div className="p-2 rounded-lg bg-muted border border-divider text-muted-foreground">
                                        <FileText size={14} />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-tighter opacity-40">#{req._id.slice(-6)}</span>
+                                    <span className="text-[10px] font-black uppercase tracking-tighter text-muted-foreground/60">#{req._id.slice(-6)}</span>
                                  </div>
                               </td>
                               {activeTab === 'APPROVALS' && (
@@ -347,7 +347,7 @@ export default function LeavesPage() {
                               <td className="p-5">
                                  <div className="flex flex-col">
                                     <span className="text-[10px] font-black uppercase tracking-tight">{req.type}</span>
-                                    <span className="text-[8px] text-muted-foreground uppercase tracking-widest opacity-40 truncate max-w-[150px]">"{req.reason}"</span>
+                                    <span className="text-[8px] text-muted-foreground uppercase tracking-widest font-bold truncate max-w-[150px]">"{req.reason}"</span>
                                  </div>
                               </td>
                               <td className="p-5">
@@ -356,7 +356,7 @@ export default function LeavesPage() {
                                        <span className="text-[10px] font-bold">{format(parseISO(req.startDate), 'MMM dd, yyyy')}</span>
                                        <span className="text-[8px] text-muted-foreground uppercase font-black uppercase tracking-tighter">Start Date</span>
                                     </div>
-                                    <ArrowRight size={10} className="text-muted-foreground opacity-30" />
+                                    <ArrowRight size={10} className="text-primary/40" />
                                     <div className="flex flex-col">
                                        <span className="text-[10px] font-bold">{format(parseISO(req.endDate), 'MMM dd, yyyy')}</span>
                                        <span className="text-[8px] text-muted-foreground uppercase font-black uppercase tracking-tighter">End Date</span>
@@ -394,7 +394,7 @@ export default function LeavesPage() {
                                        </button>
                                     </div>
                                  ) : (
-                                    <span className="text-[8px] text-muted-foreground uppercase font-black tracking-widest opacity-30">
+                                    <span className="text-[8px] text-muted-foreground uppercase font-black tracking-widest">
                                        {formatDistanceToNow(parseISO(req.createdAt))} ago
                                     </span>
                                  )}

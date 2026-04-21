@@ -65,12 +65,12 @@ export default function PerformancePage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-4 bg-muted/60 p-1.5 rounded-2xl border border-divider shadow-sm">
+        <div className="flex items-center gap-4 bg-card p-1.5 rounded-2xl border border-divider shadow-sm">
           <div className="flex flex-col items-end px-4">
             <span className="text-[9px] font-black text-muted-foreground uppercase tracking-widest">Global Status</span>
             <span className="text-xs font-black text-emerald-500 uppercase tracking-tighter">OPTIMIZED</span>
           </div>
-          <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500 border border-emerald-500/10">
+          <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-500 border border-emerald-500/20">
             <Activity size={20} />
           </div>
         </div>
@@ -86,7 +86,7 @@ export default function PerformancePage() {
 
             <div className="relative z-10">
               <div className="flex items-center gap-3">
-                <span className="text-[10px] font-black bg-white/20 px-3 py-1 rounded-full uppercase tracking-widest border border-white/10 inline-block backdrop-blur-md">Elite Performer</span>
+                <span className="text-[10px] font-black bg-white/10 dark:bg-black/20 px-3 py-1 rounded-full uppercase tracking-widest border border-white/20 dark:border-white/10 inline-block backdrop-blur-md">Elite Performer</span>
                 <Zap size={14} className="text-white/60" />
               </div>
               <h2 className="text-3xl font-black mt-4 break-all tracking-tight leading-[0.9] group-hover:translate-x-1 transition-transform cursor-default">

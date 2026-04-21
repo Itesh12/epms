@@ -131,7 +131,7 @@ export function OrganizationSettingsTab() {
              <h2 className="text-[9px] font-black text-primary uppercase tracking-[0.2em] leading-none mb-0.5">Brand Identity Hub</h2>
           </div>
           <h1 className="text-2xl font-black text-foreground uppercase tracking-tight">Organization <span className="text-primary">Branding</span></h1>
-          <p className="text-[10px] text-muted-foreground/60 font-medium max-w-sm uppercase tracking-widest leading-relaxed">
+          <p className="text-[10px] text-muted-foreground font-medium max-w-sm uppercase tracking-widest leading-relaxed">
              Define your corporate aesthetics, logo, and metadata to professionalize your entire workspace.
           </p>
         </div>
@@ -149,7 +149,7 @@ export function OrganizationSettingsTab() {
                     <p className="text-[8px] font-black text-white uppercase tracking-widest">Logo Preview</p>
                  </div>
               </div>
-              <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/40 text-center">Brand Mark</span>
+              <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/60 text-center">Brand Mark</span>
            </div>
 
            {/* Color Preview */}
@@ -162,7 +162,7 @@ export function OrganizationSettingsTab() {
                     <p className="text-[8px] font-black text-white uppercase tracking-widest">Aura Theme</p>
                  </div>
               </div>
-              <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/40 text-center">Dynamic Gradient</span>
+              <span className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/60 text-center">Dynamic Gradient</span>
            </div>
         </div>
       </div>
@@ -170,8 +170,8 @@ export function OrganizationSettingsTab() {
       <form onSubmit={handleSubmit} className="space-y-12">
         {/* Core Identity Grid */}
         <section className="space-y-6">
-           <div className="flex items-center gap-3 opacity-60">
-              <p className="text-[10px] font-black uppercase tracking-widest leading-none">Core Identity</p>
+           <div className="flex items-center gap-3">
+              <p className="text-[10px] font-black uppercase tracking-widest leading-none text-muted-foreground">Core Identity</p>
               <div className="h-px flex-1 bg-divider" />
            </div>
            
@@ -196,8 +196,8 @@ export function OrganizationSettingsTab() {
 
         {/* Brand Theme Colors */}
         <section className="space-y-6">
-           <div className="flex items-center gap-3 opacity-60">
-              <p className="text-[10px] font-black uppercase tracking-widest leading-none">Aura Design System</p>
+           <div className="flex items-center gap-3">
+              <p className="text-[10px] font-black uppercase tracking-widest leading-none text-muted-foreground">Aura Design System</p>
               <div className="h-px flex-1 bg-divider" />
            </div>
 
@@ -245,8 +245,8 @@ export function OrganizationSettingsTab() {
 
         {/* Corporate Metadata */}
         <section className="space-y-6">
-           <div className="flex items-center gap-3 opacity-60">
-              <p className="text-[10px] font-black uppercase tracking-widest leading-none">Corporate Metadata</p>
+           <div className="flex items-center gap-3">
+              <p className="text-[10px] font-black uppercase tracking-widest leading-none text-muted-foreground">Corporate Metadata</p>
               <div className="h-px flex-1 bg-divider" />
            </div>
 
@@ -301,12 +301,12 @@ export function OrganizationSettingsTab() {
 
         {/* Action Controls */}
         <div className="pt-10 flex border-t border-divider gap-4 items-center justify-between">
-           <div className="flex items-center gap-4 opacity-30">
+           <div className="flex items-center gap-4 text-muted-foreground/40">
               <div className="p-2 border border-divider rounded-xl">
                  <Target size={14} />
               </div>
               <div>
-                 <p className="text-[8px] font-black uppercase tracking-widest leading-none mb-1 text-muted-foreground">System Authority</p>
+                 <p className="text-[8px] font-black uppercase tracking-widest leading-none mb-1">System Authority</p>
                  <p className="text-[9px] font-black text-primary tracking-widest leading-none">EPMS-ORG-ROOT</p>
               </div>
            </div>

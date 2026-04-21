@@ -95,7 +95,7 @@ export default function AnnouncementsPage() {
           <h1 className="text-4xl font-black text-foreground uppercase tracking-tight leading-none">
             Broadcasting <span className="text-primary">Center</span>
           </h1>
-          <p className="text-sm text-muted-foreground font-medium opacity-60">Manage system-wide announcements and critical organization updates.</p>
+          <p className="text-sm text-muted-foreground font-medium">Manage system-wide announcements and critical organization updates.</p>
         </div>
 
         <Button 
@@ -164,7 +164,7 @@ export default function AnnouncementsPage() {
                             "flex items-center gap-2 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all",
                             item.isActive && !isExpired 
                               ? "bg-emerald-500/10 text-emerald-500 border border-emerald-500/20" 
-                              : "bg-muted text-muted-foreground opacity-50"
+                              : "bg-muted text-muted-foreground/60"
                           )}
                         >
                           {item.isActive && !isExpired ? (
@@ -192,7 +192,7 @@ export default function AnnouncementsPage() {
                       </td>
                       <td className="px-8 py-6">
                          <div className="flex items-center gap-2 text-muted-foreground">
-                           <Clock size={14} className="opacity-40" />
+                           <Clock size={14} className="text-muted-foreground/40" />
                            <span className={cn("text-xs font-medium", isExpired && "text-red-500 font-bold")}>
                              {item.expiresAt ? format(new Date(item.expiresAt), 'MMM dd, yyyy') : 'Never'}
                            </span>

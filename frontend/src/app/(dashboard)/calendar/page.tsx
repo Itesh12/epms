@@ -208,7 +208,7 @@ export default function CalendarPage() {
 
         {/* Timeline Sidebar - Compactified */}
         <div className="xl:w-80 space-y-5">
-           <div className="bg-card/50 backdrop-blur-xl border border-divider rounded-[32px] p-6 space-y-6 sticky top-6 shadow-xl">
+           <div className="bg-card border border-divider rounded-[32px] p-6 space-y-6 sticky top-6 shadow-xl">
               <div className="space-y-1">
                 <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/60">Upcoming</h3>
                 <h2 className="text-xl font-black text-foreground uppercase tracking-tight">Timeline</h2>
@@ -223,7 +223,7 @@ export default function CalendarPage() {
                 }).sort((a,b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()).map((event, idx) => (
                   <div key={idx} className="group relative">
                     {/* Dot */}
-                    <div className="absolute left-[-21px] top-1 w-2 h-2 rounded-full bg-divider border-2 border-card outline outline-1 outline-divider group-hover:bg-primary group-hover:outline-primary/40 transition-all duration-500" />
+                    <div className="absolute left-[-21px] top-1 w-2 h-2 rounded-full bg-primary/40 border-2 border-card outline outline-1 outline-divider group-hover:bg-primary group-hover:outline-primary/40 transition-all duration-500" />
                     
                     <div className="space-y-1.5">
                        <span className="text-[9px] font-black text-primary/60 uppercase tracking-widest">
@@ -231,7 +231,7 @@ export default function CalendarPage() {
                        </span>
                        <div className="p-3.5 rounded-xl border border-divider bg-muted/20 hover:border-primary/20 hover:bg-primary/[0.02] transition-all duration-300 cursor-pointer" onClick={() => handleSelectDay(new Date(event.startDate), events.filter((e: any) => isSameDay(new Date(e.startDate), new Date(event.startDate))))}>
                           <h4 className="text-xs font-black text-foreground group-hover:text-primary transition-colors leading-tight uppercase tracking-tight">{event.title}</h4>
-                          <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 font-medium opacity-60 italic leading-none">
+                          <p className="text-[10px] text-muted-foreground line-clamp-1 mt-1 font-medium italic leading-none">
                             {event.description || 'No description'}
                           </p>
                        </div>

@@ -53,7 +53,7 @@ export default function EmployeesPage() {
           <h1 className="text-2xl font-black text-foreground tracking-tight leading-tight">
             Team Management
           </h1>
-          <p className="text-muted-foreground text-sm font-medium max-w-md leading-relaxed opacity-70">
+          <p className="text-muted-foreground text-sm font-medium max-w-md leading-relaxed">
             View, manage, and update employee profiles and organizational structure.
           </p>
         </div>
@@ -62,7 +62,7 @@ export default function EmployeesPage() {
           <button
             onClick={() => fetchEmployees(true)}
             disabled={isRefreshing}
-            className="p-2.5 bg-white/5 border border-white/10 rounded-xl text-muted-foreground hover:text-white hover:bg-white/10 transition-all disabled:opacity-50"
+            className="p-2.5 bg-muted/10 border border-divider rounded-xl text-muted-foreground hover:text-foreground hover:bg-muted/20 transition-all disabled:opacity-50"
             title="Refresh"
           >
             <RefreshCw size={16} className={isRefreshing ? 'animate-spin' : ''} />

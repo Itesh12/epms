@@ -132,11 +132,11 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     <item.icon 
                       size={18} 
                       strokeWidth={isActive ? 2.5 : 2}
-                      className={cn(isActive ? 'text-primary-foreground rotate-0' : 'text-muted-foreground/60 group-hover:text-primary group-hover:scale-110 group-hover:rotate-3 transition-all')} 
+                      className={cn(isActive ? 'text-primary-foreground rotate-0' : 'text-muted-foreground group-hover:text-primary group-hover:scale-110 group-hover:rotate-3 transition-all')} 
                     />
                     <span className="tracking-tight text-sm">{item.label}</span>
                     {isActive && (
-                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-white/20 rounded-l-full" />
+                      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-1 h-5 bg-primary-foreground/30 rounded-l-full" />
                     )}
                   </Link>
                 );

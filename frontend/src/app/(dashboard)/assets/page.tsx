@@ -112,7 +112,7 @@ export default function AssetsPage() {
           <h1 className="text-2xl font-black text-foreground uppercase tracking-tight leading-none">
             Asset & <span className="text-primary">Inventory</span>
           </h1>
-          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">Manage IT infrastructure, hardware allocations, and software manifest.</p>
+          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest leading-none">Manage IT infrastructure, hardware allocations, and software manifest.</p>
         </div>
 
         <div className="flex gap-3">
@@ -145,7 +145,7 @@ export default function AssetsPage() {
                   <Box size={20} />
                 </div>
                 <div>
-                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">In Stock</p>
+                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">In Stock</p>
                    <h3 className="text-xl font-black tracking-tight">{summary.inStock}</h3>
                 </div>
              </div>

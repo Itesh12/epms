@@ -506,11 +506,11 @@ export default function AttendancePage() {
                       title={`${format(currentTime, 'MMMM')} ${dayNum}${rec ? ' — ' + rec.status : ''}`}
                       className={cn(
                         "aspect-square rounded-lg flex items-center justify-center text-[8px] font-black border transition-all",
-                        isToday ? "border-primary ring-1 ring-primary/50" : "border-white/5",
-                        rec && !isLate ? "bg-emerald-500/30 text-emerald-400" :
-                        rec && isLate  ? "bg-amber-500/30 text-amber-400" :
-                        isPast         ? "bg-muted/20 text-muted-foreground/20" :
-                                         "bg-muted/10 text-muted-foreground/10"
+                        isToday ? "border-primary ring-1 ring-primary/50" : "border-divider/50",
+                        rec && !isLate ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400" :
+                        rec && isLate  ? "bg-amber-500/20 text-amber-600 dark:text-amber-400" :
+                        isPast         ? "bg-muted/40 text-muted-foreground/30" :
+                                         "bg-muted/20 text-muted-foreground/20"
                       )}
                     >
                       {dayNum}
@@ -522,15 +522,15 @@ export default function AttendancePage() {
             <div className="flex items-center gap-4">
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-sm bg-emerald-500/30" />
-                  <span className="text-[8px] font-black text-muted-foreground opacity-40 uppercase">Present</span>
+                  <span className="text-[8px] font-black text-muted-foreground/60 uppercase">Present</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <div className="w-2 h-2 rounded-sm bg-amber-500/30" />
-                  <span className="text-[8px] font-black text-muted-foreground opacity-40 uppercase">Late</span>
+                  <span className="text-[8px] font-black text-muted-foreground/60 uppercase">Late</span>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="w-2 h-2 rounded-sm bg-muted/20 border border-white/5" />
-                  <span className="text-[8px] font-black text-muted-foreground opacity-40 uppercase">Missing</span>
+                  <div className="w-2 h-2 rounded-sm bg-muted border border-divider" />
+                  <span className="text-[8px] font-black text-muted-foreground/60 uppercase">Missing</span>
                 </div>
               </div>
             </div>

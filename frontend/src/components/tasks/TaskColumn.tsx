@@ -16,12 +16,12 @@ interface TaskColumnProps {
 }
 
 const columnConfig = {
-  [TaskStatus.BACKLOG]:     { icon: Inbox,        color: 'text-zinc-400',    bg: 'bg-zinc-500/10',    border: 'border-zinc-500/20',    dot: 'bg-zinc-400' },
-  [TaskStatus.TODO]:        { icon: ListTodo,     color: 'text-slate-400',   bg: 'bg-slate-500/10',   border: 'border-slate-500/20',   dot: 'bg-slate-400' },
-  [TaskStatus.IN_PROGRESS]: { icon: Clock,        color: 'text-blue-400',    bg: 'bg-blue-500/10',    border: 'border-blue-500/20',    dot: 'bg-blue-400 animate-pulse' },
-  [TaskStatus.IN_REVIEW]:   { icon: Eye,          color: 'text-purple-400',  bg: 'bg-purple-500/10',  border: 'border-purple-500/20',  dot: 'bg-purple-400' },
-  [TaskStatus.TESTING]:     { icon: Beaker,       color: 'text-amber-400',   bg: 'bg-amber-500/10',   border: 'border-amber-500/20',   dot: 'bg-amber-400' },
-  [TaskStatus.DONE]:        { icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-400' },
+  [TaskStatus.BACKLOG]:     { icon: Inbox,        color: 'text-zinc-600 dark:text-zinc-400',    bg: 'bg-zinc-500/10',    border: 'border-zinc-500/20',    dot: 'bg-zinc-400' },
+  [TaskStatus.TODO]:        { icon: ListTodo,     color: 'text-slate-600 dark:text-slate-400',   bg: 'bg-slate-500/10',   border: 'border-slate-500/20',   dot: 'bg-slate-400' },
+  [TaskStatus.IN_PROGRESS]: { icon: Clock,        color: 'text-blue-600 dark:text-blue-400',    bg: 'bg-blue-500/10',    border: 'border-blue-500/20',    dot: 'bg-blue-400 animate-pulse' },
+  [TaskStatus.IN_REVIEW]:   { icon: Eye,          color: 'text-purple-600 dark:text-purple-400',  bg: 'bg-purple-500/10',  border: 'border-purple-500/20',  dot: 'bg-purple-400' },
+  [TaskStatus.TESTING]:     { icon: Beaker,       color: 'text-amber-600 dark:text-amber-400',   bg: 'bg-amber-500/10',   border: 'border-amber-500/20',   dot: 'bg-amber-400' },
+  [TaskStatus.DONE]:        { icon: CheckCircle2, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10', border: 'border-emerald-500/20', dot: 'bg-emerald-400' },
 };
 
 export function TaskColumn({ id, title, tasks, allTasks = [], onTaskClick }: TaskColumnProps) {
@@ -38,7 +38,7 @@ export function TaskColumn({ id, title, tasks, allTasks = [], onTaskClick }: Tas
           <div className={cn('p-1.5 rounded-lg border', config.bg, config.border)}>
             <Icon size={14} className={config.color} strokeWidth={2.5} />
           </div>
-          <h3 className="font-black text-[10px] uppercase tracking-widest text-white/60">{title}</h3>
+          <h3 className="font-black text-[10px] uppercase tracking-widest text-muted-foreground/80">{title}</h3>
         </div>
         <div className={cn(
           'flex items-center gap-1.5 text-[9px] font-black px-2 py-0.5 rounded-lg border uppercase tracking-widest',
@@ -52,7 +52,7 @@ export function TaskColumn({ id, title, tasks, allTasks = [], onTaskClick }: Tas
       {/* Drop Zone */}
       <div
         ref={setNodeRef}
-        className="bg-white/[0.03] border border-white/5 rounded-2xl p-2 min-h-[560px] flex flex-col gap-2 relative transition-colors"
+        className="bg-muted/10 border border-divider rounded-2xl p-2 min-h-[560px] flex flex-col gap-2 relative transition-colors"
       >
         <SortableContext
           id={id}
@@ -69,7 +69,7 @@ export function TaskColumn({ id, title, tasks, allTasks = [], onTaskClick }: Tas
           ))}
 
           {tasks.length === 0 && (
-            <div className="flex-1 flex flex-col items-center justify-center p-8 border border-dashed border-white/5 rounded-xl text-center gap-3 opacity-30 m-2">
+            <div className="flex-1 flex flex-col items-center justify-center p-8 border border-dashed border-divider rounded-xl text-center gap-3 opacity-30 m-2">
               <Icon size={22} className={config.color} />
               <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">No tasks here</p>
             </div>

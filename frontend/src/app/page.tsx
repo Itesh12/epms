@@ -20,7 +20,7 @@ import { cn } from '@/lib/utils';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-[#030712] text-foreground selection:bg-primary/30 overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 overflow-x-hidden">
       {/* Background Aura */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
@@ -29,21 +29,21 @@ export default function LandingPage() {
 
       {/* Navigation */}
       <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl">
-        <div className="astra-glass border border-white/5 rounded-2xl px-6 py-2.5 flex items-center justify-between shadow-2xl bg-black/40">
+        <div className="astra-glass border border-divider rounded-2xl px-6 py-2.5 flex items-center justify-between shadow-2xl bg-card/60 backdrop-blur-xl">
           <div className="flex items-center gap-2.5">
             <div className="bg-primary p-1.5 rounded-lg text-white shadow-lg shadow-primary/20">
               <Zap size={16} fill="currentColor" strokeWidth={3} />
             </div>
-            <span className="text-xl font-black tracking-widest text-white uppercase opacity-40">EPMS</span>
+            <span className="text-xl font-black tracking-widest text-foreground uppercase opacity-40">EPMS</span>
           </div>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-[9px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors">Solutions</a>
-            <a href="#security" className="text-[9px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors">Security</a>
-            <a href="#analytics" className="text-[9px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors">Analytics</a>
+            <a href="#features" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Solutions</a>
+            <a href="#security" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Security</a>
+            <a href="#analytics" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Analytics</a>
           </div>
           <div className="flex items-center gap-3">
             <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-[9px] font-black uppercase tracking-widest text-white/40 hover:text-white">Sign In</Button>
+              <Button variant="ghost" size="sm" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-foreground">Sign In</Button>
             </Link>
             <Link href="/signup">
               <Button size="sm" className="h-8 px-4 rounded-lg shadow-lg shadow-primary/10 text-[9px] uppercase font-black tracking-widest">Register</Button>
@@ -60,12 +60,12 @@ export default function LandingPage() {
             Enterprise Project Management
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest leading-[1.1]">
+          <h1 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-widest leading-[1.1]">
             MANAGE PROJECTS <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-400 to-white animate-gradient-x">WITH PRECISION</span>
           </h1>
           
-          <p className="text-sm text-white/20 max-w-2xl mx-auto font-black uppercase tracking-widest leading-relaxed">
+          <p className="text-sm text-muted-foreground/60 max-w-2xl mx-auto font-black uppercase tracking-widest leading-relaxed">
             A premium management platform built for modern organizations. 
             Track performance, manage portfolios, and scale your operations.
           </p>
@@ -77,7 +77,7 @@ export default function LandingPage() {
               </Button>
             </Link>
             <Link href="/login">
-              <Button variant="ghost" className="h-12 px-10 text-[10px] font-black uppercase tracking-widest rounded-xl border border-white/5 text-white/40 hover:text-white hover:bg-white/5">
+              <Button variant="ghost" className="h-12 px-10 text-[10px] font-black uppercase tracking-widest rounded-xl border border-divider text-muted-foreground hover:text-foreground hover:bg-muted/10">
                 Enterprise Login
               </Button>
             </Link>
@@ -113,7 +113,7 @@ export default function LandingPage() {
               <p className="text-[9px] font-black text-primary uppercase tracking-[0.4em]">Key Features</p>
               <h2 className="text-3xl font-black text-white uppercase tracking-widest">Enterprise Solutions.</h2>
             </div>
-            <p className="max-w-md text-white/20 font-black uppercase tracking-widest text-[10px] leading-relaxed">
+            <p className="max-w-md text-muted-foreground/60 font-black uppercase tracking-widest text-[10px] leading-relaxed">
               structural tools required for reliable organizational growth and coordination.
             </p>
           </div>
@@ -147,8 +147,8 @@ export default function LandingPage() {
                 <Lock size={12} className="text-primary/60" />
                 Enterprise Security
               </div>
-              <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest leading-none">Global <br /> Protection.</h2>
-              <p className="text-[10px] text-white/20 font-black uppercase tracking-widest leading-relaxed max-w-xl">
+              <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-widest leading-none">Global <br /> Protection.</h2>
+              <p className="text-[10px] text-muted-foreground/60 font-black uppercase tracking-widest leading-relaxed max-w-xl">
                 Industry-standard encryption for all data transmissions. Your information is protected by sophisticated security layers.
               </p>
               <div className="grid grid-cols-2 gap-10 pt-4">

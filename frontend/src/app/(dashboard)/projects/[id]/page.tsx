@@ -16,10 +16,10 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 
 const STATUS_CONFIG: Record<string, { label: string; color: string; bg: string }> = {
-  ACTIVE:      { label: 'Active',      color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
-  COMPLETED:   { label: 'Completed',   color: 'text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20' },
-  ON_HOLD:     { label: 'On Hold',     color: 'text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' },
-  TODO:        { label: 'Not Started', color: 'text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20' },
+  ACTIVE:      { label: 'Active',      color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' },
+  COMPLETED:   { label: 'Completed',   color: 'text-blue-600 dark:text-blue-400',    bg: 'bg-blue-500/10 border-blue-500/20' },
+  ON_HOLD:     { label: 'On Hold',     color: 'text-amber-600 dark:text-amber-400',   bg: 'bg-amber-500/10 border-amber-500/20' },
+  TODO:        { label: 'Not Started', color: 'text-slate-600 dark:text-slate-400',   bg: 'bg-slate-500/10 border-slate-500/20' },
 };
 
 export default function ProjectWorkspacePage({ params }: { params: Promise<{ id: string }> }) {
@@ -80,11 +80,11 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
   if (!project) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center space-y-6 min-h-[60vh]">
-        <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center">
+        <div className="w-16 h-16 rounded-2xl bg-muted border border-divider flex items-center justify-center">
           <Target size={32} className="text-muted-foreground/30" />
         </div>
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-black text-white tracking-tight">Project Not Found</h2>
+          <h2 className="text-2xl font-black text-foreground tracking-tight">Project Not Found</h2>
           <p className="text-muted-foreground text-sm">This project doesn't exist or you don't have access.</p>
         </div>
         <Link href="/projects">
@@ -133,16 +133,16 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
     <div className="space-y-6 animate-in fade-in duration-500 max-w-[1500px] w-full h-full flex flex-col">
 
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-[11px] font-bold text-muted-foreground/50 uppercase tracking-widest">
+      <div className="flex items-center gap-2 text-[11px] font-bold text-muted-foreground/70 uppercase tracking-widest">
         <Link href="/projects" className="hover:text-primary transition-colors flex items-center gap-1.5">
           <ArrowLeft size={12} /> Projects
         </Link>
         <span>/</span>
-        <span className="text-white/60">{project.title}</span>
+        <span className="text-foreground/80">{project.title}</span>
       </div>
 
       {/* Project Header */}
-      <div className="bg-white/5 border border-white/5 rounded-2xl overflow-hidden">
+      <div className="bg-card border border-divider rounded-2xl overflow-hidden shadow-sm">
         {/* Gradient Banner */}
         <div
           className="h-14 sm:h-16 w-full"
@@ -164,12 +164,12 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
               </div>
               <div className="pb-1">
                 <div className="flex flex-wrap items-center gap-2 mb-0.5">
-                  <h1 className="text-lg sm:text-xl font-black text-white tracking-tight">{project.title}</h1>
+                  <h1 className="text-lg sm:text-xl font-black text-foreground tracking-tight">{project.title}</h1>
                   <span className={cn('text-[9px] font-black px-2 py-0.5 rounded-lg border uppercase tracking-widest', status.bg, status.color)}>
                     {status.label}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground/60 font-medium max-w-xl">
+                <p className="text-sm text-muted-foreground font-medium max-w-xl">
                   {project.description || 'No description provided.'}
                 </p>
               </div>
@@ -199,17 +199,17 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3.5 mt-5">
             {[
               { label: 'Total Tasks',  value: totalTasks,       icon: ListTodo,     color: 'text-primary',     bg: 'bg-primary/10' },
-              { label: 'To Do',        value: todoTasks,        icon: CircleDot,    color: 'text-slate-400',   bg: 'bg-slate-500/10' },
-              { label: 'In Progress',  value: inProgressTasks,  icon: Clock,        color: 'text-blue-400',    bg: 'bg-blue-500/10' },
-              { label: 'Completed',    value: doneTasks,        icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
+              { label: 'To Do',        value: todoTasks,        icon: CircleDot,    color: 'text-slate-500',   bg: 'bg-slate-500/10' },
+              { label: 'In Progress',  value: inProgressTasks,  icon: Clock,        color: 'text-blue-500',    bg: 'bg-blue-500/10' },
+              { label: 'Completed',    value: doneTasks,        icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
             ].map(s => (
-              <div key={s.label} className="bg-white/5 rounded-xl p-3.5 flex items-center gap-3">
+              <div key={s.label} className="bg-muted/40 border border-divider rounded-xl p-3.5 flex items-center gap-3">
                 <div className={cn('p-1.5 rounded-lg', s.bg)}>
                   <s.icon size={14} className={s.color} />
                 </div>
                 <div>
-                  <div className="text-base font-black text-white leading-tight">{s.value}</div>
-                  <div className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-0.5">{s.label}</div>
+                  <div className="text-base font-black text-foreground leading-tight">{s.value}</div>
+                  <div className="text-[9px] font-bold text-muted-foreground/80 uppercase tracking-widest leading-none mt-0.5">{s.label}</div>
                 </div>
               </div>
             ))}
@@ -218,10 +218,10 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
           {/* Progress Bar */}
           <div className="mt-4 space-y-1.5">
             <div className="flex items-center justify-between">
-              <span className="text-[9px] font-black text-muted-foreground/40 uppercase tracking-[0.1em]">Overall Progress</span>
-              <span className="text-[10px] font-black text-white/80" style={project.color ? { color: project.color } : {}}>{progress}%</span>
+              <span className="text-[9px] font-black text-muted-foreground/60 uppercase tracking-[0.1em]">Overall Progress</span>
+              <span className="text-[10px] font-black text-foreground" style={project.color ? { color: project.color } : {}}>{progress}%</span>
             </div>
-            <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-muted border border-divider rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all duration-700"
                 style={{ width: `${progress}%`, background: project.color || 'var(--primary)' }}
@@ -255,7 +255,7 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
       </div>
 
       {/* View Tabs */}
-      <div className="flex items-center gap-1 bg-white/5 border border-white/5 p-1 rounded-lg w-fit">
+      <div className="flex items-center gap-1 bg-muted border border-divider p-1 rounded-lg w-fit shadow-sm">
         {[
           { id: 'board',     label: 'Board',     icon: Kanban },
           { id: 'list',      label: 'List',       icon: List },
@@ -267,8 +267,8 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
             className={cn(
               'flex items-center gap-2 px-3 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest transition-all duration-200',
               activeView === tab.id
-                ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                : 'text-muted-foreground hover:text-white hover:bg-white/5'
+                ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20'
+                : 'text-muted-foreground hover:text-foreground hover:bg-background'
             )}
           >
             <tab.icon size={13} strokeWidth={2.5} />
@@ -289,7 +289,7 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
 
         {/* LIST VIEW */}
         {activeView === 'list' && (
-          <div className="bg-white/5 border border-white/5 rounded-2xl overflow-hidden">
+          <div className="bg-card border border-divider rounded-2xl overflow-hidden shadow-sm">
             {tasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-20 gap-4 opacity-40">
                 <List size={32} className="text-muted-foreground" />
@@ -299,13 +299,13 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                   <thead>
-                    <tr className="border-b border-white/5 bg-white/[0.02]">
+                    <tr className="border-b border-divider bg-muted/30">
                       {['Task', 'Status', 'Priority', 'Assignee', 'Due Date', 'Est. Hours'].map(h => (
-                        <th key={h} className="px-4 py-2.5 text-[9px] font-black uppercase tracking-widest text-muted-foreground/50">{h}</th>
+                        <th key={h} className="px-4 py-3 text-[9px] font-black uppercase tracking-widest text-muted-foreground/60">{h}</th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-white/5">
+                  <tbody className="divide-y divide-divider font-medium">
                     {topLevelTasks.map((task: any) => {
                       const isOverdue = task.dueDate && new Date(task.dueDate) < new Date() && task.status !== 'DONE';
                       const taskSubtasks = tasks.filter((t: any) => t.parentId === task._id);
@@ -318,9 +318,9 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
                             <div className="flex items-start gap-2">
                               {subtaskCount > 0 && <GitBranch size={12} className="text-primary/50 flex-shrink-0 mt-0.5" />}
                               <div>
-                                <div className="text-xs font-bold text-white leading-tight">{task.title}</div>
+                                <div className="text-xs font-bold text-foreground leading-tight">{task.title}</div>
                                 {subtaskCount > 0 && (
-                                  <div className="text-[9px] text-muted-foreground/40 mt-0.5">{subtaskCount} subtask{subtaskCount !== 1 ? 's' : ''}</div>
+                                  <div className="text-[9px] text-muted-foreground/60 mt-0.5">{subtaskCount} subtask{subtaskCount !== 1 ? 's' : ''}</div>
                                 )}
                               </div>
                             </div>
@@ -347,14 +347,14 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
                           </td>
                           <td className="px-4 py-3">
                             {task.dueDate ? (
-                              <span className={cn('text-[11px] font-bold', isOverdue ? 'text-red-400' : 'text-muted-foreground/50')}>
+                              <span className={cn('text-[11px] font-bold', isOverdue ? 'text-red-500' : 'text-muted-foreground/60')}>
                                 {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                               </span>
                             ) : <span className="text-muted-foreground/30 text-[11px]">—</span>}
                           </td>
                           <td className="px-4 py-3">
                             <div className="flex items-center gap-1.5">
-                              <span className="text-[11px] font-bold text-white">{totalEst}h</span>
+                              <span className="text-[11px] font-bold text-foreground">{totalEst}h</span>
                             </div>
                           </td>
                         </tr>
@@ -362,8 +362,8 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
                     })}
                   </tbody>
                 </table>
-                <div className="px-5 py-3 border-t border-white/5">
-                  <span className="text-[11px] text-muted-foreground/40 font-medium">{tasks.length} task{tasks.length !== 1 ? 's' : ''} total</span>
+                <div className="px-5 py-3 border-t border-divider bg-muted/10">
+                  <span className="text-[11px] text-muted-foreground/60 font-medium">{tasks.length} task{tasks.length !== 1 ? 's' : ''} total</span>
                 </div>
               </div>
             )}
@@ -374,26 +374,26 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
         {activeView === 'analytics' && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Status Distribution */}
-            <div className="bg-white/5 border border-white/5 rounded-2xl p-5 space-y-4">
-              <h3 className="text-[11px] font-black text-white uppercase tracking-widest flex items-center gap-2">
+            <div className="bg-card border border-divider shadow-sm rounded-2xl p-6 space-y-4">
+              <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest flex items-center gap-2">
                 <CheckCircle2 size={13} className="text-primary" /> Task Status
               </h3>
               {totalTasks === 0 ? (
                 <p className="text-xs text-muted-foreground/40 font-medium py-3">No tasks yet</p>
               ) : (
                 [
-                  { label: 'To Do',       value: todoTasks,       color: 'bg-slate-400',   text: 'text-slate-400' },
-                  { label: 'In Progress', value: inProgressTasks, color: 'bg-blue-400',    text: 'text-blue-400' },
-                  { label: 'Done',        value: doneTasks,       color: 'bg-emerald-400', text: 'text-emerald-400' },
+                  { label: 'To Do',       value: todoTasks,       color: 'bg-slate-500',   text: 'text-slate-500' },
+                  { label: 'In Progress', value: inProgressTasks, color: 'bg-blue-500',    text: 'text-blue-500' },
+                  { label: 'Done',        value: doneTasks,       color: 'bg-emerald-500', text: 'text-emerald-500' },
                 ].map(row => (
-                  <div key={row.label} className="space-y-1">
+                  <div key={row.label} className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-muted-foreground/60">{row.label}</span>
+                      <span className="text-[11px] font-bold text-muted-foreground/80">{row.label}</span>
                       <span className={cn('text-[11px] font-black', row.text)}>
                         {row.value} ({Math.round((row.value / totalTasks) * 100)}%)
                       </span>
                     </div>
-                    <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-muted rounded-full overflow-hidden border border-divider">
                       <div className={cn('h-full rounded-full transition-all', row.color)}
                         style={{ width: `${(row.value / totalTasks) * 100}%` }} />
                     </div>
@@ -403,27 +403,27 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
             </div>
 
             {/* Priority Distribution */}
-            <div className="bg-white/5 border border-white/5 rounded-2xl p-5 space-y-4">
-              <h3 className="text-[11px] font-black text-white uppercase tracking-widest flex items-center gap-2">
+            <div className="bg-card border border-divider shadow-sm rounded-2xl p-6 space-y-4">
+              <h3 className="text-[11px] font-black text-foreground uppercase tracking-widest flex items-center gap-2">
                 <TrendingUp size={13} className="text-primary" /> Priority Breakdown
               </h3>
               {totalTasks === 0 ? (
                 <p className="text-xs text-muted-foreground/40 font-medium py-3">No tasks yet</p>
               ) : (
                 [
-                  { label: 'Urgent', value: byPriority.URGENT, color: 'bg-red-400',    text: 'text-red-400' },
-                  { label: 'High',   value: byPriority.HIGH,   color: 'bg-orange-400', text: 'text-orange-400' },
-                  { label: 'Medium', value: byPriority.MEDIUM, color: 'bg-amber-400',  text: 'text-amber-400' },
-                  { label: 'Low',    value: byPriority.LOW,    color: 'bg-slate-400',  text: 'text-slate-400' },
+                  { label: 'Urgent', value: byPriority.URGENT, color: 'bg-red-500',    text: 'text-red-500' },
+                  { label: 'High',   value: byPriority.HIGH,   color: 'bg-orange-500', text: 'text-orange-500' },
+                  { label: 'Medium', value: byPriority.MEDIUM, color: 'bg-amber-500',  text: 'text-amber-500' },
+                  { label: 'Low',    value: byPriority.LOW,    color: 'bg-slate-500',  text: 'text-slate-500' },
                 ].map(row => (
-                  <div key={row.label} className="space-y-1">
+                  <div key={row.label} className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold text-muted-foreground/60">{row.label}</span>
+                      <span className="text-[11px] font-bold text-muted-foreground/80">{row.label}</span>
                       <span className={cn('text-[11px] font-black', row.text)}>
                         {row.value} ({totalTasks ? Math.round((row.value / totalTasks) * 100) : 0}%)
                       </span>
                     </div>
-                    <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-1.5 bg-muted rounded-full overflow-hidden border border-divider">
                       <div className={cn('h-full rounded-full transition-all', row.color)}
                         style={{ width: `${totalTasks ? (row.value / totalTasks) * 100 : 0}%` }} />
                     </div>
@@ -435,17 +435,17 @@ export default function ProjectWorkspacePage({ params }: { params: Promise<{ id:
             {/* Summary Cards */}
             {([
               { label: 'Total Tasks',   value: totalTasks,   icon: ListTodo,     color: 'text-primary',     bg: 'bg-primary/10' },
-              { label: 'Completed',     value: doneTasks,    icon: CheckCircle2, color: 'text-emerald-400', bg: 'bg-emerald-500/10' },
-              { label: 'Overdue',       value: overdueTasks, icon: Clock,        color: 'text-red-400',     bg: 'bg-red-500/10' },
-              { label: 'With Subtasks', value: withSubtasks, icon: GitBranch,    color: 'text-blue-400',    bg: 'bg-blue-500/10' },
+              { label: 'Completed',     value: doneTasks,    icon: CheckCircle2, color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+              { label: 'Overdue',       value: overdueTasks, icon: Clock,        color: 'text-red-500',     bg: 'bg-red-500/10' },
+              { label: 'With Subtasks', value: withSubtasks, icon: GitBranch,    color: 'text-blue-500',    bg: 'bg-blue-500/10' },
             ] as const).map(s => (
-              <div key={s.label} className="bg-white/5 border border-white/5 rounded-2xl p-4 flex items-center gap-4">
-                <div className={cn('p-2 rounded-xl', s.bg)}>
-                  <s.icon size={16} className={s.color} />
+              <div key={s.label} className="bg-card border border-divider shadow-sm rounded-2xl p-5 flex items-center gap-4">
+                <div className={cn('p-2.5 rounded-xl', s.bg)}>
+                  <s.icon size={18} className={s.color} />
                 </div>
                 <div>
-                  <div className="text-xl font-black text-white">{s.value}</div>
-                  <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none mt-0.5">{s.label}</div>
+                  <div className="text-xl font-black text-foreground tabular-nums tracking-tight">{s.value}</div>
+                  <div className="text-[10px] font-bold text-muted-foreground/70 uppercase tracking-widest leading-none mt-1">{s.label}</div>
                 </div>
               </div>
             ))}

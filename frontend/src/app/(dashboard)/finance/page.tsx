@@ -104,7 +104,7 @@ export default function FinancePage() {
           <h1 className="text-2xl font-black text-foreground uppercase tracking-tight leading-none">
             Finance & <span className="text-primary">Payroll</span>
           </h1>
-          <p className="text-[10px] text-muted-foreground font-black uppercase tracking-widest opacity-40">Monitor payouts, manage expenses, and track organization health.</p>
+          <p className="text-[10px] text-muted-foreground/70 font-black uppercase tracking-widest">Monitor payouts, manage expenses, and track organization health.</p>
         </div>
 
         <div className="flex gap-3">
@@ -137,7 +137,7 @@ export default function FinancePage() {
                   <AlertCircle size={20} />
                 </div>
                 <div>
-                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Pending Expenses</p>
+                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/80">Pending Expenses</p>
                    <h3 className="text-xl font-black tracking-tight">{summary.pendingExpenses}</h3>
                 </div>
              </div>
@@ -149,7 +149,7 @@ export default function FinancePage() {
                   <Wallet size={20} />
                 </div>
                 <div>
-                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Total Paid (INR)</p>
+                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/80">Total Paid (INR)</p>
                    <h3 className="text-xl font-black tracking-tight">₹{summary.totalPaidPayroll.toLocaleString()}</h3>
                 </div>
              </div>
@@ -161,8 +161,8 @@ export default function FinancePage() {
                   <TrendingUp size={20} />
                 </div>
                 <div>
-                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-60">Organization Value</p>
-                   <h3 className="text-xl font-black tracking-tight text-emerald-500">Optimal</h3>
+                   <p className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/80">Organization Value</p>
+                   <h3 className="text-xl font-black tracking-tight text-emerald-600 dark:text-emerald-500">Optimal</h3>
                 </div>
              </div>
           </div>
@@ -229,20 +229,20 @@ export default function FinancePage() {
                       <tr className="border-b border-divider/40">
                          {activeTab === 'expenses' ? (
                            <>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Employee</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2 text-center">Category</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Details</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Amount</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2 text-right">Status</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Employee</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2 text-center">Category</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Details</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Amount</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2 text-right">Status</th>
                            </>
                          ) : (
                            <>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Employee</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Period</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Gross Payout</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Adjustments</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2">Net Salary</th>
-                             <th className="pb-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest px-2 text-right">Status</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Employee</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Period</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Gross Payout</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Adjustments</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2">Net Salary</th>
+                             <th className="pb-4 text-[9px] font-black text-muted-foreground/70 uppercase tracking-widest px-2 text-right">Status</th>
                            </>
                          )}
                       </tr>
@@ -259,7 +259,7 @@ export default function FinancePage() {
                                      </div>
                                      <div>
                                         <p className="text-[11px] font-black text-foreground">{item.userId?.firstName} {item.userId?.lastName}</p>
-                                        <p className="text-[8px] text-muted-foreground uppercase tracking-widest opacity-40">{format(new Date(item.createdAt), 'MMM dd, yyyy')}</p>
+                                        <p className="text-[8px] text-muted-foreground/60 uppercase tracking-widest font-bold">{format(new Date(item.createdAt), 'MMM dd, yyyy')}</p>
                                      </div>
                                   </div>
                                </td>
@@ -269,7 +269,7 @@ export default function FinancePage() {
                                   </span>
                                </td>
                                <td className="py-4 px-2">
-                                  <p className="text-[10px] font-bold text-muted-foreground line-clamp-1 max-w-[200px] opacity-80">{item.description}</p>
+                                  <p className="text-[10px] font-bold text-muted-foreground/80 line-clamp-1 max-w-[200px]">{item.description}</p>
                                </td>
                                <td className="py-4 px-2">
                                   <p className="text-[11px] font-black text-foreground">₹{item.amount.toLocaleString()}</p>
@@ -317,8 +317,8 @@ export default function FinancePage() {
                                   <p className="text-[10px] font-bold text-muted-foreground">₹{item.baseSalary.toLocaleString()}</p>
                                </td>
                                <td className="py-4 px-2 text-[10px] font-black">
-                                  <span className="text-emerald-500">+₹{item.bonuses.toLocaleString()}</span>
-                                  <span className="text-red-400 opacity-60 ml-1">(-₹{item.deductions.toLocaleString()})</span>
+                                  <span className="text-emerald-600 dark:text-emerald-500">+₹{item.bonuses.toLocaleString()}</span>
+                                  <span className="text-red-500/80 dark:text-red-400 opacity-60 ml-1">(-₹{item.deductions.toLocaleString()})</span>
                                </td>
                                <td className="py-4 px-2">
                                   <p className="text-[11px] font-black text-primary">₹{item.netAmount.toLocaleString()}</p>

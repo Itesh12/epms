@@ -325,20 +325,20 @@ export default function SocialWallPage() {
                <div className="w-20 h-20 rounded-3xl bg-primary/20 border-2 border-primary/30 flex items-center justify-center text-2xl font-black text-primary shadow-xl shadow-primary/10 overflow-hidden">
                   {user?.firstName?.[0]}{user?.lastName?.[0]}
                </div>
-               <div className="space-y-1">
+                <div className="space-y-1">
                   <h3 className="text-lg font-black tracking-tight">{user?.firstName} {user?.lastName}</h3>
-                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40">{user?.role}</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground/60">{user?.role}</p>
                </div>
             </div>
             
             <div className="grid grid-cols-2 gap-2 pt-2">
                <div className="p-3 bg-muted/20 rounded-2xl text-center">
                   <p className="text-sm font-black">{posts.filter(p => p.authorId._id === user?.id).length}</p>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground opacity-40">Posts</p>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/60">Posts</p>
                </div>
                <div className="p-3 bg-muted/20 rounded-2xl text-center">
                   <p className="text-sm font-black text-primary">0</p>
-                  <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground opacity-40">Kudos</p>
+                  <p className="text-[8px] font-black uppercase tracking-widest text-muted-foreground/60">Kudos</p>
                </div>
             </div>
          </div>
@@ -395,7 +395,7 @@ export default function SocialWallPage() {
                       onChange={handleMentionInput}
                       onFocus={() => setIsCreating(true)}
                       placeholder="Celebrate a win or share a thought with the team..."
-                      className="w-full bg-transparent border-none text-[15px] font-semibold resize-none focus:ring-0 placeholder:text-muted-foreground/20 min-h-[50px] pt-2"
+                      className="w-full bg-transparent border-none text-[15px] font-semibold resize-none focus:ring-0 placeholder:text-muted-foreground/50 min-h-[500px] pt-2"
                       rows={isCreating ? 5 : 1}
                     />
 
@@ -528,7 +528,7 @@ export default function SocialWallPage() {
                                </span>
                              )}
                           </div>
-                          <span className="text-[11px] font-bold text-muted-foreground opacity-50 uppercase tracking-widest">
+                          <span className="text-[11px] font-bold text-muted-foreground/70 uppercase tracking-widest">
                              {post.authorId.role} • {formatDistanceToNow(parseISO(post.createdAt))}
                           </span>
                        </div>
@@ -596,7 +596,7 @@ export default function SocialWallPage() {
                                    "flex items-center gap-2 px-5 py-2.5 rounded-2xl transition-all text-[11px] font-black group/btn border border-transparent shadow-sm",
                                    hasReacted 
                                      ? emoji.activeColor + " border-divider"
-                                     : "text-muted-foreground opacity-40 hover:bg-muted hover:opacity-100 hover:border-divider"
+                                     : "text-muted-foreground/60 hover:bg-muted hover:text-foreground hover:border-divider focus:text-foreground"
                                  )}
                                >
                                   <emoji.icon size={hasReacted ? 18 : 16} strokeWidth={hasReacted ? 3 : 2} className={cn(hasReacted ? "" : "group-hover/btn:scale-125 transition-all")} />

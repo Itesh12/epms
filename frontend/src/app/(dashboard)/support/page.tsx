@@ -195,7 +195,7 @@ export default function SupportCenterPage() {
              <span className="px-2 py-0.5 bg-primary/10 text-primary text-[9px] font-black uppercase tracking-widest rounded-md border border-primary/20">Resolution Hub</span>
           </div>
           <h1 className="text-3xl font-black text-foreground uppercase tracking-tight">Helpdesk & <span className="text-primary">Grievances</span></h1>
-          <p className="text-xs text-muted-foreground font-medium opacity-60">Central resolution point for IT support and workplace grievances.</p>
+          <p className="text-xs text-muted-foreground/80 font-medium">Central resolution point for IT support and workplace grievances.</p>
         </div>
 
         <div className="flex gap-2">
@@ -236,8 +236,8 @@ export default function SupportCenterPage() {
 
             <div className="flex items-center gap-2">
                <div className="relative">
-                  <input placeholder="Search records..." className="h-10 pl-10 pr-4 bg-muted/20 border border-divider rounded-xl outline-none focus:border-primary/40 text-[11px] font-bold w-full sm:w-64" />
-                  <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground opacity-40" />
+                  <input placeholder="Search records..." className="h-10 pl-10 pr-4 bg-muted border border-divider rounded-xl outline-none focus:border-primary/40 text-[11px] font-bold w-full sm:w-64" />
+                  <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground/60" />
                </div>
                <Button variant="outline" size="icon" className="rounded-xl border-divider h-10 w-10">
                   <Filter size={16} />
@@ -249,11 +249,11 @@ export default function SupportCenterPage() {
             <table className="w-full text-left border-collapse">
                <thead>
                   <tr className="bg-muted/10">
-                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40 border-b border-divider">Triage Reference</th>
-                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40 border-b border-divider">Type & Detail</th>
-                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40 border-b border-divider">Requester</th>
-                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40 border-b border-divider">Status</th>
-                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground opacity-40 border-b border-divider">SLA Timer</th>
+                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 border-b border-divider">Triage Reference</th>
+                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 border-b border-divider">Type & Detail</th>
+                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 border-b border-divider">Requester</th>
+                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 border-b border-divider">Status</th>
+                     <th className="px-6 py-4 text-[10px] font-black uppercase tracking-widest text-muted-foreground/70 border-b border-divider">SLA Timer</th>
                   </tr>
                </thead>
                <tbody className="divide-y divide-divider/40">

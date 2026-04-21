@@ -58,7 +58,7 @@ export function TaskCard({ task, onClick, allTasks = [] }: TaskCardProps) {
       </div>
 
       <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 pt-2 border-t border-divider">
-        <div className="w-4.5 h-4.5 rounded-lg bg-primary/20 flex items-center justify-center text-[8px] font-black text-white" title={task.assigneeId?.email || 'Unassigned'}>
+        <div className="w-4.5 h-4.5 rounded-lg bg-primary flex items-center justify-center text-[8px] font-black text-primary-foreground" title={task.assigneeId?.email || 'Unassigned'}>
           {task.assigneeId?.email?.[0].toUpperCase() || <UserIcon size={9} />}
         </div>
 

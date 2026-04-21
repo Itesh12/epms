@@ -2,28 +2,28 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fdfdff;
-  --foreground: #020617;
+  --background: #fcfdfe;
+  --foreground: #1e293b; /* Premium Charcoal Gray */
   
-  --primary: #5850ec; /* Astra Indigo */
+  --primary: #5850ec;
   --primary-foreground: #ffffff;
   
-  --muted: #f1f5f9;
-  --muted-foreground: #334155; /* Darker Slate for better readability */
+  --muted: #f8fafc;
+  --muted-foreground: #475569; /* Slate 600 for optimal readability */
   
-  --accent: #f8fafc;
-  --accent-foreground: #020617;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
   
-  --border: #e2e8f0;
-  --input: #cbd5e1; /* Stronger input borders */
-  --divider: rgba(0, 0, 0, 0.1); /* Doubled opacity for definition */
+  --border: #cbd5e1; /* Stronger borders for Light Mode */
+  --input: #cbd5e1;
+  --divider: rgba(0, 0, 0, 0.08);
   
   --card: #ffffff;
-  --card-foreground: #020617;
+  --card-foreground: #1e293b;
   
   /* Aura Gradients */
   --aura-primary: linear-gradient(135deg, #5850ec 0%, #312e81 100%);
-  --aura-glass: rgba(255, 255, 255, 0.9); /* More opaque glass in Light Mode */
+  --aura-glass: rgba(255, 255, 255, 0.95);
   
   --radius: 1.25rem;
 }
