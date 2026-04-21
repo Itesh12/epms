@@ -17,26 +17,24 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
+import { Logo } from '@/components/ui/Logo';
+import { OrgThemeProvider } from '@/components/providers/OrgThemeProvider';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 overflow-x-hidden">
-      {/* Background Aura */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full animate-pulse delay-1000" />
-      </div>
+    <OrgThemeProvider>
+      <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 overflow-x-hidden">
+        {/* Background Aura */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full animate-pulse delay-1000" />
+        </div>
 
-      {/* Navigation */}
-      <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl">
-        <div className="astra-glass border border-divider rounded-2xl px-6 py-2.5 flex items-center justify-between shadow-2xl bg-card/60 backdrop-blur-xl">
-          <div className="flex items-center gap-2.5">
-            <div className="bg-primary p-1.5 rounded-lg text-white shadow-lg shadow-primary/20">
-              <Zap size={16} fill="currentColor" strokeWidth={3} />
-            </div>
-            <span className="text-xl font-black tracking-widest text-foreground uppercase opacity-40">EPMS</span>
-          </div>
-          <div className="hidden md:flex items-center gap-8">
+        {/* Navigation */}
+        <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl">
+          <div className="astra-glass border border-divider rounded-2xl px-6 py-2.5 flex items-center justify-between shadow-2xl bg-card/60 backdrop-blur-xl">
+            <Logo variant="landing" />
+            <div className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Solutions</a>
             <a href="#security" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Security</a>
             <a href="#analytics" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Analytics</a>
@@ -205,7 +203,8 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </OrgThemeProvider>
   );
 }
 

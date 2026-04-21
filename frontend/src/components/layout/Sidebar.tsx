@@ -26,6 +26,7 @@ import { twMerge } from 'tailwind-merge';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useOrgTheme } from '@/components/providers/OrgThemeProvider';
 import { cn } from '@/lib/utils';
+import { Logo } from '@/components/ui/Logo';
 
 const navItems = [
   { label: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
@@ -81,23 +82,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="flex flex-col h-full bg-background/50 backdrop-blur-3xl dark:bg-card/20">
           <div className="p-6">
             <div className="flex items-center justify-between mb-8 translate-y-0 opacity-100 transition-all duration-700">
-              <div className="flex items-center gap-2.5">
-                {branding?.logoUrl ? (
-                  <div className="w-10 h-10 rounded-xl bg-muted/20 border border-divider p-1.5 flex items-center justify-center overflow-hidden astra-glass shadow-lg">
-                    <img src={branding.logoUrl} alt="Org Logo" className="w-full h-full object-contain" />
-                  </div>
-                ) : (
-                  <div className="bg-[var(--aura-primary)] text-primary-foreground p-1.5 rounded-xl shadow-lg shadow-primary/20">
-                    <BarChart3 size={18} strokeWidth={2.5} />
-                  </div>
-                )}
-                <div className="flex flex-col">
-                  <span className="text-lg font-black tracking-tight text-foreground leading-none truncate max-w-[140px]">
-                    {branding?.name || 'EPMS'}
-                  </span>
-                  <span className="text-[9px] font-bold text-primary uppercase tracking-widest mt-0.5 opacity-60">Enterprise v1.0</span>
-                </div>
-              </div>
+              <Logo variant="sidebar" showSubtitle />
               <button 
                 onClick={onClose}
                 className="lg:hidden text-muted-foreground hover:text-foreground transition-colors p-2 hover:bg-muted/50 rounded-xl"

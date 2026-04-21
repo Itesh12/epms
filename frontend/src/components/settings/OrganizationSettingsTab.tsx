@@ -35,7 +35,8 @@ export function OrganizationSettingsTab() {
     website: '',
     contactEmail: '',
     industry: '',
-    size: ''
+    size: '',
+    subtitle: ''
   });
 
   const [initialData, setInitialData] = useState<any>(null);
@@ -55,7 +56,8 @@ export function OrganizationSettingsTab() {
           website: res.data.website || '',
           contactEmail: res.data.contactEmail || '',
           industry: res.data.industry || '',
-          size: res.data.size || ''
+          size: res.data.size || '',
+          subtitle: res.data.subtitle || ''
         };
         setFormData(data);
         setInitialData(data);
@@ -183,6 +185,13 @@ export function OrganizationSettingsTab() {
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
                 className="bg-muted/10 border-divider rounded-2xl h-12 text-[11px] font-black"
                 required
+              />
+              <Input 
+                label="Organization Subtitle" 
+                placeholder="Enterprise v1.0"
+                value={formData.subtitle}
+                onChange={(e) => setFormData({...formData, subtitle: e.target.value})}
+                className="bg-muted/10 border-divider rounded-2xl h-12 text-[11px] font-black"
               />
               <Input 
                 label="Branding Logo (URL)" 

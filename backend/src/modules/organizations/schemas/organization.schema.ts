@@ -15,6 +15,9 @@ export class Organization extends Document {
   @Prop()
   logoUrl: string;
 
+  @Prop()
+  subtitle: string;
+
   @Prop({ default: '#6366f1' })
   primaryColor: string;
 

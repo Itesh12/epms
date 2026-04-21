@@ -14,6 +14,11 @@ export class UpdateOrganizationDto {
 
   @IsString()
   @IsOptional()
+  @MaxLength(100)
+  subtitle?: string;
+
+  @IsString()
+  @IsOptional()
   @Matches(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, { message: 'Primary color must be a valid hex code' })
   primaryColor?: string;
 

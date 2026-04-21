@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store/useAuthStore';
 interface OrganizationBranding {
   name: string;
   logoUrl?: string;
+  subtitle?: string;
   primaryColor: string;
   secondaryColor: string;
 }
