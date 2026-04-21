@@ -19,6 +19,7 @@ import { AssetsModule } from './modules/assets/assets.module';
 import { WikiModule } from './modules/wiki/wiki.module';
 import { PollsModule } from './modules/polls/polls.module';
 import { LeavesModule } from './modules/leaves/leaves.module';
+import { SocialModule } from './modules/social/social.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -44,6 +45,7 @@ import configuration from './config/configuration';
     WikiModule,
     PollsModule,
     LeavesModule,
+    SocialModule,
   ],
   controllers: [AppController],
   providers: [AppService],
