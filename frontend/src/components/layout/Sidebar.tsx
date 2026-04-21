@@ -18,7 +18,8 @@ import {
   Package,
   BookOpen,
   CalendarClock,
-  Sparkles
+  Sparkles,
+  LifeBuoy
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -40,6 +41,7 @@ const navItems = [
   { label: 'Polls & Feedback', icon: BarChart3, href: '/polls' },
   { label: 'Leaves', icon: CalendarClock, href: '/leaves' },
   { label: 'Social Wall', icon: Sparkles, href: '/social' },
+  { label: 'Support Center', icon: LifeBuoy, href: '/support' },
   { label: 'Settings', icon: Settings, href: '/settings' },
 ];
 
