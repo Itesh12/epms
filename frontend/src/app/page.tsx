@@ -1,223 +1,145 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  Users, 
-  Briefcase, 
-  BarChart3, 
-  ShieldCheck, 
-  ArrowRight,
-  Zap,
-  Globe,
-  Lock,
-  Cpu,
-  Target,
-  Trophy,
-  Activity
-} from 'lucide-react';
+import { toast } from 'react-hot-toast';
 import { Button } from '@/components/ui/Button';
+import { Input } from '@/components/ui/Input';
+import api from '@/services/api';
+import { useAuthStore } from '@/store/useAuthStore';
+import { Zap, ShieldCheck, ArrowRight, Lock, Mail } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/ui/Logo';
 import { OrgThemeProvider } from '@/components/providers/OrgThemeProvider';
 
-export default function LandingPage() {
+export default function RootPage() {
+  const router = useRouter();
+  const { user, setAuth } = useAuthStore();
+  const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  });
+
+  // Automatically redirect to dashboard if user is already logged in
+  useEffect(() => {
+    if (user) {
+      // Ensure cookie is synced for middleware before redirecting
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        document.cookie = `accessToken=${token}; path=/; max-age=2592000; SameSite=Lax`;
+      }
+      router.push('/dashboard');
+    }
+  }, [user, router]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    try {
+      const response: any = await api.post('/auth/login', formData);
+      const { user: userData, accessToken, refreshToken } = response.data;
+
+      setAuth(userData, accessToken, refreshToken);
+      toast.success('Login Successful');
+      router.push('/dashboard');
+    } catch (error: any) {
+      toast.error(error.message || 'Authentication failed');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // If user is logged in, show a simple loading state while redirecting
+  if (user) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center animate-pulse">
+            <Zap className="text-primary" size={24} fill="currentColor" />
+          </div>
+          <p className="text-[10px] font-black uppercase tracking-[0.3em] text-muted-foreground animate-pulse">Redirecting to Dashboard...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <OrgThemeProvider>
-      <div className="min-h-screen bg-background text-foreground selection:bg-primary/30 overflow-x-hidden">
-        {/* Background Aura */}
-        <div className="fixed inset-0 pointer-events-none">
-          <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-indigo-500/10 blur-[120px] rounded-full animate-pulse delay-1000" />
+      <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
+        {/* Background Aura blurs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-primary/10 blur-[140px] rounded-full animate-pulse" />
+          <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] bg-indigo-500/5 blur-[100px] rounded-full animate-pulse delay-700" />
         </div>
 
-        {/* Navigation */}
-        <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-5xl">
-          <div className="astra-glass border border-divider rounded-2xl px-6 py-2.5 flex items-center justify-between shadow-2xl bg-card/60 backdrop-blur-xl">
-            <Logo variant="landing" />
-            <div className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Solutions</a>
-            <a href="#security" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Security</a>
-            <a href="#analytics" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground/60 hover:text-foreground transition-colors">Analytics</a>
-          </div>
-          <div className="flex items-center gap-3">
-            <Link href="/login">
-              <Button variant="ghost" size="sm" className="text-[9px] font-black uppercase tracking-widest text-muted-foreground hover:text-foreground">Sign In</Button>
-            </Link>
-            <Link href="/signup">
-              <Button size="sm" className="h-8 px-4 rounded-lg shadow-lg shadow-primary/10 text-[9px] uppercase font-black tracking-widest">Register</Button>
-            </Link>
-          </div>
-        </div>
-      </nav>
+        {/* Decorative Brand Header */}
+        <Logo className="absolute top-8 left-8" textClassName="opacity-40" />
 
-      {/* Hero Section */}
-      <section className="relative pt-32 pb-20 flex flex-col items-center">
-        <div className="max-w-5xl mx-auto px-6 text-center space-y-6 relative z-10 animate-in fade-in slide-in-from-bottom-10 duration-1000">
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-[9px] font-black uppercase tracking-widest text-primary shadow-2xl">
-            <ShieldCheck size={12} />
-            Enterprise Project Management
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-widest leading-[1.1]">
-            MANAGE PROJECTS <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-indigo-400 to-white animate-gradient-x">WITH PRECISION</span>
-          </h1>
-          
-          <p className="text-sm text-muted-foreground/60 max-w-2xl mx-auto font-black uppercase tracking-widest leading-relaxed">
-            A premium management platform built for modern organizations. 
-            Track performance, manage portfolios, and scale your operations.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Link href="/signup">
-              <Button className="h-12 px-10 text-[10px] font-black uppercase tracking-widest rounded-xl group border border-primary/20 bg-primary shadow-xl shadow-primary/20">
-                Get Started <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-              </Button>
-            </Link>
-            <Link href="/login">
-              <Button variant="ghost" className="h-12 px-10 text-[10px] font-black uppercase tracking-widest rounded-xl border border-divider text-muted-foreground hover:text-foreground hover:bg-muted/10">
-                Enterprise Login
-              </Button>
-            </Link>
-          </div>
-        </div>
-
-        {/* Hero Visual */}
-        <div className="mt-16 w-[90%] max-w-6xl aspect-[21/9] rounded-2xl border border-white/5 bg-white/[0.01] shadow-2xl relative group overflow-hidden animate-in fade-in zoom-in-95 duration-1000 delay-300">
-          <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-transparent opacity-30" />
-          <div className="absolute inset-0 flex items-center justify-center">
-             <div className="p-20 opacity-5">
-                <BarChart3 size={200} strokeWidth={1} className="text-primary" />
-             </div>
-          </div>
-          <div className="absolute bottom-6 left-6 flex flex-col gap-2">
-             <div className="flex gap-2">
-                {[1,2,3].map(i => (
-                  <div key={i} className="w-8 h-0.5 bg-white/5 rounded-full overflow-hidden">
-                    <div className="h-full bg-primary/40 animate-progress origin-left" style={{ animationDelay: `${i*300}ms` }} />
-                  </div>
-                ))}
-             </div>
-             <p className="text-[8px] font-black text-white/10 uppercase tracking-widest">System Online...</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section id="features" className="py-20 relative">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex flex-col md:flex-row justify-between items-end gap-10 mb-12">
-            <div className="space-y-2">
-              <p className="text-[9px] font-black text-primary uppercase tracking-[0.4em]">Key Features</p>
-              <h2 className="text-3xl font-black text-white uppercase tracking-widest">Enterprise Solutions.</h2>
+        <div className="w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-700">
+          <div className="astra-glass rounded-3xl border border-divider shadow-3xl overflow-hidden bg-card/10">
+            <div className="p-8 pb-5 text-center space-y-2 border-b border-divider bg-muted/5">
+              <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mx-auto mb-4 border border-primary/20 shadow-xl shadow-primary/10">
+                <Lock size={20} className="text-primary" strokeWidth={2.5} />
+              </div>
+              <h1 className="text-xl font-black text-foreground uppercase tracking-widest">Login</h1>
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-[0.2em] opacity-40">Secure User Access</p>
             </div>
-            <p className="max-w-md text-muted-foreground/60 font-black uppercase tracking-widest text-[10px] leading-relaxed">
-              structural tools required for reliable organizational growth and coordination.
+
+            <form onSubmit={handleSubmit} className="p-8 space-y-5">
+              <div className="space-y-4">
+                <Input
+                  label="Corporate Email"
+                  type="email"
+                  placeholder="name@company.com"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="h-10 text-xs font-bold bg-muted/5 border-divider rounded-xl"
+                />
+                <div className="space-y-1.5">
+                  <Input
+                    label="Password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={formData.password}
+                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    required
+                    className="h-10 text-xs font-bold bg-muted/5 border-divider rounded-xl"
+                  />
+                  <div className="flex justify-end px-1">
+                    <Link href="/forgot-password" className="text-[9px] font-black uppercase tracking-widest text-primary/40 hover:text-primary transition-colors">
+                      Forgot Password?
+                    </Link>
+                  </div>
+                </div>
+              </div>
+
+              <Button type="submit" className="w-full h-10 rounded-xl text-[10px] font-black uppercase tracking-widest group" isLoading={isLoading}>
+                Sign In <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </form>
+
+            <div className="p-8 pt-5 text-center border-t border-divider bg-muted/5">
+              <p className="text-[9px] font-black text-muted-foreground uppercase tracking-widest mb-3 opacity-20">New to the system?</p>
+              <Link href="/signup">
+                <Button variant="ghost" className="w-full h-9 rounded-xl text-[10px] font-black uppercase tracking-widest text-primary hover:bg-primary/5 border border-primary/10 hover:border-primary shadow-none">
+                  Create Workspace Account
+                </Button>
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-8 text-center opacity-20 hover:opacity-100 transition-opacity duration-500">
+            <p className="text-[9px] font-black text-foreground uppercase tracking-[0.5em] leading-relaxed">
+              EPMS Enterprise Management System &copy; {new Date().getFullYear()}. <br />
+              System Status: Online.
             </p>
           </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            <LandingFeatureCard 
-              icon={<Users className="text-primary" size={20} />}
-              title="Workforce Management"
-              description="Unified active profiles and detailed organizational charts."
-            />
-            <LandingFeatureCard 
-              icon={<Briefcase className="text-primary" size={20} />}
-              title="Active Portfolios"
-              description="Comprehensive project tracking and delivery milestones."
-            />
-            <LandingFeatureCard 
-              icon={<BarChart3 className="text-primary" size={20} />}
-              title="Performance Analytics"
-              description="Automated reporting and data-driven insights."
-            />
-          </div>
         </div>
-      </section>
-
-      {/* Security Section */}
-      <section id="security" className="py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-primary/[0.01]" />
-        <div className="max-w-7xl mx-auto px-6 flex flex-col lg:flex-row gap-20 items-center">
-           <div className="flex-1 space-y-8">
-              <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white/[0.02] border border-white/5 text-[9px] font-black uppercase tracking-widest text-white/20">
-                <Lock size={12} className="text-primary/60" />
-                Enterprise Security
-              </div>
-              <h2 className="text-4xl md:text-6xl font-black text-foreground uppercase tracking-widest leading-none">Global <br /> Protection.</h2>
-              <p className="text-[10px] text-muted-foreground/60 font-black uppercase tracking-widest leading-relaxed max-w-xl">
-                Industry-standard encryption for all data transmissions. Your information is protected by sophisticated security layers.
-              </p>
-              <div className="grid grid-cols-2 gap-10 pt-4">
-                 <div className="space-y-1">
-                    <p className="text-2xl font-black text-white uppercase tracking-widest leading-none">99.99%</p>
-                    <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/40">Uptime Reliability</p>
-                 </div>
-                 <div className="space-y-1">
-                    <p className="text-2xl font-black text-white uppercase tracking-widest leading-none">AES-256</p>
-                    <p className="text-[8px] font-black uppercase tracking-[0.2em] text-primary/40">Encryption Level</p>
-                 </div>
-              </div>
-           </div>
-           <div className="flex-1 w-full flex justify-center lg:justify-end">
-              <div className="w-full max-w-sm aspect-square rounded-[40px] border border-white/5 flex items-center justify-center relative shadow-3xl bg-white/[0.01]">
-                 <div className="absolute inset-0 p-10 opacity-5">
-                    <Globe size="100%" strokeWidth={0.5} className="text-primary" />
-                 </div>
-                 <ShieldCheck size={60} className="text-white opacity-20" />
-              </div>
-           </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-24 relative">
-        <div className="max-w-3xl mx-auto px-6 text-center space-y-8">
-           <h2 className="text-4xl md:text-6xl font-black text-white uppercase tracking-widest leading-none">READY TO <br /> START?</h2>
-           <p className="text-[10px] text-white/20 font-black uppercase tracking-widest">Connect your organization today.</p>
-           <Link href="/signup">
-             <Button className="h-12 px-12 text-[10px] font-black uppercase tracking-widest rounded-xl shadow-2xl shadow-primary/40 group">
-               Register Now <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={16} />
-             </Button>
-           </Link>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-white/5 py-12 bg-black relative z-10">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-10">
-          <div className="flex items-center gap-2.5 opacity-40">
-            <div className="bg-white/5 p-1.5 rounded-lg text-white border border-white/5">
-              <Zap size={14} fill="currentColor" strokeWidth={3} />
-            </div>
-            <span className="text-xl font-black tracking-widest text-white uppercase">EPMS</span>
-          </div>
-          <div className="flex gap-8 text-[8px] font-black uppercase tracking-widest text-white/20">
-             <a href="#" className="hover:text-primary transition-colors">Privacy</a>
-             <a href="#" className="hover:text-primary transition-colors">Terms</a>
-             <a href="#" className="hover:text-primary transition-colors">Contact</a>
-          </div>
-          <div className="text-[8px] font-black text-white/10 uppercase tracking-widest">
-            &copy; {new Date().getFullYear()} EPMS. PROPRIETARY.
-          </div>
-        </div>
-      </footer>
       </div>
     </OrgThemeProvider>
-  );
-}
-
-function LandingFeatureCard({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
-  return (
-    <div className="p-6 rounded-2xl border border-white/5 bg-white/[0.01] transition-all group duration-500 hover:border-primary/20">
-      <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-all duration-700">
-        <div className="text-primary transform scale-90 group-hover:scale-100">
-          {icon}
-        </div>
-      </div>
-      <h3 className="text-sm font-black text-white mb-2 uppercase tracking-widest">{title}</h3>
-      <p className="text-white/20 font-black uppercase tracking-widest leading-relaxed text-[9px] group-hover:text-white/40 transition-colors">{description}</p>
-    </div>
   );
 }

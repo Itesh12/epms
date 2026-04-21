@@ -16,15 +16,19 @@ export function middleware(request: NextRequest) {
                           path.startsWith('/employees');
   
   // Define auth routes (where logged in users shouldn't go)
-  const isAuthRoute = path === '/login' || path === '/signup';
+  const isAuthRoute = path === '/' || path === '/signup';
 
-  // For this demo, we'll assume authentication status is managed 
-  // mainly on the client, but we can add basic cookie-based checks here 
-  // if we move tokens to cookies later.
+  if (isProtectedRoute && !token) {
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
+  if (isAuthRoute && token) {
+    return NextResponse.redirect(new URL('/dashboard', request.url));
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/projects/:path*', '/employees/:path*', '/login', '/signup'],
+  matcher: ['/dashboard/:path*', '/projects/:path*', '/employees/:path*', '/', '/signup'],
 };

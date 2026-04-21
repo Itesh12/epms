@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api from '@/services/api';
 import { Zap, Key, ShieldCheck, ArrowRight, Lock } from 'lucide-react';
+import { Logo } from '@/components/ui/Logo';
+import { OrgThemeProvider } from '@/components/providers/OrgThemeProvider';
 
 function ResetPasswordForm() {
   const router = useRouter();
@@ -35,7 +37,7 @@ function ResetPasswordForm() {
         newPassword: password
       });
       toast.success('Password updated successfully');
-      router.push('/login');
+      router.push('/');
     } catch (error: any) {
       toast.error(error.message || 'Update failed');
     } finally {
@@ -45,12 +47,12 @@ function ResetPasswordForm() {
 
   return (
     <div className="w-full max-w-md relative z-10 animate-in fade-in zoom-in-95 duration-700">
-      <div className="astra-glass rounded-2xl border border-white/5 shadow-3xl overflow-hidden bg-white/[0.02]">
-        <div className="p-8 pb-5 text-center space-y-2 border-b border-white/5 bg-white/[0.01]">
+      <div className="astra-glass rounded-2xl border border-divider shadow-3xl overflow-hidden bg-card/10">
+        <div className="p-8 pb-5 text-center space-y-2 border-b border-divider bg-muted/5">
           <div className="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto mb-4 border border-emerald-500/20 shadow-xl shadow-emerald-500/10">
              <Key size={20} className="text-emerald-500" strokeWidth={2.5} />
           </div>
-          <h1 className="text-xl font-black text-white uppercase tracking-widest">Update Password</h1>
+          <h1 className="text-xl font-black text-foreground uppercase tracking-widest">Update Password</h1>
           <p className="text-[9px] font-black text-emerald-500/40 uppercase tracking-[0.2em]">Security Update</p>
         </div>
 
@@ -95,22 +97,19 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#030712] p-6 relative overflow-hidden selection:bg-primary/30">
-      {/* Background Aura blurs */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-500/5 blur-[120px] rounded-full animate-pulse" />
-      </div>
-
-      <div className="absolute top-8 left-8 flex items-center gap-2">
-        <div className="bg-primary p-1.5 rounded-lg text-white shadow-xl shadow-primary/20">
-          <Zap size={16} fill="currentColor" strokeWidth={3} />
+    <OrgThemeProvider>
+      <div className="min-h-screen flex items-center justify-center bg-background p-6 relative overflow-hidden selection:bg-primary/30">
+        {/* Background Aura blurs */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-primary/10 blur-[120px] rounded-full animate-pulse" />
         </div>
-        <span className="text-xl font-black tracking-widest text-white uppercase opacity-40">EPMS</span>
-      </div>
 
-      <Suspense fallback={<div className="text-[10px] text-white font-black animate-pulse uppercase tracking-widest">Checking Access...</div>}>
-         <ResetPasswordForm />
-      </Suspense>
-    </div>
+        <Logo className="absolute top-8 left-8" textClassName="opacity-40" />
+
+        <Suspense fallback={<div className="text-[10px] text-white font-black animate-pulse uppercase tracking-widest">Checking Access...</div>}>
+           <ResetPasswordForm />
+        </Suspense>
+      </div>
+    </OrgThemeProvider>
   );
 }

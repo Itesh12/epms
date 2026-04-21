@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import api from '@/services/api';
-import { Zap, Globe, Rocket, ShieldCheck, Mail, Lock, Building, ArrowRight } from 'lucide-react';
+import { Zap, Globe, Rocket, ShieldCheck, Mail, Lock, Building, ArrowRight, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from '@/components/ui/Logo';
 import { OrgThemeProvider } from '@/components/providers/OrgThemeProvider';
@@ -94,6 +94,10 @@ export default function SignupPage() {
               <Button type="submit" className="w-full h-10 rounded-xl text-[10px] font-black uppercase tracking-widest group" isLoading={isLoading}>
                 Create Account <ArrowRight size={14} className="ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
+
+              <Link href="/" className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/40 hover:text-primary transition-colors group">
+                <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back to Login
+              </Link>
             </form>
 
             <div className="p-8 pt-5 text-center border-t border-divider bg-muted/5 flex items-center justify-between">
@@ -103,7 +107,7 @@ export default function SignupPage() {
               </div>
               <div className="flex items-center gap-3 text-[9px] font-black uppercase tracking-widest">
                 <span className="text-muted-foreground opacity-40">Already in?</span>
-                <Link href="/login" className="text-primary hover:text-foreground transition-colors">
+                <Link href="/" className="text-primary hover:text-foreground transition-colors">
                   Sign In
                 </Link>
               </div>
