@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Bell, Search, User, Menu, Settings } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Bell, Search, User, Menu, Settings, LogOut } from 'lucide-react';
+import Link from 'next/link';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useProfileStore } from '@/store/useProfileStore';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
@@ -11,8 +13,10 @@ interface NavbarProps {
 }
 
 export function Navbar({ onMenuClick }: NavbarProps) {
+  const router = useRouter();
   const user = useAuthStore((state) => state.user);
   const { openProfile } = useProfileStore();
+  const logout = useAuthStore((state) => state.logout);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   return (
@@ -60,21 +64,46 @@ export function Navbar({ onMenuClick }: NavbarProps) {
             </button>
 
             {isProfileOpen && (
-              <div className="absolute right-0 top-full mt-2 w-48 bg-background border rounded-xl shadow-xl overflow-hidden z-50">
-                <div className="py-2 border-b border-white/5">
+              <div className="absolute right-0 top-full mt-3 w-56 astra-glass border border-divider rounded-2xl shadow-2xl overflow-hidden z-50 bg-card/90 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200">
+                <div className="p-2 space-y-1">
                   <button
                     onClick={() => {
                       setIsProfileOpen(false);
                       if (user?.id) openProfile(user.id);
                     }}
-                    className="w-full text-left px-5 py-3 text-xs font-bold text-foreground hover:bg-white/5 flex items-center gap-3 transition-colors group"
+                    className="w-full text-left px-4 py-3 text-xs font-bold text-foreground hover:bg-primary/10 rounded-xl flex items-center gap-3 transition-all group"
                   >
-                    <User className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <User size={16} className="text-primary group-hover:scale-110 transition-transform" />
+                    </div>
                     My Profile
                   </button>
-                  <button className="w-full text-left px-5 py-3 text-xs font-bold text-foreground hover:bg-white/5 flex items-center gap-3 transition-colors group">
-                    <Settings className="w-4 h-4 text-muted-foreground group-hover:rotate-45 transition-transform" />
+
+                  <Link
+                    href="/settings"
+                    onClick={() => setIsProfileOpen(false)}
+                    className="w-full text-left px-4 py-3 text-xs font-bold text-foreground hover:bg-primary/10 rounded-xl flex items-center gap-3 transition-all group"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-muted flex items-center justify-center">
+                      <Settings size={16} className="text-muted-foreground group-hover:rotate-45 transition-transform" />
+                    </div>
                     General Settings
+                  </Link>
+
+                  <div className="h-px bg-divider mx-2 my-1" />
+
+                  <button
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                      logout();
+                      router.push('/');
+                    }}
+                    className="w-full text-left px-4 py-3 text-xs font-black text-red-500 hover:bg-red-500/10 rounded-xl flex items-center gap-3 transition-all group uppercase tracking-widest"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-red-500/10 flex items-center justify-center">
+                      <LogOut size={16} className="group-hover:-translate-x-1 transition-transform" />
+                    </div>
+                    Sign Out
                   </button>
                 </div>
               </div>

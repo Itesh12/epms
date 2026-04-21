@@ -127,20 +127,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 );
               })}
             </nav>
-          </div>
-
-          <div className="mt-auto p-6 border-t border-divider">
-            <button
-              onClick={() => {
-                logout();
-                onClose();
-              }}
-              className="flex items-center gap-3 px-3 py-3 rounded-xl text-muted-foreground hover:bg-red-500/10 hover:text-red-500 transition-all w-full group font-extrabold tracking-tight text-sm"
-            >
-              <LogOut size={18} className="group-hover:scale-110 group-hover:-translate-x-1 transition-transform" />
-              <span>Sign Out</span>
-            </button>
-          </div>
+          </div> 
         </div>
       </div>
     </>
