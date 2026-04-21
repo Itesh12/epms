@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
 import { SocialService } from './social.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -51,5 +51,15 @@ export class SocialController {
   @Get('posts/:id/comments')
   getComments(@Param('id') id: string) {
     return this.socialService.getComments(id);
+  }
+
+  @Get('search/users')
+  searchUsers(@Request() req: any, @Query('q') query: string) {
+    return this.socialService.searchUsers(query || '', req.user.orgId);
+  }
+
+  @Get('search/projects')
+  searchProjects(@Request() req: any, @Query('q') query: string) {
+    return this.socialService.searchProjects(query || '', req.user.orgId);
   }
 }

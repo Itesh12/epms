@@ -42,6 +42,12 @@ export class SocialPost extends Document {
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   pinnedBy: MongooseSchema.Types.ObjectId;
+
+  @Prop([{ type: MongooseSchema.Types.ObjectId, refPath: 'mentionModel' }])
+  mentions: MongooseSchema.Types.ObjectId[];
+
+  @Prop({ enum: ['User', 'Project'], default: 'User' })
+  mentionModel: string;
 }
 
 export const SocialPostSchema = SchemaFactory.createForClass(SocialPost);

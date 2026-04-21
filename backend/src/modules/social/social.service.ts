@@ -3,6 +3,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { SocialPost, SocialPostType } from './schemas/social-post.schema';
 import { SocialComment } from './schemas/social-comment.schema';
+import { User } from '../users/schemas/user.schema';
+import { Project } from '../projects/schemas/project.schema';
 import { CreateSocialPostDto, UpdateSocialPostDto, CreateSocialCommentDto } from './dto/social.dto';
 
 @Injectable()
@@ -10,6 +12,8 @@ export class SocialService {
   constructor(
     @InjectModel(SocialPost.name) private postModel: Model<SocialPost>,
     @InjectModel(SocialComment.name) private commentModel: Model<SocialComment>,
+    @InjectModel(User.name) private userModel: Model<User>,
+    @InjectModel(Project.name) private projectModel: Model<Project>,
   ) {}
 
   async createPost(userId: string, organizationId: string, dto: CreateSocialPostDto) {
@@ -99,6 +103,29 @@ export class SocialService {
     return this.commentModel.find({ postId: new Types.ObjectId(postId) } as any)
       .populate('authorId', 'firstName lastName avatar role')
       .sort({ createdAt: 1 })
+      .exec();
+  }
+
+  async searchUsers(query: string, organizationId: string) {
+    return this.userModel.find({
+      organizationId: new Types.ObjectId(organizationId),
+      $or: [
+        { firstName: { $regex: query, $options: 'i' } },
+        { lastName: { $regex: query, $options: 'i' } },
+      ],
+    } as any)
+      .select('firstName lastName avatar role')
+      .limit(5)
+      .exec();
+  }
+
+  async searchProjects(query: string, organizationId: string) {
+    return this.projectModel.find({
+      organizationId: new Types.ObjectId(organizationId),
+      name: { $regex: query, $options: 'i' },
+    } as any)
+      .select('name')
+      .limit(5)
       .exec();
   }
 }
