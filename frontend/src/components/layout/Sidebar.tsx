@@ -16,7 +16,8 @@ import {
   Megaphone,
   Wallet,
   Package,
-  BookOpen
+  BookOpen,
+  CalendarClock
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -36,6 +37,7 @@ const navItems = [
   { label: 'Assets', icon: Package, href: '/assets' },
   { label: 'Knowledge Base', icon: BookOpen, href: '/wiki' },
   { label: 'Polls & Feedback', icon: BarChart3, href: '/polls' },
+  { label: 'Leaves', icon: CalendarClock, href: '/leaves' },
   { label: 'Settings', icon: Settings, href: '/settings' },
 ];
 

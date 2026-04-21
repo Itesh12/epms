@@ -18,6 +18,7 @@ import { FinanceModule } from './modules/finance/finance.module';
 import { AssetsModule } from './modules/assets/assets.module';
 import { WikiModule } from './modules/wiki/wiki.module';
 import { PollsModule } from './modules/polls/polls.module';
+import { LeavesModule } from './modules/leaves/leaves.module';
 import configuration from './config/configuration';
 
 @Module({
@@ -42,6 +43,7 @@ import configuration from './config/configuration';
     AssetsModule,
     WikiModule,
     PollsModule,
+    LeavesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

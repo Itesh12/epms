@@ -6,6 +6,7 @@ export enum AttendanceStatus {
   LATE = 'LATE',
   HALF_DAY = 'HALF_DAY',
   ABSENT = 'ABSENT',
+  LEAVE = 'LEAVE',
 }
 
 @Schema({ timestamps: true })
