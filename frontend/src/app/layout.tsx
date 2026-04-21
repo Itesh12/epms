@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import { OrgThemeProvider } from "@/components/providers/OrgThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
+          <OrgThemeProvider>
+            {children}
+          </OrgThemeProvider>
           <Toaster 
             position="top-right" 
             toastOptions={{
