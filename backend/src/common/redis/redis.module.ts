@@ -8,11 +8,14 @@ import Redis from 'ioredis';
     {
       provide: 'REDIS_CLIENT',
       useFactory: (configService: ConfigService) => {
-        const redis = new Redis({
-          host: configService.get<string>('redis.host'),
-          port: configService.get<number>('redis.port'),
-          maxRetriesPerRequest: null,
-        });
+        const redisUrl = configService.get<string>('redis.url');
+        const redis = redisUrl 
+          ? new Redis(redisUrl, { maxRetriesPerRequest: null })
+          : new Redis({
+              host: configService.get<string>('redis.host'),
+              port: configService.get<number>('redis.port'),
+              maxRetriesPerRequest: null,
+            });
 
         redis.on('error', (err) => {
           console.warn('[Redis] Connection error:', err.message);

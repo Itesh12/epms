@@ -26,7 +26,10 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 
   // CORS
-  app.enableCors();
+  app.enableCors({
+    origin: process.env.FRONTEND_URL || '*',
+    credentials: true,
+  });
 
   await app.listen(process.env.PORT || 3001, '0.0.0.0');
   console.log(`Application is running on: ${await app.getUrl()}`);
