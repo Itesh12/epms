@@ -28,7 +28,7 @@ export default function SignupPage() {
     try {
       await api.post('/auth/signup', formData);
       toast.success('Account Created Successfully');
-      router.push('/login');
+      router.push('/');
     } catch (error: any) {
       toast.error(error.message || 'Registration failed');
     } finally {
