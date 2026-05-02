@@ -1,10 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { FinanceService } from './finance.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole } from '../users/schemas/user.schema';
-import { CreateExpenseDto, UpdateExpenseStatusDto, CreatePayrollDto } from './dto/finance.dto';
+import {
+  CreateExpenseDto,
+  UpdateExpenseStatusDto,
+  CreatePayrollDto,
+} from './dto/finance.dto';
 
 @Controller('finance')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -14,7 +27,11 @@ export class FinanceController {
   // Expenses - Employee & Admin
   @Post('expenses')
   createExpense(@Request() req: any, @Body() dto: CreateExpenseDto) {
-    return this.financeService.createExpense(req.user.userId, req.user.orgId, dto);
+    return this.financeService.createExpense(
+      req.user.userId,
+      req.user.orgId,
+      dto,
+    );
   }
 
   @Get('expenses/my')
@@ -36,14 +53,20 @@ export class FinanceController {
     @Request() req: any,
     @Body() dto: UpdateExpenseStatusDto,
   ) {
-    return this.financeService.updateExpenseStatus(id, req.user.orgId, req.user.userId, dto);
+    return this.financeService.updateExpenseStatus(
+      id,
+      req.user.orgId,
+      req.user.userId,
+      dto,
+    );
   }
 
   // Payroll - Restricted
   @Get('payroll')
   getPayroll(@Request() req: any) {
     // Admins see all, employees see only theirs
-    const userId = req.user.role === UserRole.ADMIN ? undefined : req.user.userId;
+    const userId =
+      req.user.role === UserRole.ADMIN ? undefined : req.user.userId;
     return this.financeService.getPayrollHistory(req.user.orgId, userId);
   }
 

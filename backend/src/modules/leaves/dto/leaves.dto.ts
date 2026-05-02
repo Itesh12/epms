@@ -1,4 +1,13 @@
-import { IsString, IsDateString, IsEnum, IsBoolean, IsOptional, IsNumber, Min, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsDateString,
+  IsEnum,
+  IsBoolean,
+  IsOptional,
+  IsNumber,
+  Min,
+  IsArray,
+} from 'class-validator';
 import { LeaveType, LeaveStatus } from '../schemas/leave-request.schema';
 
 export class CreateLeaveRequestDto {

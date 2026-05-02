@@ -1,10 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  Query,
+} from '@nestjs/common';
 import { WikiService } from './wiki.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole } from '../users/schemas/user.schema';
-import { CreateWikiCategoryDto, CreateWikiArticleDto, UpdateWikiArticleDto } from './dto/wiki.dto';
+import {
+  CreateWikiCategoryDto,
+  CreateWikiArticleDto,
+  UpdateWikiArticleDto,
+} from './dto/wiki.dto';
 
 @Controller('wiki')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -44,8 +59,17 @@ export class WikiController {
   }
 
   @Patch('articles/:id')
-  updateArticle(@Param('id') id: string, @Request() req: any, @Body() dto: UpdateWikiArticleDto) {
-    return this.wikiService.updateArticle(req.user.userId, id, req.user.orgId, dto);
+  updateArticle(
+    @Param('id') id: string,
+    @Request() req: any,
+    @Body() dto: UpdateWikiArticleDto,
+  ) {
+    return this.wikiService.updateArticle(
+      req.user.userId,
+      id,
+      req.user.orgId,
+      dto,
+    );
   }
 
   @Delete('articles/:id')

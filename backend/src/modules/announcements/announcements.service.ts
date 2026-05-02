@@ -23,10 +23,7 @@ export class AnnouncementsService {
       .find({
         organizationId: organizationId as any,
         isActive: true,
-        $or: [
-          { expiresAt: { $gt: now } },
-          { expiresAt: { $eq: null } }
-        ]
+        $or: [{ expiresAt: { $gt: now } }, { expiresAt: { $eq: null } }],
       } as any)
       .sort({ type: 1, createdAt: -1 }) // Sort by critical first, then newest
       .exec();
@@ -39,11 +36,7 @@ export class AnnouncementsService {
 
   async update(id: string, organizationId: string, data: any) {
     return this.announcementModel
-      .findOneAndUpdate(
-        { _id: id, organizationId } as any,
-        data,
-        { new: true }
-      )
+      .findOneAndUpdate({ _id: id, organizationId } as any, data, { new: true })
       .exec();
   }
 
@@ -51,7 +44,7 @@ export class AnnouncementsService {
     return this.announcementModel
       .findOneAndDelete({
         _id: id,
-        organizationId
+        organizationId,
       } as any)
       .exec();
   }

@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  Query,
+} from '@nestjs/common';
 import { SocialService } from './social.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -29,7 +40,12 @@ export class SocialController {
   @Delete('posts/:id')
   deletePost(@Param('id') id: string, @Request() req: any) {
     const isAdmin = req.user.role === UserRole.ADMIN;
-    return this.socialService.deletePost(id, req.user.orgId, req.user.userId, isAdmin);
+    return this.socialService.deletePost(
+      id,
+      req.user.orgId,
+      req.user.userId,
+      isAdmin,
+    );
   }
 
   @Patch('posts/:id/pin')
@@ -39,12 +55,20 @@ export class SocialController {
   }
 
   @Post('posts/:id/react/:type')
-  toggleReaction(@Param('id') id: string, @Param('type') type: string, @Request() req: any) {
+  toggleReaction(
+    @Param('id') id: string,
+    @Param('type') type: string,
+    @Request() req: any,
+  ) {
     return this.socialService.toggleReaction(id, req.user.userId, type);
   }
 
   @Post('posts/:id/comments')
-  addComment(@Param('id') id: string, @Request() req: any, @Body() dto: CreateSocialCommentDto) {
+  addComment(
+    @Param('id') id: string,
+    @Request() req: any,
+    @Body() dto: CreateSocialCommentDto,
+  ) {
     return this.socialService.addComment(id, req.user.userId, dto);
   }
 

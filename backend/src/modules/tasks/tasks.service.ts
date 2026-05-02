@@ -15,7 +15,9 @@ export class TasksService {
       organizationId: new Types.ObjectId(orgId),
       projectId: new Types.ObjectId(createTaskDto.projectId),
       assigneeId: new Types.ObjectId(createTaskDto.assigneeId),
-      parentId: createTaskDto.parentId ? new Types.ObjectId(createTaskDto.parentId) : null,
+      parentId: createTaskDto.parentId
+        ? new Types.ObjectId(createTaskDto.parentId)
+        : null,
     });
     return newTask.save();
   }
@@ -31,15 +33,22 @@ export class TasksService {
       .exec();
   }
 
-  async update(id: string, updateTaskDto: UpdateTaskDto, orgId: string): Promise<Task> {
-    const filter = { 
-      _id: new Types.ObjectId(id), 
-      organizationId: new Types.ObjectId(orgId) 
+  async update(
+    id: string,
+    updateTaskDto: UpdateTaskDto,
+    orgId: string,
+  ): Promise<Task> {
+    const filter = {
+      _id: new Types.ObjectId(id),
+      organizationId: new Types.ObjectId(orgId),
     } as any;
 
     // If status is changed to DONE and completedAt isn't set, set it automatically
     const updateData: any = { ...updateTaskDto };
-    if (updateTaskDto.status === TaskStatus.DONE && !updateTaskDto.completedAt) {
+    if (
+      updateTaskDto.status === TaskStatus.DONE &&
+      !updateTaskDto.completedAt
+    ) {
       updateData.completedAt = new Date();
     }
 
@@ -47,11 +56,10 @@ export class TasksService {
       updateData.assigneeId = new Types.ObjectId(updateTaskDto.assigneeId);
     }
 
-    const updatedTask = await this.taskModel.findOneAndUpdate(
-      filter,
-      { $set: updateData },
-      { new: true }
-    ).populate('assigneeId', 'email role').exec();
+    const updatedTask = await this.taskModel
+      .findOneAndUpdate(filter, { $set: updateData }, { new: true })
+      .populate('assigneeId', 'email role')
+      .exec();
 
     if (!updatedTask) {
       throw new NotFoundException(`Task with ID ${id} not found`);
@@ -61,15 +69,15 @@ export class TasksService {
   }
 
   async remove(id: string, orgId: string): Promise<void> {
-    const filter = { 
-      _id: new Types.ObjectId(id), 
-      organizationId: new Types.ObjectId(orgId) 
+    const filter = {
+      _id: new Types.ObjectId(id),
+      organizationId: new Types.ObjectId(orgId),
     } as any;
-    
+
     // Check if task has subtasks and disconnect them or handle them?
     // For now, simple delete. Recursion can be handled by client if needed or cascaded here.
     const result = await this.taskModel.deleteOne(filter).exec();
-    
+
     if (result.deletedCount === 0) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }

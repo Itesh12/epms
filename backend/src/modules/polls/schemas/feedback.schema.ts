@@ -21,7 +21,11 @@ export class Feedback extends Document {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   userId: MongooseSchema.Types.ObjectId; // Null if anonymous
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+  })
   organizationId: MongooseSchema.Types.ObjectId;
 
   @Prop({ enum: FeedbackStatus, default: FeedbackStatus.OPEN })

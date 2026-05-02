@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CalendarEvent, CalendarEventDocument, EventType } from './calendar.schema';
+import {
+  CalendarEvent,
+  CalendarEventDocument,
+  EventType,
+} from './calendar.schema';
 
 @Injectable()
 export class CalendarService {
@@ -30,29 +34,63 @@ export class CalendarService {
   }
 
   async remove(id: string) {
-    return this.calendarEventModel.findByIdAndUpdate(id, { isActive: false }).exec();
+    return this.calendarEventModel
+      .findByIdAndUpdate(id, { isActive: false })
+      .exec();
   }
 
   async seedHolidays(organizationId: string, userId: string) {
     const currentYear = 2026;
     const indianHolidays = [
-      { title: 'Republic Day', date: `${currentYear}-01-26`, type: EventType.HOLIDAY },
+      {
+        title: 'Republic Day',
+        date: `${currentYear}-01-26`,
+        type: EventType.HOLIDAY,
+      },
       { title: 'Holi', date: `${currentYear}-03-14`, type: EventType.HOLIDAY },
-      { title: 'Eid-ul-Fitr', date: `${currentYear}-03-20`, type: EventType.HOLIDAY }, // Approximate
-      { title: 'Dr. Ambedkar Jayanti', date: `${currentYear}-04-14`, type: EventType.HOLIDAY },
-      { title: 'Independence Day', date: `${currentYear}-08-15`, type: EventType.HOLIDAY },
-      { title: 'Gandhi Jayanti', date: `${currentYear}-10-02`, type: EventType.HOLIDAY },
-      { title: 'Dussehra', date: `${currentYear}-10-21`, type: EventType.HOLIDAY },
-      { title: 'Diwali', date: `${currentYear}-11-09`, type: EventType.HOLIDAY },
-      { title: 'Christmas Day', date: `${currentYear}-12-25`, type: EventType.HOLIDAY },
+      {
+        title: 'Eid-ul-Fitr',
+        date: `${currentYear}-03-20`,
+        type: EventType.HOLIDAY,
+      }, // Approximate
+      {
+        title: 'Dr. Ambedkar Jayanti',
+        date: `${currentYear}-04-14`,
+        type: EventType.HOLIDAY,
+      },
+      {
+        title: 'Independence Day',
+        date: `${currentYear}-08-15`,
+        type: EventType.HOLIDAY,
+      },
+      {
+        title: 'Gandhi Jayanti',
+        date: `${currentYear}-10-02`,
+        type: EventType.HOLIDAY,
+      },
+      {
+        title: 'Dussehra',
+        date: `${currentYear}-10-21`,
+        type: EventType.HOLIDAY,
+      },
+      {
+        title: 'Diwali',
+        date: `${currentYear}-11-09`,
+        type: EventType.HOLIDAY,
+      },
+      {
+        title: 'Christmas Day',
+        date: `${currentYear}-12-25`,
+        type: EventType.HOLIDAY,
+      },
     ];
 
-    const operations = indianHolidays.map(holiday => ({
+    const operations = indianHolidays.map((holiday) => ({
       updateOne: {
-        filter: { 
-          title: holiday.title, 
-          organizationId, 
-          startDate: new Date(holiday.date) 
+        filter: {
+          title: holiday.title,
+          organizationId,
+          startDate: new Date(holiday.date),
         },
         update: {
           $setOnInsert: {
@@ -62,11 +100,11 @@ export class CalendarService {
             type: holiday.type,
             organizationId,
             createdBy: userId,
-            isActive: true
-          }
+            isActive: true,
+          },
         },
-        upsert: true
-      }
+        upsert: true,
+      },
     }));
 
     return this.calendarEventModel.bulkWrite(operations);

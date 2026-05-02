@@ -11,10 +11,20 @@ export enum AttendanceStatus {
 
 @Schema({ timestamps: true })
 export class Attendance extends Document {
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true, index: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+    index: true,
+  })
   userId: MongooseSchema.Types.ObjectId;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true, index: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+    index: true,
+  })
   organizationId: MongooseSchema.Types.ObjectId;
 
   @Prop({ required: true, index: true })

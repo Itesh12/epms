@@ -1,4 +1,13 @@
-import { IsString, IsArray, IsOptional, IsDateString, IsBoolean, IsEnum, IsNumber, Min } from 'class-validator';
+import {
+  IsString,
+  IsArray,
+  IsOptional,
+  IsDateString,
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  Min,
+} from 'class-validator';
 import { FeedbackStatus } from '../schemas/feedback.schema';
 
 export class CreatePollDto {

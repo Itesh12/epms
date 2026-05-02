@@ -1,4 +1,10 @@
-import { IsEnum, IsOptional, IsString, MinLength, IsBoolean } from 'class-validator';
+import {
+  IsEnum,
+  IsOptional,
+  IsString,
+  MinLength,
+  IsBoolean,
+} from 'class-validator';
 import { UserRole } from '../schemas/user.schema';
 
 export class UpdateEmployeeDto {

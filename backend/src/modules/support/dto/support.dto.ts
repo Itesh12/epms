@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, IsEnum, IsBoolean, IsOptional, MaxLength } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsEnum,
+  IsBoolean,
+  IsOptional,
+  MaxLength,
+} from 'class-validator';
 
 export enum TicketType {
   IT_SUPPORT = 'IT_SUPPORT',

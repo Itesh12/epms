@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, IsOptional, IsEnum, IsMongoId } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsEnum,
+  IsMongoId,
+} from 'class-validator';
 import { ProjectStatus, ProjectPriority } from '../schemas/project.schema';
 
 export class CreateProjectDto {

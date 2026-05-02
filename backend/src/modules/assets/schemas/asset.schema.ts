@@ -33,7 +33,11 @@ export class Asset extends Document {
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User' })
   assignedTo: MongooseSchema.Types.ObjectId;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+  })
   organizationId: MongooseSchema.Types.ObjectId;
 
   @Prop()

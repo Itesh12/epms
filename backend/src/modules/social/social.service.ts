@@ -1,11 +1,19 @@
-import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ForbiddenException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { SocialPost, SocialPostType } from './schemas/social-post.schema';
 import { SocialComment } from './schemas/social-comment.schema';
 import { User } from '../users/schemas/user.schema';
 import { Project } from '../projects/schemas/project.schema';
-import { CreateSocialPostDto, UpdateSocialPostDto, CreateSocialCommentDto } from './dto/social.dto';
+import {
+  CreateSocialPostDto,
+  UpdateSocialPostDto,
+  CreateSocialCommentDto,
+} from './dto/social.dto';
 
 @Injectable()
 export class SocialService {
@@ -16,7 +24,11 @@ export class SocialService {
     @InjectModel(Project.name) private projectModel: Model<Project>,
   ) {}
 
-  async createPost(userId: string, organizationId: string, dto: CreateSocialPostDto) {
+  async createPost(
+    userId: string,
+    organizationId: string,
+    dto: CreateSocialPostDto,
+  ) {
     const post = new this.postModel({
       ...dto,
       authorId: new Types.ObjectId(userId),
@@ -33,38 +45,56 @@ export class SocialService {
 
   async findAll(organizationId: string) {
     // Show pinned posts first, then newest
-    return this.postModel.find({ organizationId: new Types.ObjectId(organizationId) } as any)
+    return this.postModel
+      .find({ organizationId: new Types.ObjectId(organizationId) } as any)
       .populate('authorId', 'firstName lastName avatar role')
       .sort({ isPinned: -1, createdAt: -1 })
       .exec();
   }
 
   async findOne(id: string) {
-    const post = await this.postModel.findById(id).populate('authorId', 'firstName lastName avatar role');
+    const post = await this.postModel
+      .findById(id)
+      .populate('authorId', 'firstName lastName avatar role');
     if (!post) throw new NotFoundException('Post not found');
     return post;
   }
 
-  async deletePost(id: string, organizationId: string, userId: string, isAdmin: boolean) {
-    const post = await this.postModel.findOne({ _id: id, organizationId } as any);
+  async deletePost(
+    id: string,
+    organizationId: string,
+    userId: string,
+    isAdmin: boolean,
+  ) {
+    const post = await this.postModel.findOne({
+      _id: id,
+      organizationId,
+    } as any);
     if (!post) throw new NotFoundException('Post not found');
-    
+
     if (!isAdmin && post.authorId.toString() !== userId) {
       throw new ForbiddenException('You can only delete your own posts');
     }
 
     await this.postModel.deleteOne({ _id: id });
-    await this.commentModel.deleteMany({ postId: new Types.ObjectId(id) as any });
+    await this.commentModel.deleteMany({
+      postId: new Types.ObjectId(id) as any,
+    });
     return { success: true };
   }
 
   async togglePin(id: string, organizationId: string, userId: string) {
-    const post = await this.postModel.findOne({ _id: id, organizationId } as any);
+    const post = await this.postModel.findOne({
+      _id: id,
+      organizationId,
+    } as any);
     if (!post) throw new NotFoundException('Post not found');
 
     post.isPinned = !post.isPinned;
-    post.pinnedBy = post.isPinned ? new Types.ObjectId(userId) as any : undefined;
-    
+    post.pinnedBy = post.isPinned
+      ? (new Types.ObjectId(userId) as any)
+      : undefined;
+
     return post.save();
   }
 
@@ -78,7 +108,7 @@ export class SocialService {
     }
 
     const userIds = reactionMap.get(reactionType) || [];
-    const index = userIds.findIndex(id => id.toString() === userId);
+    const index = userIds.findIndex((id) => id.toString() === userId);
 
     if (index > -1) {
       userIds.splice(index, 1);
@@ -90,7 +120,11 @@ export class SocialService {
     return post.save();
   }
 
-  async addComment(postId: string, userId: string, dto: CreateSocialCommentDto) {
+  async addComment(
+    postId: string,
+    userId: string,
+    dto: CreateSocialCommentDto,
+  ) {
     const comment = new this.commentModel({
       ...dto,
       postId: new Types.ObjectId(postId),
@@ -100,30 +134,33 @@ export class SocialService {
   }
 
   async getComments(postId: string) {
-    return this.commentModel.find({ postId: new Types.ObjectId(postId) } as any)
+    return this.commentModel
+      .find({ postId: new Types.ObjectId(postId) } as any)
       .populate('authorId', 'firstName lastName avatar role')
       .sort({ createdAt: 1 })
       .exec();
   }
 
   async searchUsers(query: string, organizationId: string) {
-    return this.userModel.find({
-      organizationId: new Types.ObjectId(organizationId),
-      $or: [
-        { firstName: { $regex: query, $options: 'i' } },
-        { lastName: { $regex: query, $options: 'i' } },
-      ],
-    } as any)
+    return this.userModel
+      .find({
+        organizationId: new Types.ObjectId(organizationId),
+        $or: [
+          { firstName: { $regex: query, $options: 'i' } },
+          { lastName: { $regex: query, $options: 'i' } },
+        ],
+      } as any)
       .select('firstName lastName avatar role')
       .limit(5)
       .exec();
   }
 
   async searchProjects(query: string, organizationId: string) {
-    return this.projectModel.find({
-      organizationId: new Types.ObjectId(organizationId),
-      name: { $regex: query, $options: 'i' },
-    } as any)
+    return this.projectModel
+      .find({
+        organizationId: new Types.ObjectId(organizationId),
+        name: { $regex: query, $options: 'i' },
+      } as any)
       .select('name')
       .limit(5)
       .exec();

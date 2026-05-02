@@ -28,8 +28,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
       typeof exceptionResponse === 'string'
         ? exceptionResponse
         : Array.isArray(exceptionResponse.message)
-        ? exceptionResponse.message[0]
-        : exceptionResponse.message || 'Internal server error';
+          ? exceptionResponse.message[0]
+          : exceptionResponse.message || 'Internal server error';
 
     response.status(status).json({
       success: false,

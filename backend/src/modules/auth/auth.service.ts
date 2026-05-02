@@ -134,7 +134,7 @@ export class AuthService {
   async forgotPassword(email: string) {
     const user = await this.userModel.findOne({ email });
     if (!user) {
-      // For security, don't reveal if user exists. 
+      // For security, don't reveal if user exists.
       // Just say "If your email is in our grid, a protocol reset has been initialized."
       return { message: 'Protocol reset initialized' };
     }
@@ -143,7 +143,7 @@ export class AuthService {
     // Store in Redis with 15 minutes expiration
     await this.redis.set(`reset_token:${token}`, email, 'EX', 15 * 60);
 
-    // In a real app, send an email here. 
+    // In a real app, send an email here.
     // For this project, we return the token so the user can "see" the functionality.
     return {
       message: 'Protocol reset initialized',

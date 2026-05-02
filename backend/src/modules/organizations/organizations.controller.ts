@@ -1,4 +1,12 @@
-import { Controller, Get, Patch, Body, UseGuards, Request, ForbiddenException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Patch,
+  Body,
+  UseGuards,
+  Request,
+  ForbiddenException,
+} from '@nestjs/common';
 import { OrganizationsService } from './organizations.service';
 import { UpdateOrganizationDto } from './dto/update-organization.dto';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
@@ -15,12 +23,20 @@ export class OrganizationsController {
   }
 
   @Patch('me')
-  updateOrganization(@Body() updateOrgDto: UpdateOrganizationDto, @Request() req: any) {
+  updateOrganization(
+    @Body() updateOrgDto: UpdateOrganizationDto,
+    @Request() req: any,
+  ) {
     // The user requested that only ADMIN can modify the organization settings.
     if (req.user.role !== UserRole.ADMIN) {
-      throw new ForbiddenException('Only Administrators can update organization settings.');
+      throw new ForbiddenException(
+        'Only Administrators can update organization settings.',
+      );
     }
-    
-    return this.organizationsService.updateOrganization(req.user.orgId, updateOrgDto);
+
+    return this.organizationsService.updateOrganization(
+      req.user.orgId,
+      updateOrgDto,
+    );
   }
 }

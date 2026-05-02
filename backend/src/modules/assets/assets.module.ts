@@ -3,7 +3,10 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { AssetsController } from './assets.controller';
 import { AssetsService } from './assets.service';
 import { Asset, AssetSchema } from './schemas/asset.schema';
-import { AssetRequest, AssetRequestSchema } from './schemas/asset-request.schema';
+import {
+  AssetRequest,
+  AssetRequestSchema,
+} from './schemas/asset-request.schema';
 
 @Module({
   imports: [

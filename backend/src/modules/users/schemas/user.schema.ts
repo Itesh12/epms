@@ -28,7 +28,7 @@ export class User extends Document {
 
   @Prop({ unique: true, index: true, sparse: true })
   employeeId: string;
-  
+
   @Prop()
   firstName: string;
 

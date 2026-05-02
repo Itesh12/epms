@@ -17,7 +17,7 @@ export class DashboardService {
     const orgId = new Types.ObjectId(organizationId);
     const userId = new Types.ObjectId(userPayload.userId);
     const isAdmin = userPayload.role === UserRole.ADMIN;
-    
+
     // Last 7 days boundary
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -25,15 +25,17 @@ export class DashboardService {
     // Queries scoped by role
     const [totalEmployees, projectStats, velocityStats] = await Promise.all([
       // Only Admin sees total employees
-      isAdmin ? this.userModel.countDocuments({ organizationId: orgId } as any) : Promise.resolve(1),
-      
+      isAdmin
+        ? this.userModel.countDocuments({ organizationId: orgId } as any)
+        : Promise.resolve(1),
+
       // Project Distribution
       this.projectModel.aggregate([
-        { 
-          $match: { 
+        {
+          $match: {
             organizationId: orgId,
-            ...(isAdmin ? {} : { members: userId })
-          } 
+            ...(isAdmin ? {} : { members: userId }),
+          },
         },
         {
           $group: {
@@ -44,24 +46,50 @@ export class DashboardService {
       ]),
 
       // 7-day Velocity
-      isAdmin ? 
-        this.projectModel.aggregate([
-          { $match: { organizationId: orgId, createdAt: { $gte: sevenDaysAgo } } },
-          { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } }, created: { $sum: 1 } } },
-          { $sort: { _id: 1 } },
-        ]) :
-        this.taskModel.aggregate([
-          { $match: { assigneeId: userId, organizationId: orgId, status: TaskStatus.DONE, updatedAt: { $gte: sevenDaysAgo } } },
-          { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$updatedAt' } }, created: { $sum: 1 } } },
-          { $sort: { _id: 1 } },
-        ])
+      isAdmin
+        ? this.projectModel.aggregate([
+            {
+              $match: {
+                organizationId: orgId,
+                createdAt: { $gte: sevenDaysAgo },
+              },
+            },
+            {
+              $group: {
+                _id: {
+                  $dateToString: { format: '%Y-%m-%d', date: '$createdAt' },
+                },
+                created: { $sum: 1 },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ])
+        : this.taskModel.aggregate([
+            {
+              $match: {
+                assigneeId: userId,
+                organizationId: orgId,
+                status: TaskStatus.DONE,
+                updatedAt: { $gte: sevenDaysAgo },
+              },
+            },
+            {
+              $group: {
+                _id: {
+                  $dateToString: { format: '%Y-%m-%d', date: '$updatedAt' },
+                },
+                created: { $sum: 1 },
+              },
+            },
+            { $sort: { _id: 1 } },
+          ]),
     ]);
 
     const stats: Record<string, number> = {
       [ProjectStatus.ACTIVE]: 0,
       [ProjectStatus.COMPLETED]: 0,
     };
-    
+
     projectStats.forEach((stat) => {
       if (stats[stat._id] !== undefined) stats[stat._id] = stat.count;
     });
@@ -73,7 +101,7 @@ export class DashboardService {
       const d = new Date();
       d.setDate(d.getDate() - i);
       const dateStr = d.toISOString().split('T')[0];
-      const match = velocityStats.find(v => v._id === dateStr);
+      const match = velocityStats.find((v) => v._id === dateStr);
       performanceVelocity.push({
         name: d.toLocaleDateString('en-US', { weekday: 'short' }),
         completed: match ? match.created : 0,
@@ -86,7 +114,7 @@ export class DashboardService {
       totalProjects,
       projectDistribution: stats,
       performanceVelocity,
-      recentActivity: [], 
+      recentActivity: [],
     };
   }
 }

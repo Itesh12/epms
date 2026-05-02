@@ -30,4 +30,3 @@ export class UpdateProjectDto {
   @IsMongoId({ each: true })
   members?: string[];
 }
-

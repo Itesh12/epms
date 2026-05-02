@@ -1,10 +1,19 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-import { TicketType, TicketPriority, TicketStatus, TicketCategory } from '../dto/support.dto';
+import {
+  TicketType,
+  TicketPriority,
+  TicketStatus,
+  TicketCategory,
+} from '../dto/support.dto';
 
 @Schema({ timestamps: true })
 export class SupportTicket extends Document {
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+  })
   organizationId: MongooseSchema.Types.ObjectId;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
@@ -48,7 +57,11 @@ export const SupportTicketSchema = SchemaFactory.createForClass(SupportTicket);
 
 @Schema({ timestamps: true })
 export class TicketComment extends Document {
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'SupportTicket', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'SupportTicket',
+    required: true,
+  })
   ticketId: MongooseSchema.Types.ObjectId;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })

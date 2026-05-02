@@ -1,10 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { PollsService } from './polls.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole } from '../users/schemas/user.schema';
-import { CreatePollDto, VoteDto, CreateFeedbackDto, UpdateFeedbackDto } from './dto/polls.dto';
+import {
+  CreatePollDto,
+  VoteDto,
+  CreateFeedbackDto,
+  UpdateFeedbackDto,
+} from './dto/polls.dto';
 
 @Controller('polls')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -37,7 +52,11 @@ export class PollsController {
   // Feedback Endpoints
   @Post('feedback')
   submitFeedback(@Request() req: any, @Body() dto: CreateFeedbackDto) {
-    return this.pollsService.submitFeedback(req.user.userId, req.user.orgId, dto);
+    return this.pollsService.submitFeedback(
+      req.user.userId,
+      req.user.orgId,
+      dto,
+    );
   }
 
   @Get('feedback/all')
@@ -48,7 +67,11 @@ export class PollsController {
 
   @Patch('feedback/:id')
   @Roles(UserRole.ADMIN)
-  updateFeedback(@Param('id') id: string, @Request() req: any, @Body() dto: UpdateFeedbackDto) {
+  updateFeedback(
+    @Param('id') id: string,
+    @Request() req: any,
+    @Body() dto: UpdateFeedbackDto,
+  ) {
     return this.pollsService.updateFeedbackStatus(id, req.user.orgId, dto);
   }
 }

@@ -3,7 +3,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { WikiCategory } from './schemas/wiki-category.schema';
 import { WikiArticle } from './schemas/wiki-article.schema';
-import { CreateWikiCategoryDto, CreateWikiArticleDto, UpdateWikiArticleDto } from './dto/wiki.dto';
+import {
+  CreateWikiCategoryDto,
+  CreateWikiArticleDto,
+  UpdateWikiArticleDto,
+} from './dto/wiki.dto';
 
 @Injectable()
 export class WikiService implements OnModuleInit {
@@ -13,7 +17,7 @@ export class WikiService implements OnModuleInit {
   ) {}
 
   async onModuleInit() {
-    // We could seed global templates here if needed, 
+    // We could seed global templates here if needed,
     // but usually better to do it per-organization or in a seed script.
   }
 
@@ -28,11 +32,17 @@ export class WikiService implements OnModuleInit {
   }
 
   async findAllCategories(organizationId: string) {
-    return this.categoryModel.find({ organizationId: new Types.ObjectId(organizationId) } as any).exec();
+    return this.categoryModel
+      .find({ organizationId: new Types.ObjectId(organizationId) } as any)
+      .exec();
   }
 
   // Articles
-  async createArticle(userId: string, organizationId: string, dto: CreateWikiArticleDto) {
+  async createArticle(
+    userId: string,
+    organizationId: string,
+    dto: CreateWikiArticleDto,
+  ) {
     const article = new this.articleModel({
       ...dto,
       authorId: new Types.ObjectId(userId),
@@ -44,8 +54,16 @@ export class WikiService implements OnModuleInit {
     return article.save();
   }
 
-  async updateArticle(userId: string, id: string, organizationId: string, dto: UpdateWikiArticleDto) {
-    const article = await this.articleModel.findOne({ _id: id, organizationId } as any);
+  async updateArticle(
+    userId: string,
+    id: string,
+    organizationId: string,
+    dto: UpdateWikiArticleDto,
+  ) {
+    const article = await this.articleModel.findOne({
+      _id: id,
+      organizationId,
+    } as any);
     if (!article) throw new NotFoundException('Article not found');
 
     // Archive current version into history
@@ -59,7 +77,8 @@ export class WikiService implements OnModuleInit {
     // Update with new content
     if (dto.title) article.title = dto.title;
     if (dto.content) article.content = dto.content;
-    if (dto.categoryId) article.categoryId = new Types.ObjectId(dto.categoryId) as any;
+    if (dto.categoryId)
+      article.categoryId = new Types.ObjectId(dto.categoryId) as any;
     if (dto.tags) article.tags = dto.tags;
     if (dto.status) article.status = dto.status;
 
@@ -70,7 +89,8 @@ export class WikiService implements OnModuleInit {
   }
 
   async findOne(id: string, organizationId: string) {
-    const article = await this.articleModel.findOne({ _id: id, organizationId } as any)
+    const article = await this.articleModel
+      .findOne({ _id: id, organizationId } as any)
       .populate('authorId', 'firstName lastName')
       .populate('categoryId', 'name icon')
       .exec();
@@ -78,7 +98,11 @@ export class WikiService implements OnModuleInit {
     return article;
   }
 
-  async findAllArticles(organizationId: string, categoryId?: string, query?: string) {
+  async findAllArticles(
+    organizationId: string,
+    categoryId?: string,
+    query?: string,
+  ) {
     const filter: any = { organizationId: new Types.ObjectId(organizationId) };
     if (categoryId) filter.categoryId = new Types.ObjectId(categoryId);
     if (query) {
@@ -88,7 +112,8 @@ export class WikiService implements OnModuleInit {
         { tags: { $in: [new RegExp(query, 'i')] } },
       ];
     }
-    return this.articleModel.find(filter)
+    return this.articleModel
+      .find(filter)
       .populate('authorId', 'firstName lastName')
       .populate('categoryId', 'name')
       .sort({ updatedAt: -1 })
@@ -97,6 +122,8 @@ export class WikiService implements OnModuleInit {
 
   async removeArticle(id: string, organizationId: string) {
     // Strict requirement: Only admin removes. Enforced in controller.
-    return this.articleModel.findOneAndDelete({ _id: id, organizationId } as any).exec();
+    return this.articleModel
+      .findOneAndDelete({ _id: id, organizationId } as any)
+      .exec();
   }
 }

@@ -1,10 +1,25 @@
-import { Controller, Get, Post, Body, Patch, Param, UseGuards, Request, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  UseGuards,
+  Request,
+  Query,
+} from '@nestjs/common';
 import { LeavesService } from './leaves.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { UserRole } from '../users/schemas/user.schema';
-import { CreateLeaveRequestDto, UpdateLeaveStatusDto, AdjustBalanceDto, UpdatePolicyDto } from './dto/leaves.dto';
+import {
+  CreateLeaveRequestDto,
+  UpdateLeaveStatusDto,
+  AdjustBalanceDto,
+  UpdatePolicyDto,
+} from './dto/leaves.dto';
 
 @Controller('leaves')
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -23,7 +38,11 @@ export class LeavesController {
 
   @Get('balance')
   getMyBalance(@Request() req: any) {
-    return this.leavesService.getOrCreateBalance(req.user.userId, req.user.orgId, new Date().getFullYear());
+    return this.leavesService.getOrCreateBalance(
+      req.user.userId,
+      req.user.orgId,
+      new Date().getFullYear(),
+    );
   }
 
   @Get('all')
@@ -34,13 +53,26 @@ export class LeavesController {
 
   @Patch(':id/status')
   @Roles(UserRole.ADMIN)
-  updateStatus(@Param('id') id: string, @Request() req: any, @Body() dto: UpdateLeaveStatusDto) {
-    return this.leavesService.updateStatus(id, req.user.orgId, req.user.userId, dto);
+  updateStatus(
+    @Param('id') id: string,
+    @Request() req: any,
+    @Body() dto: UpdateLeaveStatusDto,
+  ) {
+    return this.leavesService.updateStatus(
+      id,
+      req.user.orgId,
+      req.user.userId,
+      dto,
+    );
   }
 
   @Post('adjust/:userId')
   @Roles(UserRole.ADMIN)
-  adjustBalance(@Param('userId') userId: string, @Request() req: any, @Body() dto: AdjustBalanceDto) {
+  adjustBalance(
+    @Param('userId') userId: string,
+    @Request() req: any,
+    @Body() dto: AdjustBalanceDto,
+  ) {
     return this.leavesService.adjustBalance(userId, req.user.orgId, dto);
   }
 

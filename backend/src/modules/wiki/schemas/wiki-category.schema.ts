@@ -12,7 +12,11 @@ export class WikiCategory extends Document {
   @Prop()
   description: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+  })
   organizationId: MongooseSchema.Types.ObjectId;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'WikiCategory' })

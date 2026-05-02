@@ -3,7 +3,12 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class LeavePolicy extends Document {
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true, unique: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+    unique: true,
+  })
   organizationId: MongooseSchema.Types.ObjectId;
 
   @Prop({ type: Map, of: Number, default: {} })

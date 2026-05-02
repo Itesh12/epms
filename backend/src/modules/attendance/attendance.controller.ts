@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  Query,
+} from '@nestjs/common';
 import { AttendanceService } from './attendance.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -22,7 +33,11 @@ export class AttendanceController {
 
   @Post('break/start')
   startBreak(@Body('reason') reason: string, @Request() req: any) {
-    return this.attendanceService.startBreak(req.user.userId, req.user.orgId, reason);
+    return this.attendanceService.startBreak(
+      req.user.userId,
+      req.user.orgId,
+      reason,
+    );
   }
 
   @Post('break/end')
@@ -32,7 +47,10 @@ export class AttendanceController {
 
   @Get('today')
   getTodayStatus(@Request() req: any) {
-    return this.attendanceService.getTodayStatus(req.user.userId, req.user.orgId);
+    return this.attendanceService.getTodayStatus(
+      req.user.userId,
+      req.user.orgId,
+    );
   }
 
   @Get('leaderboard')
@@ -60,16 +78,27 @@ export class AttendanceController {
 
   @Post('admin/mark-absent')
   @Roles(UserRole.ADMIN)
-  markAbsent(@Body('date') date: string, @Body('userIds') userIds: string[], @Request() req: any) {
+  markAbsent(
+    @Body('date') date: string,
+    @Body('userIds') userIds: string[],
+    @Request() req: any,
+  ) {
     const targetDate = date || new Date().toISOString().split('T')[0];
-    return this.attendanceService.markAbsentForDate(targetDate, req.user.orgId, userIds);
+    return this.attendanceService.markAbsentForDate(
+      targetDate,
+      req.user.orgId,
+      userIds,
+    );
   }
 
   @Get('admin/missing')
   @Roles(UserRole.ADMIN)
   getMissing(@Query('date') date: string, @Request() req: any) {
     const targetDate = date || new Date().toISOString().split('T')[0];
-    return this.attendanceService.getMissingEmployees(targetDate, req.user.orgId);
+    return this.attendanceService.getMissingEmployees(
+      targetDate,
+      req.user.orgId,
+    );
   }
 
   @Get('admin/live')
@@ -89,7 +118,7 @@ export class AttendanceController {
   adminUpdate(
     @Param('id') id: string,
     @Body() updateData: any,
-    @Request() req: any
+    @Request() req: any,
   ) {
     return this.attendanceService.adminUpdate(id, updateData, req.user.orgId);
   }
@@ -105,11 +134,20 @@ export class AttendanceController {
     @Query('userId') userId: string,
     @Query('startDate') start: string,
     @Query('endDate') end: string,
-    @Request() req: any
+    @Request() req: any,
   ) {
     // If not admin, force userId to self
-    const targetUserId = req.user.role === UserRole.ADMIN ? userId : req.user.userId;
-    const csv = await this.attendanceService.exportAttendance(req.user.orgId, targetUserId, start, end);
-    return { csv, filename: `attendance_export_${new Date().toISOString().split('T')[0]}.csv` };
+    const targetUserId =
+      req.user.role === UserRole.ADMIN ? userId : req.user.userId;
+    const csv = await this.attendanceService.exportAttendance(
+      req.user.orgId,
+      targetUserId,
+      start,
+      end,
+    );
+    return {
+      csv,
+      filename: `attendance_export_${new Date().toISOString().split('T')[0]}.csv`,
+    };
   }
 }

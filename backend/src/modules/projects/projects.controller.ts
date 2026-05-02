@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -15,7 +25,11 @@ export class ProjectsController {
   @Post()
   @Roles(UserRole.ADMIN)
   create(@Body() createProjectDto: CreateProjectDto, @Request() req: any) {
-    return this.projectsService.create(createProjectDto, req.user.sub, req.user.orgId);
+    return this.projectsService.create(
+      createProjectDto,
+      req.user.sub,
+      req.user.orgId,
+    );
   }
 
   @Get()
@@ -30,7 +44,11 @@ export class ProjectsController {
 
   @Patch(':id')
   @Roles(UserRole.ADMIN)
-  update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto, @Request() req: any) {
+  update(
+    @Param('id') id: string,
+    @Body() updateProjectDto: UpdateProjectDto,
+    @Request() req: any,
+  ) {
     return this.projectsService.update(id, updateProjectDto, req.user);
   }
 

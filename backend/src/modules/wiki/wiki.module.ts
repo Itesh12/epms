@@ -2,7 +2,10 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WikiController } from './wiki.controller';
 import { WikiService } from './wiki.service';
-import { WikiCategory, WikiCategorySchema } from './schemas/wiki-category.schema';
+import {
+  WikiCategory,
+  WikiCategorySchema,
+} from './schemas/wiki-category.schema';
 import { WikiArticle, WikiArticleSchema } from './schemas/wiki-article.schema';
 
 @Module({

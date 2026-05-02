@@ -1,4 +1,10 @@
-import { Injectable, ConflictException, NotFoundException, UnauthorizedException, InternalServerErrorException } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+  UnauthorizedException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
@@ -17,8 +23,13 @@ export class UsersService {
     return `EP-${random}`;
   }
 
-  async createEmployee(createEmployeeDto: CreateEmployeeDto, organizationId: string): Promise<Omit<User, 'password'>> {
-    const existingUser = await this.userModel.findOne({ email: createEmployeeDto.email });
+  async createEmployee(
+    createEmployeeDto: CreateEmployeeDto,
+    organizationId: string,
+  ): Promise<Omit<User, 'password'>> {
+    const existingUser = await this.userModel.findOne({
+      email: createEmployeeDto.email,
+    });
     if (existingUser) {
       throw new ConflictException('Email already in use');
     }
@@ -28,12 +39,18 @@ export class UsersService {
 
     // Generate Unique ID
     let employeeId = this.generateEmployeeId();
-    let idExists = await this.userModel.findOne({ employeeId, organizationId: new Types.ObjectId(organizationId) } as any);
-    
+    let idExists = await this.userModel.findOne({
+      employeeId,
+      organizationId: new Types.ObjectId(organizationId),
+    } as any);
+
     // Collision resistance
     while (idExists) {
       employeeId = this.generateEmployeeId();
-      idExists = await this.userModel.findOne({ employeeId, organizationId: new Types.ObjectId(organizationId) } as any);
+      idExists = await this.userModel.findOne({
+        employeeId,
+        organizationId: new Types.ObjectId(organizationId),
+      } as any);
     }
 
     const newUser = new this.userModel({
@@ -46,7 +63,7 @@ export class UsersService {
     });
 
     await newUser.save();
-    
+
     // Return user without password
     const { password, ...userObj } = newUser.toObject() as any;
     return userObj;
@@ -66,14 +83,22 @@ export class UsersService {
         needsId.map(async (u: any) => {
           let newId = this.generateEmployeeId();
           // Ensure uniqueness within org
-          let exists = await this.userModel.findOne({ employeeId: newId, organizationId: new Types.ObjectId(organizationId) } as any);
+          let exists = await this.userModel.findOne({
+            employeeId: newId,
+            organizationId: new Types.ObjectId(organizationId),
+          } as any);
           while (exists) {
             newId = this.generateEmployeeId();
-            exists = await this.userModel.findOne({ employeeId: newId, organizationId: new Types.ObjectId(organizationId) } as any);
+            exists = await this.userModel.findOne({
+              employeeId: newId,
+              organizationId: new Types.ObjectId(organizationId),
+            } as any);
           }
           u.employeeId = newId;
-          await this.userModel.updateOne({ _id: u._id }, { $set: { employeeId: newId } }).exec();
-        })
+          await this.userModel
+            .updateOne({ _id: u._id }, { $set: { employeeId: newId } })
+            .exec();
+        }),
       );
     }
 
@@ -81,10 +106,14 @@ export class UsersService {
   }
 
   async findById(id: string, organizationId: string): Promise<User> {
-    const user = await this.userModel.findOne({ 
-      _id: new Types.ObjectId(id), 
-      organizationId: new Types.ObjectId(organizationId) 
-    } as any).select('-password').populate('reportingManager', 'firstName lastName email designation').exec();
+    const user = await this.userModel
+      .findOne({
+        _id: new Types.ObjectId(id),
+        organizationId: new Types.ObjectId(organizationId),
+      } as any)
+      .select('-password')
+      .populate('reportingManager', 'firstName lastName email designation')
+      .exec();
 
     if (!user) {
       throw new NotFoundException('Employee not found');
@@ -94,25 +123,28 @@ export class UsersService {
 
   async findPotentialManagers(organizationId: string): Promise<User[]> {
     return this.userModel
-      .find({ 
+      .find({
         organizationId: new Types.ObjectId(organizationId),
-        role: { $in: [UserRole.ADMIN, UserRole.MANAGER, UserRole.TEAM_LEADER] }
+        role: { $in: [UserRole.ADMIN, UserRole.MANAGER, UserRole.TEAM_LEADER] },
       } as any)
       .select('firstName lastName email designation')
       .exec();
   }
 
-  async updateEmployee(id: string, updateEmployeeDto: UpdateEmployeeDto, organizationId: string): Promise<User> {
-    const filter = { 
-      _id: new Types.ObjectId(id), 
-      organizationId: new Types.ObjectId(organizationId) 
+  async updateEmployee(
+    id: string,
+    updateEmployeeDto: UpdateEmployeeDto,
+    organizationId: string,
+  ): Promise<User> {
+    const filter = {
+      _id: new Types.ObjectId(id),
+      organizationId: new Types.ObjectId(organizationId),
     } as any;
 
-    const updatedUser = await this.userModel.findOneAndUpdate(
-      filter,
-      { $set: updateEmployeeDto },
-      { new: true }
-    ).select('-password').exec();
+    const updatedUser = await this.userModel
+      .findOneAndUpdate(filter, { $set: updateEmployeeDto }, { new: true })
+      .select('-password')
+      .exec();
 
     if (!updatedUser) {
       throw new NotFoundException('Employee not found in your organization');
@@ -123,30 +155,39 @@ export class UsersService {
 
   async removeEmployee(id: string, organizationId: string): Promise<void> {
     // You might want to prevent an admin from deleting themselves, but keeping it simple for now.
-    const filter = { 
-      _id: new Types.ObjectId(id), 
-      organizationId: new Types.ObjectId(organizationId) 
+    const filter = {
+      _id: new Types.ObjectId(id),
+      organizationId: new Types.ObjectId(organizationId),
     } as any;
 
     const result = await this.userModel.deleteOne(filter).exec();
-    
+
     if (result.deletedCount === 0) {
       throw new NotFoundException('Employee not found');
     }
   }
 
   async changePassword(userId: string, changePasswordDto: ChangePasswordDto) {
-    const user = await this.userModel.findById(userId).select('+password').exec();
+    const user = await this.userModel
+      .findById(userId)
+      .select('+password')
+      .exec();
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    const isMatch = await bcrypt.compare(changePasswordDto.oldPassword, user.password);
+    const isMatch = await bcrypt.compare(
+      changePasswordDto.oldPassword,
+      user.password,
+    );
     if (!isMatch) {
-        throw new UnauthorizedException('Incorrect current password');
+      throw new UnauthorizedException('Incorrect current password');
     }
 
-    const hashedNewPassword = await bcrypt.hash(changePasswordDto.newPassword, 10);
+    const hashedNewPassword = await bcrypt.hash(
+      changePasswordDto.newPassword,
+      10,
+    );
     user.password = hashedNewPassword;
     await user.save();
     return { success: true };

@@ -6,7 +6,10 @@ import { UpdateOrganizationDto } from './dto/update-organization.dto';
 
 @Injectable()
 export class OrganizationsService {
-  constructor(@InjectModel(Organization.name) private organizationModel: Model<Organization>) {}
+  constructor(
+    @InjectModel(Organization.name)
+    private organizationModel: Model<Organization>,
+  ) {}
 
   async getMyOrganization(orgId: string): Promise<Organization> {
     const org = await this.organizationModel.findById(orgId).exec();
@@ -16,13 +19,14 @@ export class OrganizationsService {
     return org;
   }
 
-  async updateOrganization(orgId: string, updateOrgDto: UpdateOrganizationDto): Promise<Organization> {
-    const org = await this.organizationModel.findByIdAndUpdate(
-      orgId,
-      { $set: updateOrgDto },
-      { new: true }
-    ).exec();
-    
+  async updateOrganization(
+    orgId: string,
+    updateOrgDto: UpdateOrganizationDto,
+  ): Promise<Organization> {
+    const org = await this.organizationModel
+      .findByIdAndUpdate(orgId, { $set: updateOrgDto }, { new: true })
+      .exec();
+
     if (!org) {
       throw new NotFoundException('Organization not found');
     }

@@ -9,13 +9,21 @@ export class WikiArticle extends Document {
   @Prop({ required: true })
   content: string; // Markdown content
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'WikiCategory', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'WikiCategory',
+    required: true,
+  })
   categoryId: MongooseSchema.Types.ObjectId;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })
   authorId: MongooseSchema.Types.ObjectId;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+  })
   organizationId: MongooseSchema.Types.ObjectId;
 
   @Prop({ default: 1 })
@@ -32,7 +40,12 @@ export class WikiArticle extends Document {
     ],
     default: [],
   })
-  history: { version: number; content: string; authorId: MongooseSchema.Types.ObjectId; createdAt: Date }[];
+  history: {
+    version: number;
+    content: string;
+    authorId: MongooseSchema.Types.ObjectId;
+    createdAt: Date;
+  }[];
 
   @Prop({ type: [String], default: [] })
   tags: string[];

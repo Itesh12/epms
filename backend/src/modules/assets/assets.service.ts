@@ -1,9 +1,18 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Asset, AssetStatus, AssetType } from './schemas/asset.schema';
 import { AssetRequest, RequestStatus } from './schemas/asset-request.schema';
-import { CreateAssetDto, UpdateAssetDto, CreateAssetRequestDto, UpdateAssetRequestDto } from './dto/assets.dto';
+import {
+  CreateAssetDto,
+  UpdateAssetDto,
+  CreateAssetRequestDto,
+  UpdateAssetRequestDto,
+} from './dto/assets.dto';
 
 @Injectable()
 export class AssetsService {
@@ -24,22 +33,32 @@ export class AssetsService {
   async findAll(organizationId: string, type?: AssetType) {
     const filter: any = { organizationId: new Types.ObjectId(organizationId) };
     if (type) filter.type = type;
-    return this.assetModel.find(filter).populate('assignedTo', 'firstName lastName').sort({ createdAt: -1 }).exec();
+    return this.assetModel
+      .find(filter)
+      .populate('assignedTo', 'firstName lastName')
+      .sort({ createdAt: -1 })
+      .exec();
   }
 
   async findMyAssets(userId: string, organizationId: string) {
-    return this.assetModel.find({ 
-      assignedTo: new Types.ObjectId(userId), 
-      organizationId: new Types.ObjectId(organizationId) 
-    } as any).exec();
+    return this.assetModel
+      .find({
+        assignedTo: new Types.ObjectId(userId),
+        organizationId: new Types.ObjectId(organizationId),
+      } as any)
+      .exec();
   }
 
   async updateAsset(id: string, organizationId: string, dto: UpdateAssetDto) {
-    const asset = await this.assetModel.findOne({ _id: id, organizationId } as any);
+    const asset = await this.assetModel.findOne({
+      _id: id,
+      organizationId,
+    } as any);
     if (!asset) throw new NotFoundException('Asset not found');
 
     if (dto.status) asset.status = dto.status;
-    if (dto.assignedTo) asset.assignedTo = new Types.ObjectId(dto.assignedTo) as any;
+    if (dto.assignedTo)
+      asset.assignedTo = new Types.ObjectId(dto.assignedTo) as any;
     else if (dto.status === AssetStatus.STOCK) asset.assignedTo = null as any;
 
     if (dto.maintenanceNote) {
@@ -54,7 +73,11 @@ export class AssetsService {
   }
 
   // Requests
-  async createRequest(userId: string, organizationId: string, dto: CreateAssetRequestDto) {
+  async createRequest(
+    userId: string,
+    organizationId: string,
+    dto: CreateAssetRequestDto,
+  ) {
     const request = new this.requestModel({
       ...dto,
       userId: new Types.ObjectId(userId),
@@ -65,14 +88,23 @@ export class AssetsService {
   }
 
   async findAllRequests(organizationId: string) {
-    return this.requestModel.find({ organizationId: new Types.ObjectId(organizationId) } as any)
+    return this.requestModel
+      .find({ organizationId: new Types.ObjectId(organizationId) } as any)
       .populate('userId', 'firstName lastName')
       .sort({ createdAt: -1 })
       .exec();
   }
 
-  async updateRequestStatus(id: string, organizationId: string, adminId: string, dto: UpdateAssetRequestDto) {
-    const request = await this.requestModel.findOne({ _id: id, organizationId } as any);
+  async updateRequestStatus(
+    id: string,
+    organizationId: string,
+    adminId: string,
+    dto: UpdateAssetRequestDto,
+  ) {
+    const request = await this.requestModel.findOne({
+      _id: id,
+      organizationId,
+    } as any);
     if (!request) throw new NotFoundException('Request not found');
 
     request.status = dto.status;
@@ -85,12 +117,24 @@ export class AssetsService {
   async getInventorySummary(organizationId: string) {
     const orgId = new Types.ObjectId(organizationId);
     const [inStock, assigned, maintenance] = await Promise.all([
-      this.assetModel.countDocuments({ organizationId: orgId, status: AssetStatus.STOCK } as any),
-      this.assetModel.countDocuments({ organizationId: orgId, status: AssetStatus.ASSIGNED } as any),
-      this.assetModel.countDocuments({ organizationId: orgId, status: AssetStatus.MAINTENANCE } as any),
+      this.assetModel.countDocuments({
+        organizationId: orgId,
+        status: AssetStatus.STOCK,
+      } as any),
+      this.assetModel.countDocuments({
+        organizationId: orgId,
+        status: AssetStatus.ASSIGNED,
+      } as any),
+      this.assetModel.countDocuments({
+        organizationId: orgId,
+        status: AssetStatus.MAINTENANCE,
+      } as any),
     ]);
 
-    const pendingRequests = await this.requestModel.countDocuments({ organizationId: orgId, status: RequestStatus.PENDING } as any);
+    const pendingRequests = await this.requestModel.countDocuments({
+      organizationId: orgId,
+      status: RequestStatus.PENDING,
+    } as any);
 
     return {
       inStock,

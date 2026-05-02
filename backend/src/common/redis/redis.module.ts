@@ -1,6 +1,10 @@
 import { Module, Global } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import Redis from 'ioredis';
+import { ConfigService } from '@nestjs/config';
+import { Redis } from 'ioredis';
+
+interface RedisError extends Error {
+  code?: string | number;
+}
 
 @Global()
 @Module({
@@ -9,7 +13,7 @@ import Redis from 'ioredis';
       provide: 'REDIS_CLIENT',
       useFactory: (configService: ConfigService) => {
         const redisUrl = configService.get<string>('redis.url');
-        const redis = redisUrl 
+        const redis = redisUrl
           ? new Redis(redisUrl, { maxRetriesPerRequest: null })
           : new Redis({
               host: configService.get<string>('redis.host'),
@@ -17,8 +21,21 @@ import Redis from 'ioredis';
               maxRetriesPerRequest: null,
             });
 
+        redis.on('connect', () => {
+          console.log('[Redis] Connecting to server...');
+        });
+
+        redis.on('ready', () => {
+          console.log('[Redis] Client is ready');
+        });
+
         redis.on('error', (err) => {
-          console.warn('[Redis] Connection error:', err.message);
+          const redisErr = err as RedisError;
+          console.error('[Redis] Connection error:', {
+            message: redisErr.message,
+            stack: redisErr.stack,
+            code: redisErr.code,
+          });
         });
 
         return redis;

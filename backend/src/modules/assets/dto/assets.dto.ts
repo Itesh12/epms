@@ -1,4 +1,10 @@
-import { IsString, IsEnum, IsOptional, IsDateString, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsEnum,
+  IsOptional,
+  IsDateString,
+  IsNumber,
+} from 'class-validator';
 import { AssetType, AssetStatus } from '../schemas/asset.schema';
 import { RequestStatus } from '../schemas/asset-request.schema';
 

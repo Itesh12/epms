@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request, UnauthorizedException, NotFoundException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+  UnauthorizedException,
+  NotFoundException,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
@@ -15,7 +27,10 @@ export class UsersController {
 
   @Post()
   @Roles(UserRole.ADMIN)
-  createEmployee(@Body() createEmployeeDto: CreateEmployeeDto, @Request() req: any) {
+  createEmployee(
+    @Body() createEmployeeDto: CreateEmployeeDto,
+    @Request() req: any,
+  ) {
     // In a mature app, you'd protect this with a RolesGuard so only ADMIN/MANAGER can do this.
     return this.usersService.createEmployee(createEmployeeDto, req.user.orgId);
   }
@@ -24,7 +39,7 @@ export class UsersController {
   getEmployees(@Request() req: any) {
     return this.usersService.findAllByOrg(req.user.orgId);
   }
-  
+
   @Get('managers')
   getPotentialManagers(@Request() req: any) {
     return this.usersService.findPotentialManagers(req.user.orgId);
@@ -36,7 +51,10 @@ export class UsersController {
   }
 
   @Patch('me/password')
-  changePassword(@Body() changePasswordDto: ChangePasswordDto, @Request() req: any) {
+  changePassword(
+    @Body() changePasswordDto: ChangePasswordDto,
+    @Request() req: any,
+  ) {
     return this.usersService.changePassword(req.user.userId, changePasswordDto);
   }
 
@@ -48,12 +66,18 @@ export class UsersController {
   }
 
   @Patch(':id')
-  updateEmployee(@Param('id') id: string, @Body() updateEmployeeDto: UpdateEmployeeDto, @Request() req: any) {
+  updateEmployee(
+    @Param('id') id: string,
+    @Body() updateEmployeeDto: UpdateEmployeeDto,
+    @Request() req: any,
+  ) {
     const isAdmin = req.user.role === UserRole.ADMIN;
     const isSelf = req.user.userId === id;
-    
+
     if (!isAdmin && !isSelf) {
-      throw new UnauthorizedException('Unauthorized profile modification attempt.');
+      throw new UnauthorizedException(
+        'Unauthorized profile modification attempt.',
+      );
     }
 
     // If not admin, prevent role/isActive modification
@@ -62,7 +86,11 @@ export class UsersController {
       delete updateEmployeeDto.isActive;
     }
 
-    return this.usersService.updateEmployee(id, updateEmployeeDto, req.user.orgId);
+    return this.usersService.updateEmployee(
+      id,
+      updateEmployeeDto,
+      req.user.orgId,
+    );
   }
 
   @Delete(':id')

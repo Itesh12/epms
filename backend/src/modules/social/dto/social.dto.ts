@@ -1,4 +1,10 @@
-import { IsString, IsArray, IsOptional, IsEnum, IsBoolean } from 'class-validator';
+import {
+  IsString,
+  IsArray,
+  IsOptional,
+  IsEnum,
+  IsBoolean,
+} from 'class-validator';
 import { SocialPostType } from '../schemas/social-post.schema';
 
 export class CreateSocialPostDto {

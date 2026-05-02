@@ -13,4 +13,3 @@ import { UsersService } from './users.service';
   exports: [MongooseModule, UsersService],
 })
 export class UsersModule {}
-

@@ -3,7 +3,12 @@ import { Document, Schema as MongooseSchema } from 'mongoose';
 
 @Schema({ timestamps: true })
 export class SocialComment extends Document {
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'SocialPost', required: true, index: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'SocialPost',
+    required: true,
+    index: true,
+  })
   postId: MongooseSchema.Types.ObjectId;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })

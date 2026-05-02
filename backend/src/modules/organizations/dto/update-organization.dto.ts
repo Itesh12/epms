@@ -1,4 +1,12 @@
-import { IsString, IsOptional, MaxLength, Matches, IsUrl, IsEmail, ValidateIf } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  MaxLength,
+  Matches,
+  IsUrl,
+  IsEmail,
+  ValidateIf,
+} from 'class-validator';
 
 export class UpdateOrganizationDto {
   @IsString()
@@ -8,7 +16,7 @@ export class UpdateOrganizationDto {
 
   @IsString()
   @IsOptional()
-  @ValidateIf(o => o.logoUrl !== '')
+  @ValidateIf((o) => o.logoUrl !== '')
   @IsUrl()
   logoUrl?: string;
 
@@ -19,12 +27,16 @@ export class UpdateOrganizationDto {
 
   @IsString()
   @IsOptional()
-  @Matches(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, { message: 'Primary color must be a valid hex code' })
+  @Matches(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+    message: 'Primary color must be a valid hex code',
+  })
   primaryColor?: string;
 
   @IsString()
   @IsOptional()
-  @Matches(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, { message: 'Secondary color must be a valid hex code' })
+  @Matches(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, {
+    message: 'Secondary color must be a valid hex code',
+  })
   secondaryColor?: string;
 
   @IsString()
@@ -33,13 +45,13 @@ export class UpdateOrganizationDto {
 
   @IsString()
   @IsOptional()
-  @ValidateIf(o => o.website !== '')
+  @ValidateIf((o) => o.website !== '')
   @IsUrl()
   website?: string;
 
   @IsString()
   @IsOptional()
-  @ValidateIf(o => o.contactEmail !== '')
+  @ValidateIf((o) => o.contactEmail !== '')
   @IsEmail()
   contactEmail?: string;
 

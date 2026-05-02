@@ -2,7 +2,12 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SupportController } from './support.controller';
 import { SupportService } from './support.service';
-import { SupportTicket, SupportTicketSchema, TicketComment, TicketCommentSchema } from './schemas/support-ticket.schema';
+import {
+  SupportTicket,
+  SupportTicketSchema,
+  TicketComment,
+  TicketCommentSchema,
+} from './schemas/support-ticket.schema';
 
 @Module({
   imports: [

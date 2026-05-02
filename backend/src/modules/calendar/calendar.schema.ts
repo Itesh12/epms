@@ -9,7 +9,7 @@ export enum EventType {
   OFFICE_CLOSURE = 'OFFICE_CLOSURE',
   DEADLINE = 'DEADLINE',
   TEAM_OUTING = 'TEAM_OUTING',
-  OTHER = 'OTHER'
+  OTHER = 'OTHER',
 }
 
 @Schema({ timestamps: true })
@@ -29,11 +29,15 @@ export class CalendarEvent {
   @Prop({
     type: String,
     enum: Object.values(EventType),
-    default: EventType.EVENT
+    default: EventType.EVENT,
   })
   type: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Organization', required: true })
+  @Prop({
+    type: MongooseSchema.Types.ObjectId,
+    ref: 'Organization',
+    required: true,
+  })
   organizationId: string;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'User', required: true })

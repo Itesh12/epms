@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Attendance, AttendanceStatus } from './schemas/attendance.schema';
@@ -18,8 +22,11 @@ export class AttendanceService {
 
   async checkIn(userId: string, orgId: string): Promise<Attendance> {
     const today = this.getTodayString();
-    
-    const existing = await this.attendanceModel.findOne({ userId: userId as any, date: today });
+
+    const existing = await this.attendanceModel.findOne({
+      userId: userId as any,
+      date: today,
+    });
     if (existing) {
       throw new BadRequestException('Already checked in for today');
     }
@@ -28,7 +35,8 @@ export class AttendanceService {
     const latesThreshold = new Date();
     latesThreshold.setHours(10, 30, 0, 0);
 
-    const status = now > latesThreshold ? AttendanceStatus.LATE : AttendanceStatus.PRESENT;
+    const status =
+      now > latesThreshold ? AttendanceStatus.LATE : AttendanceStatus.PRESENT;
 
     const attendance = new this.attendanceModel({
       userId: new Types.ObjectId(userId),
@@ -43,10 +51,10 @@ export class AttendanceService {
 
   async checkOut(userId: string, orgId: string): Promise<Attendance> {
     const today = this.getTodayString();
-    const attendance = await this.attendanceModel.findOne({ 
-      userId: userId as any, 
+    const attendance = await this.attendanceModel.findOne({
+      userId: userId as any,
       date: today,
-      organizationId: orgId as any
+      organizationId: orgId as any,
     } as any);
 
     if (!attendance) {
@@ -58,30 +66,36 @@ export class AttendanceService {
     }
 
     // End any active break first
-    const activeBreak = attendance.breaks.find(b => !b.endTime);
+    const activeBreak = attendance.breaks.find((b) => !b.endTime);
     if (activeBreak) {
       activeBreak.endTime = new Date();
     }
 
     attendance.checkOut = new Date();
     attendance.totalWorkMinutes = this.calculateWorkMinutes(attendance);
-    
+
     return attendance.save();
   }
 
-  async startBreak(userId: string, orgId: string, reason?: string): Promise<Attendance> {
+  async startBreak(
+    userId: string,
+    orgId: string,
+    reason?: string,
+  ): Promise<Attendance> {
     const today = this.getTodayString();
-    const attendance = await this.attendanceModel.findOne({ 
-      userId: userId as any, 
+    const attendance = await this.attendanceModel.findOne({
+      userId: userId as any,
       date: today,
-      organizationId: orgId as any
+      organizationId: orgId as any,
     } as any);
 
     if (!attendance || attendance.checkOut) {
-      throw new BadRequestException('Must be checked in and not checked out to start a break');
+      throw new BadRequestException(
+        'Must be checked in and not checked out to start a break',
+      );
     }
 
-    if (attendance.breaks.some(b => !b.endTime)) {
+    if (attendance.breaks.some((b) => !b.endTime)) {
       throw new BadRequestException('Already on a break');
     }
 
@@ -95,15 +109,15 @@ export class AttendanceService {
 
   async endBreak(userId: string, orgId: string): Promise<Attendance> {
     const today = this.getTodayString();
-    const attendance = await this.attendanceModel.findOne({ 
-      userId: userId as any, 
+    const attendance = await this.attendanceModel.findOne({
+      userId: userId as any,
       date: today,
-      organizationId: orgId as any
+      organizationId: orgId as any,
     } as any);
 
     if (!attendance) throw new NotFoundException('Record not found');
 
-    const activeBreak = attendance.breaks.find(b => !b.endTime);
+    const activeBreak = attendance.breaks.find((b) => !b.endTime);
     if (!activeBreak) {
       throw new BadRequestException('No active break found');
     }
@@ -112,59 +126,82 @@ export class AttendanceService {
     return attendance.save();
   }
 
-  async getTodayStatus(userId: string, orgId: string): Promise<Attendance | null> {
-    return this.attendanceModel.findOne({ 
-      userId: userId as any, 
+  async getTodayStatus(
+    userId: string,
+    orgId: string,
+  ): Promise<Attendance | null> {
+    return this.attendanceModel.findOne({
+      userId: userId as any,
       date: this.getTodayString(),
-      organizationId: orgId as any
+      organizationId: orgId as any,
     });
   }
 
   async getMyHistory(userId: string, orgId: string): Promise<Attendance[]> {
-    return this.attendanceModel.find({ 
-      userId: userId as any,
-      organizationId: orgId as any
-    }).sort({ date: -1 }).limit(30);
+    return this.attendanceModel
+      .find({
+        userId: userId as any,
+        organizationId: orgId as any,
+      })
+      .sort({ date: -1 })
+      .limit(30);
   }
 
   async getUserHistory(userId: string, orgId: string): Promise<Attendance[]> {
-    return this.attendanceModel.find({ 
-      userId: userId as any,
-      organizationId: orgId as any
-    }).sort({ date: -1 });
+    return this.attendanceModel
+      .find({
+        userId: userId as any,
+        organizationId: orgId as any,
+      })
+      .sort({ date: -1 });
   }
 
   async getAllHistory(orgId: string): Promise<Attendance[]> {
-    return this.attendanceModel.find({ organizationId: orgId as any })
+    return this.attendanceModel
+      .find({ organizationId: orgId as any })
       .populate('userId', 'firstName lastName email')
       .sort({ date: -1, createdAt: -1 });
   }
 
-  async markAbsentForDate(date: string, orgId: string, userIds?: string[]): Promise<{ marked: number }> {
+  async markAbsentForDate(
+    date: string,
+    orgId: string,
+    userIds?: string[],
+  ): Promise<{ marked: number }> {
     let targetUsers;
-    
+
     if (userIds && userIds.length > 0) {
       // Validate requested users are in the org
-      targetUsers = await this.userModel.find({ 
-        _id: { $in: userIds },
-        organizationId: orgId as any,
-        isActive: true 
-      }).lean();
+      targetUsers = await this.userModel
+        .find({
+          _id: { $in: userIds },
+          organizationId: orgId as any,
+          isActive: true,
+        })
+        .lean();
     } else {
       // Fallback: Get ALL active users in the org who are missing records
-      const allUsers = await this.userModel.find({ organizationId: orgId as any, isActive: true }).lean();
+      const allUsers = await this.userModel
+        .find({ organizationId: orgId as any, isActive: true })
+        .lean();
       targetUsers = allUsers;
     }
 
     // Find who already has a record on that date
-    const existing = await this.attendanceModel.find({ 
-      organizationId: orgId as any, 
-      date 
-    } as any).lean();
-    const existingUserIds = new Set(existing.map((r: any) => r.userId.toString()));
+    const existing = await this.attendanceModel
+      .find({
+        organizationId: orgId as any,
+        date,
+      } as any)
+      .lean();
+    const existingUserIds = new Set(
+      existing.map((r: any) => r.userId.toString()),
+    );
 
     // Filter out users who already have records
-    const absentUsers = targetUsers.filter((u: any) => !existingUserIds.has(u._id.toString()));
+    const absentUsers = targetUsers.filter(
+      (u: any) => !existingUserIds.has(u._id.toString()),
+    );
 
     if (absentUsers.length === 0) return { marked: 0 };
 
@@ -177,26 +214,37 @@ export class AttendanceService {
       breaks: [],
     }));
 
-    await this.attendanceModel.insertMany(absentRecords, { ordered: false }).catch(() => {});
+    await this.attendanceModel
+      .insertMany(absentRecords, { ordered: false })
+      .catch(() => {});
     return { marked: absentUsers.length };
   }
 
   async getLeaderboard(orgId: string): Promise<any[]> {
     const start = startOfMonth(new Date());
     const end = endOfMonth(new Date());
-    
-    const records = await this.attendanceModel.find({
-      organizationId: orgId as any,
-      date: { $gte: format(start, 'yyyy-MM-dd'), $lte: format(end, 'yyyy-MM-dd') },
-      status: { $in: ['PRESENT', 'LATE', 'HALF_DAY'] }
-    }).populate('userId', 'firstName lastName').lean();
+
+    const records = await this.attendanceModel
+      .find({
+        organizationId: orgId as any,
+        date: {
+          $gte: format(start, 'yyyy-MM-dd'),
+          $lte: format(end, 'yyyy-MM-dd'),
+        },
+        status: { $in: ['PRESENT', 'LATE', 'HALF_DAY'] },
+      })
+      .populate('userId', 'firstName lastName')
+      .lean();
 
     const userStats = new Map<string, { name: string; minutes: number }>();
     records.forEach((r: any) => {
       const uid = r.userId?._id.toString();
       if (!uid) return;
-      const current = userStats.get(uid) || { name: `${r.userId.firstName} ${r.userId.lastName}`, minutes: 0 };
-      current.minutes += (r.totalWorkMinutes || 0);
+      const current = userStats.get(uid) || {
+        name: `${r.userId.firstName} ${r.userId.lastName}`,
+        minutes: 0,
+      };
+      current.minutes += r.totalWorkMinutes || 0;
       userStats.set(uid, current);
     });
 
@@ -206,34 +254,47 @@ export class AttendanceService {
   }
 
   async getMissingEmployees(date: string, orgId: string): Promise<User[]> {
-    const allUsers = await this.userModel.find({ organizationId: orgId as any, isActive: true }).lean();
-    const existing = await this.attendanceModel.find({ organizationId: orgId as any, date } as any).lean();
-    const existingUserIds = new Set(existing.map((r: any) => r.userId.toString()));
-    
-    return allUsers.filter((u: any) => !existingUserIds.has(u._id.toString())) as any;
+    const allUsers = await this.userModel
+      .find({ organizationId: orgId as any, isActive: true })
+      .lean();
+    const existing = await this.attendanceModel
+      .find({ organizationId: orgId as any, date } as any)
+      .lean();
+    const existingUserIds = new Set(
+      existing.map((r: any) => r.userId.toString()),
+    );
+
+    return allUsers.filter(
+      (u: any) => !existingUserIds.has(u._id.toString()),
+    ) as any;
   }
 
   async getLiveActivity(orgId: string): Promise<Attendance[]> {
-    return this.attendanceModel.find({
-      organizationId: orgId as any,
-      date: this.getTodayString(),
-      checkIn: { $exists: true },
-      checkOut: { $exists: false },
-    }).populate('userId', 'firstName lastName email').lean();
+    return this.attendanceModel
+      .find({
+        organizationId: orgId as any,
+        date: this.getTodayString(),
+        checkIn: { $exists: true },
+        checkOut: { $exists: false },
+      })
+      .populate('userId', 'firstName lastName email')
+      .lean();
   }
 
   async adminCreate(data: any, orgId: string): Promise<Attendance> {
     const { userId, date, checkIn, checkOut, status } = data;
-    
+
     // Check for existing
-    const existing = await this.attendanceModel.findOne({ 
-      userId: userId as any, 
+    const existing = await this.attendanceModel.findOne({
+      userId: userId,
       date,
-      organizationId: orgId as any
+      organizationId: orgId as any,
     } as any);
 
     if (existing) {
-      throw new BadRequestException('A record already exists for this employee on this date');
+      throw new BadRequestException(
+        'A record already exists for this employee on this date',
+      );
     }
 
     const attendance = new this.attendanceModel({
@@ -252,19 +313,24 @@ export class AttendanceService {
     return attendance.save();
   }
 
-  async adminUpdate(id: string, updateData: any, orgId: string): Promise<Attendance> {
+  async adminUpdate(
+    id: string,
+    updateData: any,
+    orgId: string,
+  ): Promise<Attendance> {
     const attendance = await this.attendanceModel.findOne({
       _id: id as any,
-      organizationId: orgId as any
+      organizationId: orgId as any,
     });
 
     if (!attendance) throw new NotFoundException('Attendance record not found');
 
     if (updateData.checkIn) updateData.checkIn = new Date(updateData.checkIn);
-    if (updateData.checkOut) updateData.checkOut = new Date(updateData.checkOut);
+    if (updateData.checkOut)
+      updateData.checkOut = new Date(updateData.checkOut);
 
     Object.assign(attendance, updateData);
-    
+
     // Recalculate work minutes if timings changed
     if (updateData.checkIn || updateData.checkOut || updateData.breaks) {
       attendance.totalWorkMinutes = this.calculateWorkMinutes(attendance);
@@ -276,7 +342,7 @@ export class AttendanceService {
   async delete(id: string, orgId: string): Promise<void> {
     const result = await this.attendanceModel.deleteOne({
       _id: id as any,
-      organizationId: orgId as any
+      organizationId: orgId as any,
     });
 
     if (result.deletedCount === 0) {
@@ -284,7 +350,12 @@ export class AttendanceService {
     }
   }
 
-  async exportAttendance(orgId: string, userId?: string, startDate?: string, endDate?: string): Promise<string> {
+  async exportAttendance(
+    orgId: string,
+    userId?: string,
+    startDate?: string,
+    endDate?: string,
+  ): Promise<string> {
     const query: any = { organizationId: orgId as any };
     if (userId) query.userId = userId as any;
     if (startDate || endDate) {
@@ -293,12 +364,22 @@ export class AttendanceService {
       if (endDate) query.date.$lte = endDate;
     }
 
-    const records = await this.attendanceModel.find(query)
+    const records = await this.attendanceModel
+      .find(query)
       .populate('userId', 'firstName lastName email')
       .sort({ date: -1, checkIn: -1 })
       .lean();
 
-    const headers = ['Date', 'Employee', 'Email', 'Status', 'Check In', 'Check Out', 'Work Minutes', 'Notes'];
+    const headers = [
+      'Date',
+      'Employee',
+      'Email',
+      'Status',
+      'Check In',
+      'Check Out',
+      'Work Minutes',
+      'Notes',
+    ];
     const rows = records.map((r: any) => [
       r.date,
       `${r.userId?.firstName} ${r.userId?.lastName}`,
@@ -307,19 +388,20 @@ export class AttendanceService {
       r.checkIn ? format(new Date(r.checkIn), 'HH:mm:ss') : '',
       r.checkOut ? format(new Date(r.checkOut), 'HH:mm:ss') : '',
       r.totalWorkMinutes || 0,
-      (r.notes || '').replace(/,/g, ';')
+      (r.notes || '').replace(/,/g, ';'),
     ]);
 
-    return [headers.join(','), ...rows.map(row => row.join(','))].join('\n');
+    return [headers.join(','), ...rows.map((row) => row.join(','))].join('\n');
   }
 
   private calculateWorkMinutes(attendance: Attendance): number {
     if (!attendance.checkIn || !attendance.checkOut) return 0;
-    
-    const totalDurationMs = attendance.checkOut.getTime() - attendance.checkIn.getTime();
-    
+
+    const totalDurationMs =
+      attendance.checkOut.getTime() - attendance.checkIn.getTime();
+
     let breakDurationMs = 0;
-    attendance.breaks.forEach(b => {
+    attendance.breaks.forEach((b) => {
       if (b.startTime && b.endTime) {
         breakDurationMs += b.endTime.getTime() - b.startTime.getTime();
       }
