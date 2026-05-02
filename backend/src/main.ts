@@ -27,7 +27,7 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: ['https://epms-rust.vercel.app', 'http://localhost:3000'],
+    origin: true,
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type, Accept, Authorization',
